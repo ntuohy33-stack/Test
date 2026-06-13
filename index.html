@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Flowfield Studio — make something</title>
+<style>
+  :root {
+    --bg: #0e0e12;
+    --panel: #16161d;
+    --ink: #e9e9f0;
+    --muted: #8a8a99;
+    --accent: #7c5cff;
+    --line: #26262f;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font: 14px/1.5 ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    height: 100vh;
+    overflow: hidden;
+  }
+  aside {
+    background: var(--panel);
+    border-right: 1px solid var(--line);
+    padding: 18px;
+    overflow-y: auto;
+  }
+  h1 { font-size: 16px; margin: 0 0 2px; letter-spacing: .2px; }
+  .sub { color: var(--muted); font-size: 12px; margin: 0 0 18px; }
+  .group { margin-bottom: 16px; }
+  label { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); margin-bottom: 6px; }
+  label b { color: var(--ink); font-weight: 600; font-variant-numeric: tabular-nums; }
+  input[type=range] { width: 100%; accent-color: var(--accent); }
+  .palettes { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  .swatch { height: 28px; border-radius: 6px; cursor: pointer; border: 2px solid transparent; }
+  .swatch.active { border-color: var(--ink); }
+  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  button {
+    width: 100%; padding: 10px; border: 1px solid var(--line); background: #1d1d26;
+    color: var(--ink); border-radius: 8px; cursor: pointer; font-size: 13px; font-weight: 600;
+    transition: background .12s, border-color .12s;
+  }
+  button:hover { background: #24242f; border-color: var(--accent); }
+  button.primary { background: var(--accent); border-color: var(--accent); }
+  button.primary:hover { filter: brightness(1.1); }
+  .hint { color: var(--muted); font-size: 11px; margin-top: 14px; line-height: 1.6; }
+  .hint kbd { background:#1d1d26; border:1px solid var(--line); border-radius:4px; padding:1px 5px; font-size:10px; }
+  main { position: relative; }
+  canvas { display: block; width: 100%; height: 100%; cursor: crosshair; }
+  .toast {
+    position: absolute; left: 50%; bottom: 22px; transform: translateX(-50%);
+    background: #1d1d26; border: 1px solid var(--line); padding: 8px 14px; border-radius: 8px;
+    font-size: 12px; color: var(--muted); opacity: 0; transition: opacity .25s; pointer-events: none;
+  }
+  .toast.show { opacity: 1; }
+</style>
+</head>
+<body>
+<aside>
+  <h1>Flowfield Studio</h1>
+  <p class="sub">Drag on the canvas to seed it. Tune the field, then let it breathe.</p>
+
+  <div class="group">
+    <label>Particles <b id="vCount">900</b></label>
+    <input id="count" type="range" min="100" max="4000" step="50" value="900" />
+  </div>
+  <div class="group">
+    <label>Field scale <b id="vScale">0.0030</b></label>
+    <input id="scale" type="range" min="5" max="80" step="1" value="30" />
+  </div>
+  <div class="group">
+    <label>Speed <b id="vSpeed">1.4</b></label>
+    <input id="speed" type="range" min="2" max="60" step="1" value="14" />
+  </div>
+  <div class="group">
+    <label>Curl <b id="vCurl">2.0</b></label>
+    <input id="curl" type="range" min="0" max="80" step="1" value="20" />
+  </div>
+  <div class="group">
+    <label>Trail / fade <b id="vFade">0.04</b></label>
+    <input id="fade" type="range" min="0" max="40" step="1" value="4" />
+  </div>
+  <div class="group">
+    <label>Line weight <b id="vWeight">1.2</b></label>
+    <input id="weight" type="range" min="2" max="40" step="1" value="12" />
+  </div>
+
+  <div class="group">
+    <label>Palette</label>
+    <div class="palettes" id="palettes"></div>
+  </div>
+
+  <div class="group row">
+    <button id="reseed">Reseed</button>
+    <button id="clear">Clear</button>
+  </div>
+  <div class="group row">
+    <button id="play" class="primary">Pause</button>
+    <button id="save">Save PNG</button>
+  </div>
+
+  <p class="hint">
+    <b style="color:var(--ink)">Tips</b><br>
+    • Drag to inject particles where you click.<br>
+    • <kbd>Space</kbd> play/pause · <kbd>R</kbd> reseed · <kbd>C</kbd> clear · <kbd>S</kbd> save.<br>
+    • High curl + low fade = silky ribbons. Low scale = big sweeping motion.
+  </p>
+</aside>
+
+<main>
+  <canvas id="c"></canvas>
+  <div class="toast" id="toast"></div>
+</main>
+
+<script>
+(() => {
+  const canvas = document.getElementById('c');
+  const ctx = canvas.getContext('2d', { alpha: false });
+  let W, H, DPR;
+
+  // ---- Palettes -------------------------------------------------------------
+  const PALETTES = [
+    { name: 'Ember',   bg: '#100a0a', cols: ['#ff5d3b','#ffb03b','#ffe6a0','#c4302b'] },
+    { name: 'Aurora',  bg: '#06120f', cols: ['#39ffa0','#3bd6ff','#9c7bff','#e6fff4'] },
+    { name: 'Bloom',   bg: '#120612', cols: ['#ff5fb0','#ff9ad1','#b46bff','#ffe0f3'] },
+    { name: 'Slate',   bg: '#0c0e12', cols: ['#7aa2ff','#9fb6d6','#cfe0ff','#445a8a'] },
+    { name: 'Citrus',  bg: '#0e1206', cols: ['#d6ff3b','#9cff5f','#fff07a','#5fd66b'] },
+    { name: 'Mono',    bg: '#0a0a0a', cols: ['#ffffff','#bdbdbd','#7a7a7a','#e8e8e8'] },
+  ];
+  let palette = PALETTES[1];
+
+  // ---- Simplex-ish value noise (compact, seedable) --------------------------
+  function makeNoise(seed) {
+    const p = new Uint8Array(512);
+    let s = seed >>> 0;
+    const rnd = () => (s = (s * 1664525 + 1013904223) >>> 0) / 4294967296;
+    const perm = Array.from({length:256}, (_,i)=>i);
+    for (let i = 255; i > 0; i--) { const j = (rnd()*(i+1))|0; [perm[i],perm[j]]=[perm[j],perm[i]]; }
+    for (let i = 0; i < 512; i++) p[i] = perm[i & 255];
+    const fade = t => t*t*t*(t*(t*6-15)+10);
+    const lerp = (a,b,t) => a+(b-a)*t;
+    const grad = (h,x,y) => { const u = h&1?x:-x, v = h&2?y:-y; return u+v; };
+    return (x,y) => {
+      const X = Math.floor(x)&255, Y = Math.floor(y)&255;
+      x -= Math.floor(x); y -= Math.floor(y);
+      const u = fade(x), v = fade(y);
+      const a = p[X]+Y, b = p[X+1]+Y;
+      return lerp(
+        lerp(grad(p[a], x, y),   grad(p[b], x-1, y),   u),
+        lerp(grad(p[a+1], x, y-1), grad(p[b+1], x-1, y-1), u),
+        v
+      );
+    };
+  }
+  let noise = makeNoise((Math.random()*1e9)|0);
+
+  // ---- Particles ------------------------------------------------------------
+  let particles = [];
+  const params = { count:900, scale:0.003, speed:1.4, curl:2.0, fade:0.04, weight:1.2 };
+
+  function spawn(n, x, y, r) {
+    for (let i = 0; i < n; i++) {
+      const px = x === undefined ? Math.random()*W : x + (Math.random()-0.5)*r;
+      const py = y === undefined ? Math.random()*H : y + (Math.random()-0.5)*r;
+      particles.push({
+        x: px, y: py,
+        c: palette.cols[(Math.random()*palette.cols.length)|0],
+        life: 200 + Math.random()*400,
+      });
+    }
+  }
+
+  function reseed() {
+    noise = makeNoise((Math.random()*1e9)|0);
+    particles = [];
+    spawn(params.count|0);
+  }
+
+  function clear() {
+    ctx.fillStyle = palette.bg;
+    ctx.fillRect(0, 0, W, H);
+  }
+
+  // ---- Simulation -----------------------------------------------------------
+  function step() {
+    // fade overlay for trails
+    if (params.fade > 0) {
+      ctx.fillStyle = hexAlpha(palette.bg, params.fade);
+      ctx.fillRect(0, 0, W, H);
+    }
+    ctx.lineWidth = params.weight;
+    ctx.lineCap = 'round';
+
+    const sc = params.scale, sp = params.speed, curl = params.curl;
+    for (let i = 0; i < particles.length; i++) {
+      const pt = particles[i];
+      const a = noise(pt.x*sc, pt.y*sc) * Math.PI * (2 + curl);
+      const vx = Math.cos(a) * sp;
+      const vy = Math.sin(a) * sp;
+      ctx.strokeStyle = pt.c;
+      ctx.beginPath();
+      ctx.moveTo(pt.x, pt.y);
+      pt.x += vx; pt.y += vy;
+      ctx.lineTo(pt.x, pt.y);
+      ctx.stroke();
+
+      pt.life--;
+      if (pt.life <= 0 || pt.x < -20 || pt.x > W+20 || pt.y < -20 || pt.y > H+20) {
+        pt.x = Math.random()*W; pt.y = Math.random()*H;
+        pt.life = 200 + Math.random()*400;
+        pt.c = palette.cols[(Math.random()*palette.cols.length)|0];
+      }
+    }
+  }
+
+  function hexAlpha(hex, a) {
+    const n = parseInt(hex.slice(1), 16);
+    return `rgba(${(n>>16)&255},${(n>>8)&255},${n&255},${a})`;
+  }
+
+  // ---- Loop -----------------------------------------------------------------
+  let playing = true;
+  function frame() {
+    if (playing) step();
+    requestAnimationFrame(frame);
+  }
+
+  // ---- Sizing ---------------------------------------------------------------
+  function resize() {
+    DPR = Math.min(window.devicePixelRatio || 1, 2);
+    const r = canvas.getBoundingClientRect();
+    W = Math.round(r.width); H = Math.round(r.height);
+    canvas.width = W * DPR; canvas.height = H * DPR;
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    clear();
+  }
+  window.addEventListener('resize', resize);
+
+  // ---- UI wiring ------------------------------------------------------------
+  const bind = (id, fn, fmt) => {
+    const el = document.getElementById(id);
+    const out = document.getElementById('v' + id[0].toUpperCase() + id.slice(1));
+    const update = () => { fn(+el.value); if (out) out.textContent = fmt(+el.value); };
+    el.addEventListener('input', update); update();
+  };
+  bind('count',  v => { const target=v|0; if (target>particles.length) spawn(target-particles.length); else particles.length=target; params.count=v; }, v=>v|0);
+  bind('scale',  v => params.scale = v/10000, v => (v/10000).toFixed(4));
+  bind('speed',  v => params.speed = v/10,    v => (v/10).toFixed(1));
+  bind('curl',   v => params.curl  = v/10,    v => (v/10).toFixed(1));
+  bind('fade',   v => params.fade  = v/100,   v => (v/100).toFixed(2));
+  bind('weight', v => params.weight= v/10,    v => (v/10).toFixed(1));
+
+  // palettes
+  const palWrap = document.getElementById('palettes');
+  PALETTES.forEach((p, i) => {
+    const d = document.createElement('div');
+    d.className = 'swatch' + (p === palette ? ' active' : '');
+    d.style.background = `linear-gradient(90deg, ${p.cols.join(',')})`;
+    d.title = p.name;
+    d.onclick = () => {
+      palette = p;
+      [...palWrap.children].forEach(c => c.classList.remove('active'));
+      d.classList.add('active');
+      clear();
+      particles.forEach(pt => pt.c = p.cols[(Math.random()*p.cols.length)|0]);
+    };
+    palWrap.appendChild(d);
+  });
+
+  // buttons
+  const toast = (msg) => {
+    const t = document.getElementById('toast');
+    t.textContent = msg; t.classList.add('show');
+    clearTimeout(t._t); t._t = setTimeout(() => t.classList.remove('show'), 1400);
+  };
+  document.getElementById('reseed').onclick = () => { reseed(); toast('Reseeded the field'); };
+  document.getElementById('clear').onclick  = () => { clear(); toast('Canvas cleared'); };
+  const playBtn = document.getElementById('play');
+  playBtn.onclick = () => { playing = !playing; playBtn.textContent = playing ? 'Pause' : 'Play'; };
+  document.getElementById('save').onclick = save;
+
+  function save() {
+    const a = document.createElement('a');
+    a.download = `flowfield-${Date.now()}.png`;
+    a.href = canvas.toDataURL('image/png');
+    a.click();
+    toast('Saved PNG');
+  }
+
+  // drag to inject
+  let dragging = false;
+  const inject = (e) => {
+    const r = canvas.getBoundingClientRect();
+    spawn(40, e.clientX - r.left, e.clientY - r.top, 30);
+  };
+  canvas.addEventListener('pointerdown', e => { dragging = true; inject(e); });
+  canvas.addEventListener('pointermove', e => { if (dragging) inject(e); });
+  window.addEventListener('pointerup', () => dragging = false);
+
+  // keyboard
+  window.addEventListener('keydown', e => {
+    if (e.target.tagName === 'INPUT') return;
+    if (e.code === 'Space') { e.preventDefault(); playBtn.click(); }
+    else if (e.key === 'r' || e.key === 'R') document.getElementById('reseed').click();
+    else if (e.key === 'c' || e.key === 'C') document.getElementById('clear').click();
+    else if (e.key === 's' || e.key === 'S') save();
+  });
+
+  // ---- Go -------------------------------------------------------------------
+  resize();
+  reseed();
+  frame();
+})();
+</script>
+</body>
+</html>
