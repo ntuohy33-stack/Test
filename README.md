@@ -21,9 +21,13 @@ No build, no install, no internet required — it's one HTML file.
 - **Presets** — one-click looks (Silky Ribbons, Ink Wash, Big Sweeps, Kaleido Bloom, Embers, Neon Web).
 - **Sliders** — particle count, field scale, speed, curl, trail fade, line weight.
 - **Symmetry** — Off / Mirror / Quad / Kaleido (6-fold mandala mode).
+- **Effects** — **Glow** (additive neon blending), **Drift** (the field slowly breathes), and
+  **🎤 Audio** (reacts to your microphone — play music and watch it pulse and burst on the beat).
 - **Palettes** — six built-in color sets plus a **Custom** palette you edit with color pickers.
 - **🎲 Surprise me** — randomizes every setting for happy accidents.
-- **🔗 Share link** — encodes your exact settings into the URL; opening that link restores the look.
+- **🔗 Share link** — encodes your exact settings (incl. glow/drift/custom colors) into the URL; opening it restores the look.
+- **💾 Gallery** — save the current canvas as a thumbnail to your browser (persists across visits);
+  click a thumbnail to reload that look, Shift-click to delete.
 - **Reseed** for a brand-new field, **Clear** to wipe.
 - **Save PNG** to keep a still frame.
 - **Record video** captures live (tweak sliders while filming) and saves a `.webm`.
