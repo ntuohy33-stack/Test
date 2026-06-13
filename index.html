@@ -158,6 +158,7 @@
     <div class="seg" id="fxSeg">
       <button data-fx="glow">Glow</button>
       <button data-fx="drift">Drift</button>
+      <button data-fx="depth">Depth</button>
       <button data-fx="audio">🎤 Audio</button>
     </div>
   </div>
@@ -169,6 +170,12 @@
       <p class="mini">Your palette — tap a swatch to change it.</p>
       <div class="chips" id="chips"></div>
     </div>
+    <button id="imgBtn" style="margin-top:10px">🖼 Paint from an image…</button>
+    <input type="file" id="imgInput" accept="image/*" hidden />
+  </div>
+
+  <div class="group">
+    <button id="paintBtn">🖌 Paint mode (blank canvas)</button>
   </div>
 
   <div class="group row">
@@ -231,8 +238,12 @@
   let palette = PALETTES[1];
 
   // ---- State flags ----------------------------------------------------------
-  let glow = false, drift = false;
+  let glow = false, drift = false, depth = false, paint = false;
   const audioState = { on: false, ac: null, analyser: null, data: null, stream: null, level: 0 };
+
+  // Image source (paint particles with a photo's colors)
+  let imageMode = false, imgData = null, currentImg = null;
+  const pointer = { x: 0, y: 0 };
 
   // ---- Value noise (compact, seedable) --------------------------------------
   function makeNoise(seed) {
@@ -263,18 +274,25 @@
   let particles = [];
   const params = { count:900, scale:0.003, speed:1.4, curl:2.0, fade:0.04, weight:1.2 };
   const pick = () => palette.cols[(Math.random()*palette.cols.length)|0];
+  function sampleImg(x, y) {
+    x = x < 0 ? 0 : x >= W ? W-1 : x|0;
+    y = y < 0 ? 0 : y >= H ? H-1 : y|0;
+    const i = (y*W + x)*4, d = imgData.data;
+    return `rgb(${d[i]},${d[i+1]},${d[i+2]})`;
+  }
+  const colorFor = (x, y) => (imageMode && imgData) ? sampleImg(x, y) : pick();
 
   function spawn(n, x, y, r) {
     for (let i = 0; i < n; i++) {
       const px = x === undefined ? Math.random()*W : x + (Math.random()-0.5)*r;
       const py = y === undefined ? Math.random()*H : y + (Math.random()-0.5)*r;
-      particles.push({ x: px, y: py, c: pick(), life: 200 + Math.random()*400 });
+      particles.push({ x: px, y: py, c: colorFor(px, py), life: 200 + Math.random()*400, z: Math.random() });
     }
   }
   function reseed() {
     noise = makeNoise((Math.random()*1e9)|0);
     particles = [];
-    spawn(params.count|0);
+    if (!paint) spawn(params.count|0);
   }
   function clear() { ctx.globalCompositeOperation = 'source-over'; ctx.fillStyle = palette.bg; ctx.fillRect(0, 0, W, H); }
 
@@ -319,34 +337,54 @@
       ctx.fillRect(0, 0, W, H);
     }
     if (glow) ctx.globalCompositeOperation = 'lighter';
-    ctx.lineWidth = params.weight;
+    if (!depth) ctx.lineWidth = params.weight;
     ctx.lineCap = 'round';
 
     const boost = sampleAudio();
     const sc = params.scale, sp = params.speed * boost, curl = params.curl;
     let dx = 0, dy = 0;
     if (drift) { const t = performance.now(); dx = Math.sin(t*0.00020)*180; dy = Math.cos(t*0.00017)*180; }
+    // camera sway for parallax 3D
+    let camX = 0, camY = 0;
+    if (depth) {
+      const t = performance.now();
+      camX = Math.sin(t*0.0003)*40 + (pointer.x - W/2)*0.06;
+      camY = Math.cos(t*0.00025)*30 + (pointer.y - H/2)*0.06;
+    }
     const ts = transforms, single = ts.length === 1;
     const a = [0,0], b = [0,0];
+    let anyDead = false;
     for (let i = 0; i < particles.length; i++) {
       const pt = particles[i];
+      const pspeed = depth ? sp * (0.5 + pt.z) : sp;
       const ang = noise((pt.x+dx)*sc, (pt.y+dy)*sc) * Math.PI * (2 + curl);
       const x0 = pt.x, y0 = pt.y;
-      pt.x += Math.cos(ang) * sp; pt.y += Math.sin(ang) * sp;
+      pt.x += Math.cos(ang) * pspeed; pt.y += Math.sin(ang) * pspeed;
+      // parallax offset (depth read as nearness)
+      let qx0 = x0, qy0 = y0, qx1 = pt.x, qy1 = pt.y;
+      if (depth) {
+        const par = pt.z - 0.5;
+        qx0 += par*camX; qx1 += par*camX; qy0 += par*camY; qy1 += par*camY;
+        ctx.lineWidth = params.weight * (0.35 + pt.z*1.3);
+      }
       ctx.strokeStyle = pt.c;
       if (single) {
-        ctx.beginPath(); ctx.moveTo(x0, y0); ctx.lineTo(pt.x, pt.y); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(qx0, qy0); ctx.lineTo(qx1, qy1); ctx.stroke();
       } else {
         for (let t = 0; t < ts.length; t++) {
-          ts[t](x0, y0, a); ts[t](pt.x, pt.y, b);
+          ts[t](qx0, qy0, a); ts[t](qx1, qy1, b);
           ctx.beginPath(); ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0], b[1]); ctx.stroke();
         }
       }
       if (--pt.life <= 0 || pt.x < -20 || pt.x > W+20 || pt.y < -20 || pt.y > H+20) {
-        pt.x = Math.random()*W; pt.y = Math.random()*H;
-        pt.life = 200 + Math.random()*400; pt.c = pick();
+        if (paint) { pt.dead = true; anyDead = true; }
+        else {
+          pt.x = Math.random()*W; pt.y = Math.random()*H; pt.z = Math.random();
+          pt.life = 200 + Math.random()*400; pt.c = colorFor(pt.x, pt.y);
+        }
       }
     }
+    if (anyDead) particles = particles.filter(p => !p.dead);
     ctx.globalCompositeOperation = 'source-over';
   }
   function hexAlpha(hex, a) {
@@ -366,6 +404,7 @@
     canvas.width = W * DPR; canvas.height = H * DPR;
     ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
     rebuildTransforms();
+    if (currentImg) buildImageData(currentImg);
     clear();
   }
   window.addEventListener('resize', resize);
@@ -379,7 +418,7 @@
     el.addEventListener('input', update); update();
     controls[id] = { el, update };
   };
-  bind('count',  v => { const t=v|0; if (t>particles.length) spawn(t-particles.length); else particles.length=t; params.count=v; }, v=>v|0);
+  bind('count',  v => { params.count=v; if (paint) return; const t=v|0; if (t>particles.length) spawn(t-particles.length); else particles.length=t; }, v=>v|0);
   bind('scale',  v => params.scale = v/10000, v => (v/10000).toFixed(4));
   bind('speed',  v => params.speed = v/10,    v => (v/10).toFixed(1));
   bind('curl',   v => params.curl  = v/10,    v => (v/10).toFixed(1));
@@ -391,7 +430,7 @@
   const swatches = [];
   const refreshSwatch = (el, p) => el.style.background = `linear-gradient(90deg, ${p.cols.join(',')})`;
   function setPalette(p) {
-    palette = p;
+    palette = p; imageMode = false;
     swatches.forEach((s, i) => s.classList.toggle('active', allPalettes[i] === p));
     clear();
     particles.forEach(pt => pt.c = pick());
@@ -437,6 +476,7 @@
       const fx = b.dataset.fx;
       if (fx === 'glow')  { glow = !glow; setFx('glow', glow); clear(); toast(glow ? 'Glow on ✨' : 'Glow off'); }
       else if (fx === 'drift') { drift = !drift; setFx('drift', drift); toast(drift ? 'Drift on 🌬' : 'Drift off'); }
+      else if (fx === 'depth') { depth = !depth; setFx('depth', depth); clear(); toast(depth ? 'Depth on — move your cursor 🪐' : 'Depth off'); }
       else if (fx === 'audio') toggleAudio();
     };
   });
@@ -457,6 +497,53 @@
       setFx('audio', true); toast('🎤 Audio reactive — play some music!');
     } catch (e) { toast('Mic access denied'); }
   }
+
+  // ---- Image source ---------------------------------------------------------
+  function buildImageData(img) {
+    const off = document.createElement('canvas');
+    off.width = W; off.height = H;
+    const o = off.getContext('2d');
+    o.fillStyle = '#000'; o.fillRect(0, 0, W, H);
+    const ar = img.width / img.height, cr = W / H;     // cover-fit
+    let dw, dh;
+    if (ar > cr) { dh = H; dw = H * ar; } else { dw = W; dh = W / ar; }
+    o.drawImage(img, (W-dw)/2, (H-dh)/2, dw, dh);
+    imgData = o.getImageData(0, 0, W, H);
+  }
+  function loadImageFile(file) {
+    if (!file || !file.type.startsWith('image/')) { toast('That is not an image'); return; }
+    const url = URL.createObjectURL(file);
+    const img = new Image();
+    img.onload = () => {
+      currentImg = img; buildImageData(img); imageMode = true;
+      swatches.forEach(s => s.classList.remove('active'));
+      clear();
+      particles.forEach(pt => pt.c = colorFor(pt.x, pt.y));
+      URL.revokeObjectURL(url);
+      toast('Image loaded 🖼 — particles now paint with its colors');
+    };
+    img.onerror = () => { URL.revokeObjectURL(url); toast('Could not load that image'); };
+    img.src = url;
+  }
+  const imgInput = document.getElementById('imgInput');
+  document.getElementById('imgBtn').onclick = () => imgInput.click();
+  imgInput.onchange = e => { if (e.target.files[0]) loadImageFile(e.target.files[0]); imgInput.value = ''; };
+  // drag & drop anywhere on the canvas
+  ['dragenter','dragover'].forEach(ev => canvas.addEventListener(ev, e => { e.preventDefault(); }));
+  canvas.addEventListener('drop', e => {
+    e.preventDefault();
+    const f = e.dataTransfer?.files?.[0];
+    if (f) loadImageFile(f);
+  });
+
+  // ---- Paint mode (start blank, build by touch) -----------------------------
+  const paintBtn = document.getElementById('paintBtn');
+  paintBtn.onclick = () => {
+    paint = !paint;
+    paintBtn.classList.toggle('primary', paint);
+    if (paint) { particles = []; clear(); toast('Paint mode — drag on the canvas to build'); }
+    else { reseed(); toast('Paint mode off'); }
+  };
 
   // ---- Presets --------------------------------------------------------------
   const PRESETS = {
@@ -490,12 +577,14 @@
     if (s.sym) setSymmetry(s.sym);
     glow = !!+s.glow; setFx('glow', glow);
     drift = !!+s.drift; setFx('drift', drift);
+    depth = !!+s.depth; setFx('depth', depth);
     clear();
   }
   function getState() {
     const s = {};
     SLIDER_KEYS.forEach(k => s[k] = +controls[k].el.value);
-    s.pal = palette.name; s.sym = symmetry; s.glow = glow ? 1 : 0; s.drift = drift ? 1 : 0;
+    s.pal = palette.name; s.sym = symmetry;
+    s.glow = glow ? 1 : 0; s.drift = drift ? 1 : 0; s.depth = depth ? 1 : 0;
     if (palette === CUSTOM) s.cols = CUSTOM.cols.slice();
     return s;
   }
@@ -530,6 +619,7 @@
       pal: names[(Math.random()*names.length)|0],
       sym: syms[(Math.random()*syms.length)|0],
       glow: Math.random() < 0.5 ? 1 : 0, drift: Math.random() < 0.5 ? 1 : 0,
+      depth: Math.random() < 0.4 ? 1 : 0,
     });
     reseed();
     toast('Surprise! 🎲');
@@ -540,7 +630,8 @@
     const s = getState();
     const p = new URLSearchParams();
     SLIDER_KEYS.forEach(k => p.set(k, s[k]));
-    p.set('pal', s.pal); p.set('sym', s.sym); p.set('glow', s.glow); p.set('drift', s.drift);
+    p.set('pal', s.pal); p.set('sym', s.sym);
+    p.set('glow', s.glow); p.set('drift', s.drift); p.set('depth', s.depth);
     if (s.cols) p.set('cols', s.cols.map(c => c.replace('#','')).join('-'));
     const hash = p.toString();
     location.hash = hash;
@@ -557,6 +648,7 @@
     if (p.get('sym')) s.sym = p.get('sym');
     if (p.get('glow') != null) s.glow = +p.get('glow');
     if (p.get('drift') != null) s.drift = +p.get('drift');
+    if (p.get('depth') != null) s.depth = +p.get('depth');
     if (p.get('cols')) s.cols = p.get('cols').split('-').map(c => '#' + c);
     applyState(s);
   }
@@ -657,7 +749,11 @@
     spawn(40, e.clientX - r.left, e.clientY - r.top, 30);
   };
   canvas.addEventListener('pointerdown', e => { dragging = true; inject(e); });
-  canvas.addEventListener('pointermove', e => { if (dragging) { e.preventDefault(); inject(e); } });
+  canvas.addEventListener('pointermove', e => {
+    const r = canvas.getBoundingClientRect();
+    pointer.x = e.clientX - r.left; pointer.y = e.clientY - r.top;
+    if (dragging) { e.preventDefault(); inject(e); }
+  });
   window.addEventListener('pointerup', () => dragging = false);
   window.addEventListener('pointercancel', () => dragging = false);
 
