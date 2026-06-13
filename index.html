@@ -175,10 +175,8 @@
   </div>
 
   <div class="group">
-    <label>Write words</label>
-    <input id="textInput" type="text" placeholder="Type a word, press Enter…" maxlength="24"
-      style="width:100%;padding:9px;border:1px solid var(--line);border-radius:8px;background:#11111a;color:var(--ink);font:inherit" />
-    <button id="writeBtn" style="margin-top:8px">✍️ Write it — linger &amp; fade</button>
+    <button id="writeModeBtn">✍️ Write with your finger</button>
+    <p class="mini" style="margin-top:6px">Turn on, then draw on the canvas — your strokes linger crisply, then drift away into the flow.</p>
   </div>
 
   <div class="group">
@@ -558,45 +556,31 @@
     else { reseed(); toast('Paint mode off'); }
   };
 
-  // ---- Write words (linger, then fade into the flow) ------------------------
-  function spawnText(text) {
-    text = (text || '').trim();
-    if (!text) return;
-    const off = document.createElement('canvas');
-    off.width = W; off.height = H;
-    const o = off.getContext('2d');
-    o.fillStyle = '#000'; o.fillRect(0, 0, W, H);
-    o.fillStyle = '#fff'; o.textAlign = 'center'; o.textBaseline = 'middle';
-    let size = Math.min(H * 0.42, W * 1.7 / Math.max(text.length, 1));
-    size = Math.max(36, size);
-    const fontOf = s => `900 ${s}px ui-sans-serif, system-ui, "Segoe UI", sans-serif`;
-    o.font = fontOf(size);
-    const w = o.measureText(text).width;
-    if (w > W * 0.9) { size *= (W * 0.9) / w; o.font = fontOf(size); }
-    o.fillText(text, W / 2, H / 2);
-
-    const data = o.getImageData(0, 0, W, H).data;
-    const pts = [];
-    for (let y = 0; y < H; y += 3)
-      for (let x = 0; x < W; x += 3)
-        if (data[(y * W + x) * 4] > 128) pts.push([x, y]);
-    if (!pts.length) return;
-
-    const MAX = 3500;
-    const stride = pts.length > MAX ? pts.length / MAX : 1;
-    for (let i = 0; i < pts.length; i += stride) {
-      const [x, y] = pts[i | 0];
-      particles.push({
-        x: x + (Math.random()-0.5)*1.5, y: y + (Math.random()-0.5)*1.5,
-        c: colorFor(x, y), life: 150 + Math.random()*180, z: Math.random(),
-        hold: 55 + Math.random()*40,
-      });
+  // ---- Write with finger gestures (strokes linger, then fade) ---------------
+  let writeMode = false;
+  const writeModeBtn = document.getElementById('writeModeBtn');
+  writeModeBtn.onclick = () => {
+    writeMode = !writeMode;
+    writeModeBtn.classList.toggle('primary', writeMode);
+    canvas.style.cursor = writeMode ? 'text' : 'crosshair';
+    toast(writeMode ? '✍️ Write mode — draw on the canvas' : 'Write mode off');
+  };
+  // lay down held particles along a gesture segment (interpolated for smooth strokes)
+  function writeStroke(x0, y0, x1, y1) {
+    const dx = x1 - x0, dy = y1 - y0;
+    const steps = Math.max(1, Math.round(Math.hypot(dx, dy) / 3));
+    for (let s = 0; s <= steps; s++) {
+      const t = s / steps, bx = x0 + dx*t, by = y0 + dy*t;
+      for (let k = 0; k < 2; k++) {          // a little thickness across the stroke
+        particles.push({
+          x: bx + (Math.random()-0.5)*4, y: by + (Math.random()-0.5)*4,
+          c: colorFor(bx, by), life: 150 + Math.random()*180, z: Math.random(),
+          hold: 75 + Math.random()*55,
+        });
+      }
     }
-    toast(`Wrote "${text}" ✍️`);
+    if (particles.length > 9000) particles.splice(0, particles.length - 9000);
   }
-  const textInput = document.getElementById('textInput');
-  document.getElementById('writeBtn').onclick = () => spawnText(textInput.value);
-  textInput.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); spawnText(textInput.value); } });
 
   // ---- Presets --------------------------------------------------------------
   const PRESETS = {
@@ -795,17 +779,21 @@
   panelToggle.onclick = () => document.body.classList.toggle('panel-open');
   canvas.addEventListener('pointerdown', () => document.body.classList.remove('panel-open'));
 
-  // ---- Drag / touch to inject ----------------------------------------------
-  let dragging = false;
-  const inject = (e) => {
-    const r = canvas.getBoundingClientRect();
-    spawn(40, e.clientX - r.left, e.clientY - r.top, 30);
-  };
-  canvas.addEventListener('pointerdown', e => { dragging = true; inject(e); });
+  // ---- Drag / touch: inject particles, or write strokes in write mode -------
+  let dragging = false, lastX = 0, lastY = 0;
+  const evPos = (e) => { const r = canvas.getBoundingClientRect(); return [e.clientX - r.left, e.clientY - r.top]; };
+  canvas.addEventListener('pointerdown', e => {
+    dragging = true;
+    const [x, y] = evPos(e); lastX = x; lastY = y; pointer.x = x; pointer.y = y;
+    if (writeMode) writeStroke(x, y, x, y); else spawn(40, x, y, 30);
+  });
   canvas.addEventListener('pointermove', e => {
-    const r = canvas.getBoundingClientRect();
-    pointer.x = e.clientX - r.left; pointer.y = e.clientY - r.top;
-    if (dragging) { e.preventDefault(); inject(e); }
+    const [x, y] = evPos(e); pointer.x = x; pointer.y = y;
+    if (dragging) {
+      e.preventDefault();
+      if (writeMode) writeStroke(lastX, lastY, x, y); else spawn(40, x, y, 30);
+      lastX = x; lastY = y;
+    }
   });
   window.addEventListener('pointerup', () => dragging = false);
   window.addEventListener('pointercancel', () => dragging = false);

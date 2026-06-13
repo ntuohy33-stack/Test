@@ -28,8 +28,9 @@ No build, no install, no internet required — it's one HTML file.
   repaint it using the real colors sampled from underneath them.
 - **🖌 Paint mode** — start from a blank canvas and build the image yourself by dragging; particles only
   appear where you touch and fade away when they leave, so nothing is generated for you.
-- **✍️ Write words** — type a word and it materializes as crisp particles that linger for a beat, then
-  release into the flow field and dissolve into colored streaks.
+- **✍️ Write mode** — toggle it on and draw on the canvas with your finger/cursor; your handwriting
+  lays down as crisp particles that linger for a beat, then release into the flow field and dissolve
+  into colored streaks.
 - **Palettes** — six built-in color sets plus a **Custom** palette you edit with color pickers.
 - **🎲 Surprise me** — randomizes every setting for happy accidents.
 - **🔗 Share link** — encodes your exact settings (incl. glow/drift/custom colors) into the URL; opening it restores the look.
