@@ -53,6 +53,12 @@
   .chips input[type=color]::-webkit-color-swatch { border:none; border-radius:6px; }
   .mini { font-size:11px; color:var(--muted); margin:0 0 8px; }
   .row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .presets { display:flex; flex-wrap:wrap; gap:6px; }
+  .presets button { width:auto; flex:1 1 40%; padding:7px 8px; font-size:11px; }
+  .seg { display:flex; border:1px solid var(--line); border-radius:8px; overflow:hidden; }
+  .seg button { width:auto; flex:1; border:none; border-left:1px solid var(--line); border-radius:0; padding:8px 4px; font-size:11px; background:#1d1d26; }
+  .seg button:first-child { border-left:none; }
+  .seg button.on { background:var(--accent); color:#fff; }
   button {
     width: 100%; padding: 11px; border: 1px solid var(--line); background: #1d1d26;
     color: var(--ink); border-radius: 8px; cursor: pointer; font-size: 13px; font-weight: 600;
@@ -73,7 +79,6 @@
     max-width: 80%; text-align:center;
   }
   .toast.show { opacity: 1; }
-  /* floating controls on canvas */
   .fab {
     position:absolute; width:42px; height:42px; padding:0; border-radius:50%;
     display:flex; align-items:center; justify-content:center; font-size:18px;
@@ -88,7 +93,6 @@
   .rec-dot i { width:9px; height:9px; border-radius:50%; background:var(--rec); animation:blink 1s infinite; }
   @keyframes blink { 50% { opacity:.25; } }
 
-  /* ---- Mobile ---- */
   @media (max-width: 720px) {
     body { grid-template-columns: 1fr; }
     aside {
@@ -105,6 +109,11 @@
 <aside id="panel">
   <h1>Flowfield Studio</h1>
   <p class="sub">Drag on the canvas to seed it. Tune the field, then let it breathe.</p>
+
+  <div class="group">
+    <label>Presets</label>
+    <div class="presets" id="presets"></div>
+  </div>
 
   <div class="group">
     <label>Particles <b id="vCount">900</b></label>
@@ -132,6 +141,16 @@
   </div>
 
   <div class="group">
+    <label>Symmetry</label>
+    <div class="seg" id="symSeg">
+      <button data-sym="off" class="on">Off</button>
+      <button data-sym="mirror">Mirror</button>
+      <button data-sym="quad">Quad</button>
+      <button data-sym="kaleido">Kaleido</button>
+    </div>
+  </div>
+
+  <div class="group">
     <label>Palette</label>
     <div class="palettes" id="palettes"></div>
     <div class="custom-edit">
@@ -148,6 +167,10 @@
     <button id="play" class="primary">Pause</button>
     <button id="save">Save PNG</button>
   </div>
+  <div class="group row">
+    <button id="surprise">🎲 Surprise me</button>
+    <button id="share">🔗 Share link</button>
+  </div>
   <div class="group">
     <button id="record">● Record video</button>
   </div>
@@ -155,9 +178,9 @@
   <p class="hint">
     <b style="color:var(--ink)">Tips</b><br>
     • Drag to inject particles where you click.<br>
-    • <kbd>Space</kbd> play/pause · <kbd>R</kbd> reseed · <kbd>C</kbd> clear · <kbd>S</kbd> save · <kbd>V</kbd> record · <kbd>F</kbd> fullscreen.<br>
-    • Record captures live — tweak sliders while filming. Saves as <b>.webm</b> (convert to GIF with any tool).<br>
-    • High curl + low fade = silky ribbons. Low scale = big sweeping motion.
+    • <kbd>Space</kbd> play/pause · <kbd>R</kbd> reseed · <kbd>C</kbd> clear · <kbd>S</kbd> save · <kbd>V</kbd> record · <kbd>F</kbd> fullscreen · <kbd>X</kbd> symmetry · <kbd>G</kbd> surprise.<br>
+    • Record captures live — tweak sliders while filming. Saves as <b>.webm</b>.<br>
+    • Kaleido + high curl = mandalas. Low scale = big sweeping motion.
   </p>
 </aside>
 
@@ -185,6 +208,7 @@
     { name: 'Mono',    bg: '#0a0a0a', cols: ['#ffffff','#bdbdbd','#7a7a7a','#e8e8e8'] },
   ];
   const CUSTOM = { name: 'Custom', bg: '#0b0b10', cols: ['#ff7ac6','#7c5cff','#3bd6ff','#ffe6a0'] };
+  const allPalettes = [...PALETTES, CUSTOM];
   let palette = PALETTES[1];
 
   // ---- Value noise (compact, seedable) --------------------------------------
@@ -215,6 +239,7 @@
   // ---- Particles ------------------------------------------------------------
   let particles = [];
   const params = { count:900, scale:0.003, speed:1.4, curl:2.0, fade:0.04, weight:1.2 };
+  const pick = () => palette.cols[(Math.random()*palette.cols.length)|0];
 
   function spawn(n, x, y, r) {
     for (let i = 0; i < n; i++) {
@@ -223,14 +248,33 @@
       particles.push({ x: px, y: py, c: pick(), life: 200 + Math.random()*400 });
     }
   }
-  const pick = () => palette.cols[(Math.random()*palette.cols.length)|0];
-
   function reseed() {
     noise = makeNoise((Math.random()*1e9)|0);
     particles = [];
     spawn(params.count|0);
   }
   function clear() { ctx.fillStyle = palette.bg; ctx.fillRect(0, 0, W, H); }
+
+  // ---- Symmetry -------------------------------------------------------------
+  let symmetry = 'off';
+  let transforms = [(x,y,o)=>{o[0]=x;o[1]=y;}];
+  function buildTransforms(mode) {
+    const cx = W/2, cy = H/2;
+    const id = (x,y,o)=>{o[0]=x;o[1]=y;};
+    if (mode === 'mirror') return [id, (x,y,o)=>{o[0]=W-x;o[1]=y;}];
+    if (mode === 'quad')   return [id, (x,y,o)=>{o[0]=W-x;o[1]=y;}, (x,y,o)=>{o[0]=x;o[1]=H-y;}, (x,y,o)=>{o[0]=W-x;o[1]=H-y;}];
+    if (mode === 'kaleido') {
+      const N = 6, ts = [];
+      for (let k = 0; k < N; k++) {
+        const ang = k*2*Math.PI/N, c = Math.cos(ang), s = Math.sin(ang);
+        ts.push((x,y,o)=>{ const dx=x-cx, dy=y-cy; o[0]=cx+dx*c-dy*s; o[1]=cy+dx*s+dy*c; });
+        ts.push((x,y,o)=>{ const dx=x-cx, dy=cy-y; o[0]=cx+dx*c-dy*s; o[1]=cy+dx*s+dy*c; });
+      }
+      return ts;
+    }
+    return [id];
+  }
+  function rebuildTransforms() { transforms = buildTransforms(symmetry); }
 
   // ---- Simulation -----------------------------------------------------------
   function step() {
@@ -241,15 +285,22 @@
     ctx.lineWidth = params.weight;
     ctx.lineCap = 'round';
     const sc = params.scale, sp = params.speed, curl = params.curl;
+    const ts = transforms, single = ts.length === 1;
+    const a = [0,0], b = [0,0];
     for (let i = 0; i < particles.length; i++) {
       const pt = particles[i];
-      const a = noise(pt.x*sc, pt.y*sc) * Math.PI * (2 + curl);
+      const ang = noise(pt.x*sc, pt.y*sc) * Math.PI * (2 + curl);
+      const x0 = pt.x, y0 = pt.y;
+      pt.x += Math.cos(ang) * sp; pt.y += Math.sin(ang) * sp;
       ctx.strokeStyle = pt.c;
-      ctx.beginPath();
-      ctx.moveTo(pt.x, pt.y);
-      pt.x += Math.cos(a) * sp; pt.y += Math.sin(a) * sp;
-      ctx.lineTo(pt.x, pt.y);
-      ctx.stroke();
+      if (single) {
+        ctx.beginPath(); ctx.moveTo(x0, y0); ctx.lineTo(pt.x, pt.y); ctx.stroke();
+      } else {
+        for (let t = 0; t < ts.length; t++) {
+          ts[t](x0, y0, a); ts[t](pt.x, pt.y, b);
+          ctx.beginPath(); ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0], b[1]); ctx.stroke();
+        }
+      }
       if (--pt.life <= 0 || pt.x < -20 || pt.x > W+20 || pt.y < -20 || pt.y > H+20) {
         pt.x = Math.random()*W; pt.y = Math.random()*H;
         pt.life = 200 + Math.random()*400; pt.c = pick();
@@ -272,16 +323,19 @@
     W = Math.round(r.width); H = Math.round(r.height);
     canvas.width = W * DPR; canvas.height = H * DPR;
     ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    rebuildTransforms();
     clear();
   }
   window.addEventListener('resize', resize);
 
-  // ---- UI wiring ------------------------------------------------------------
+  // ---- Controls registry + slider wiring ------------------------------------
+  const controls = {};
   const bind = (id, fn, fmt) => {
     const el = document.getElementById(id);
     const out = document.getElementById('v' + id[0].toUpperCase() + id.slice(1));
     const update = () => { fn(+el.value); if (out) out.textContent = fmt(+el.value); };
     el.addEventListener('input', update); update();
+    controls[id] = { el, update };
   };
   bind('count',  v => { const t=v|0; if (t>particles.length) spawn(t-particles.length); else particles.length=t; params.count=v; }, v=>v|0);
   bind('scale',  v => params.scale = v/10000, v => (v/10000).toFixed(4));
@@ -290,28 +344,27 @@
   bind('fade',   v => params.fade  = v/100,   v => (v/100).toFixed(2));
   bind('weight', v => params.weight= v/10,    v => (v/10).toFixed(1));
 
-  // palettes (built-in + custom)
+  // ---- Palettes UI ----------------------------------------------------------
   const palWrap = document.getElementById('palettes');
-  const allPalettes = [...PALETTES, CUSTOM];
   const swatches = [];
-  function refreshSwatch(el, p) { el.style.background = `linear-gradient(90deg, ${p.cols.join(',')})`; }
+  const refreshSwatch = (el, p) => el.style.background = `linear-gradient(90deg, ${p.cols.join(',')})`;
+  function setPalette(p) {
+    palette = p;
+    swatches.forEach((s, i) => s.classList.toggle('active', allPalettes[i] === p));
+    clear();
+    particles.forEach(pt => pt.c = pick());
+  }
+  const selectPaletteByName = name => { const p = allPalettes.find(x => x.name === name); if (p) setPalette(p); };
   allPalettes.forEach((p) => {
     const d = document.createElement('div');
     d.className = 'swatch' + (p === palette ? ' active' : '') + (p === CUSTOM ? ' custom' : '');
     refreshSwatch(d, p);
     d.title = p.name;
-    d.onclick = () => {
-      palette = p;
-      swatches.forEach(s => s.classList.remove('active'));
-      d.classList.add('active');
-      clear();
-      particles.forEach(pt => pt.c = pick());
-    };
+    d.onclick = () => setPalette(p);
     palWrap.appendChild(d); swatches.push(d);
   });
   const customSwatch = swatches[swatches.length - 1];
 
-  // custom palette color pickers
   const chips = document.getElementById('chips');
   CUSTOM.cols.forEach((col, i) => {
     const input = document.createElement('input');
@@ -323,6 +376,50 @@
     };
     chips.appendChild(input);
   });
+
+  // ---- Symmetry UI ----------------------------------------------------------
+  const symSeg = document.getElementById('symSeg');
+  const symButtons = [...symSeg.querySelectorAll('button')];
+  function setSymmetry(mode) {
+    symmetry = mode; rebuildTransforms();
+    symButtons.forEach(b => b.classList.toggle('on', b.dataset.sym === mode));
+    clear();
+  }
+  symButtons.forEach(b => b.onclick = () => setSymmetry(b.dataset.sym));
+
+  // ---- Presets --------------------------------------------------------------
+  const PRESETS = {
+    'Silky Ribbons': { count:1200, scale:28, speed:12, curl:60, fade:2,  weight:8,  pal:'Aurora', sym:'off' },
+    'Ink Wash':      { count:600,  scale:22, speed:8,  curl:10, fade:28, weight:34, pal:'Mono',   sym:'off' },
+    'Big Sweeps':    { count:1500, scale:8,  speed:40, curl:12, fade:5,  weight:10, pal:'Slate',  sym:'mirror' },
+    'Kaleido Bloom': { count:1000, scale:30, speed:14, curl:30, fade:4,  weight:9,  pal:'Bloom',  sym:'kaleido' },
+    'Embers':        { count:1400, scale:35, speed:16, curl:50, fade:6,  weight:8,  pal:'Ember',  sym:'mirror' },
+    'Neon Web':      { count:2000, scale:50, speed:20, curl:5,  fade:3,  weight:6,  pal:'Citrus', sym:'quad' },
+  };
+  const presetWrap = document.getElementById('presets');
+  Object.keys(PRESETS).forEach(name => {
+    const b = document.createElement('button');
+    b.textContent = name;
+    b.onclick = () => { applyState(PRESETS[name]); toast(name); };
+    presetWrap.appendChild(b);
+  });
+
+  // ---- State get / apply (presets, share, surprise) -------------------------
+  const SLIDER_KEYS = ['count','scale','speed','curl','fade','weight'];
+  function applyState(s) {
+    SLIDER_KEYS.forEach(k => {
+      if (s[k] != null && controls[k]) { controls[k].el.value = s[k]; controls[k].update(); }
+    });
+    if (s.pal) selectPaletteByName(s.pal);
+    if (s.sym) setSymmetry(s.sym);
+    clear();
+  }
+  function getState() {
+    const s = {};
+    SLIDER_KEYS.forEach(k => s[k] = +controls[k].el.value);
+    s.pal = palette.name; s.sym = symmetry;
+    return s;
+  }
 
   // ---- Buttons / toast ------------------------------------------------------
   const toast = (msg) => {
@@ -343,12 +440,56 @@
     toast('Saved PNG');
   }
 
+  // Surprise me — randomize everything
+  document.getElementById('surprise').onclick = surprise;
+  function surprise() {
+    const rnd = (a,b) => Math.round(a + Math.random()*(b-a));
+    const syms = ['off','mirror','quad','kaleido'];
+    const names = allPalettes.map(p => p.name);
+    applyState({
+      count: rnd(400,2500), scale: rnd(6,60), speed: rnd(6,45),
+      curl: rnd(0,75), fade: rnd(1,20), weight: rnd(4,28),
+      pal: names[(Math.random()*names.length)|0],
+      sym: syms[(Math.random()*syms.length)|0],
+    });
+    reseed();
+    toast('Surprise! 🎲');
+  }
+
+  // Share link — encode state in the URL
+  document.getElementById('share').onclick = shareLink;
+  function shareLink() {
+    const s = getState();
+    const p = new URLSearchParams();
+    Object.entries(s).forEach(([k,v]) => p.set(k, v));
+    if (palette === CUSTOM) p.set('cols', CUSTOM.cols.map(c => c.replace('#','')).join('-'));
+    const hash = p.toString();
+    location.hash = hash;
+    const url = location.origin + location.pathname + '#' + hash;
+    if (navigator.clipboard) navigator.clipboard.writeText(url).then(() => toast('Share link copied! 🔗'), () => toast('Link is in the address bar'));
+    else toast('Link is in the address bar');
+  }
+  function loadFromHash() {
+    if (!location.hash) return;
+    const p = new URLSearchParams(location.hash.slice(1));
+    if (p.get('cols')) {
+      const cols = p.get('cols').split('-').map(c => '#' + c);
+      cols.forEach((c, i) => { if (CUSTOM.cols[i] !== undefined) CUSTOM.cols[i] = c; });
+      refreshSwatch(customSwatch, CUSTOM);
+      [...chips.children].forEach((inp, i) => { if (cols[i]) inp.value = cols[i]; });
+    }
+    const s = {};
+    SLIDER_KEYS.forEach(k => { if (p.get(k) != null) s[k] = +p.get(k); });
+    if (p.get('pal')) s.pal = p.get('pal');
+    if (p.get('sym')) s.sym = p.get('sym');
+    applyState(s);
+  }
+
   // ---- Video recording (MediaRecorder → WebM) -------------------------------
   let recorder = null, chunks = [], recStart = 0, recTimer = null;
   const recBtn = document.getElementById('record');
   const recDot = document.getElementById('recDot');
   const recTime = document.getElementById('recTime');
-
   function pickMime() {
     const opts = ['video/webm;codecs=vp9','video/webm;codecs=vp8','video/webm','video/mp4'];
     return opts.find(t => window.MediaRecorder && MediaRecorder.isTypeSupported(t)) || '';
@@ -392,12 +533,11 @@
     else document.exitFullscreen?.();
   }
   fsBtn.onclick = toggleFullscreen;
-  document.addEventListener('fullscreenchange', () => { setTimeout(resize, 60); });
+  document.addEventListener('fullscreenchange', () => setTimeout(resize, 60));
 
   // ---- Mobile panel toggle --------------------------------------------------
   const panelToggle = document.getElementById('panelToggle');
   panelToggle.onclick = () => document.body.classList.toggle('panel-open');
-  // tap canvas closes the panel on mobile
   canvas.addEventListener('pointerdown', () => document.body.classList.remove('panel-open'));
 
   // ---- Drag / touch to inject ----------------------------------------------
@@ -412,6 +552,7 @@
   window.addEventListener('pointercancel', () => dragging = false);
 
   // ---- Keyboard -------------------------------------------------------------
+  const SYMS = ['off','mirror','quad','kaleido'];
   window.addEventListener('keydown', e => {
     if (e.target.tagName === 'INPUT') return;
     const k = e.key.toLowerCase();
@@ -421,11 +562,14 @@
     else if (k === 's') save();
     else if (k === 'v') toggleRecord();
     else if (k === 'f') toggleFullscreen();
+    else if (k === 'g') surprise();
+    else if (k === 'x') setSymmetry(SYMS[(SYMS.indexOf(symmetry) + 1) % SYMS.length]);
   });
 
   // ---- Go -------------------------------------------------------------------
   resize();
   reseed();
+  loadFromHash();
   frame();
 })();
 </script>

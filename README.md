@@ -18,8 +18,12 @@ No build, no install, no internet required — it's one HTML file.
 ## Controls
 
 - **Drag / touch the canvas** to inject particles where you point.
+- **Presets** — one-click looks (Silky Ribbons, Ink Wash, Big Sweeps, Kaleido Bloom, Embers, Neon Web).
 - **Sliders** — particle count, field scale, speed, curl, trail fade, line weight.
+- **Symmetry** — Off / Mirror / Quad / Kaleido (6-fold mandala mode).
 - **Palettes** — six built-in color sets plus a **Custom** palette you edit with color pickers.
+- **🎲 Surprise me** — randomizes every setting for happy accidents.
+- **🔗 Share link** — encodes your exact settings into the URL; opening that link restores the look.
 - **Reseed** for a brand-new field, **Clear** to wipe.
 - **Save PNG** to keep a still frame.
 - **Record video** captures live (tweak sliders while filming) and saves a `.webm`.
@@ -49,6 +53,8 @@ canvas directly, and tapping the canvas dismisses the panel.
 | `S` | save PNG |
 | `V` | start / stop video recording |
 | `F` | toggle fullscreen |
+| `X` | cycle symmetry mode |
+| `G` | surprise me (randomize) |
 
 ## Recipes to try
 
