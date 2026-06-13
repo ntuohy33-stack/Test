@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 <title>Flowfield Studio — make something</title>
 <style>
   :root {
@@ -11,17 +11,19 @@
     --ink: #e9e9f0;
     --muted: #8a8a99;
     --accent: #7c5cff;
+    --rec: #ff4d5e;
     --line: #26262f;
   }
-  * { box-sizing: border-box; }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
   html, body { margin: 0; height: 100%; }
   body {
     background: var(--bg);
     color: var(--ink);
     font: 14px/1.5 ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
     display: grid;
-    grid-template-columns: 280px 1fr;
+    grid-template-columns: 290px 1fr;
     height: 100vh;
+    height: 100dvh;
     overflow: hidden;
   }
   aside {
@@ -29,39 +31,78 @@
     border-right: 1px solid var(--line);
     padding: 18px;
     overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
   }
   h1 { font-size: 16px; margin: 0 0 2px; letter-spacing: .2px; }
   .sub { color: var(--muted); font-size: 12px; margin: 0 0 18px; }
   .group { margin-bottom: 16px; }
   label { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); margin-bottom: 6px; }
   label b { color: var(--ink); font-weight: 600; font-variant-numeric: tabular-nums; }
-  input[type=range] { width: 100%; accent-color: var(--accent); }
+  input[type=range] { width: 100%; accent-color: var(--accent); height: 26px; }
   .palettes { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
-  .swatch { height: 28px; border-radius: 6px; cursor: pointer; border: 2px solid transparent; }
+  .swatch { height: 30px; border-radius: 6px; cursor: pointer; border: 2px solid transparent; position: relative; }
   .swatch.active { border-color: var(--ink); }
+  .swatch.custom::after { content: '★'; position:absolute; top:1px; right:5px; font-size:10px; color:#000; mix-blend-mode: difference; }
+  .custom-edit { margin-top: 10px; padding: 10px; background:#11111a; border:1px solid var(--line); border-radius:8px; }
+  .chips { display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+  .chips input[type=color] {
+    width: 34px; height: 34px; padding:0; border:1px solid var(--line); border-radius:8px;
+    background:none; cursor:pointer;
+  }
+  .chips input[type=color]::-webkit-color-swatch-wrapper { padding:2px; }
+  .chips input[type=color]::-webkit-color-swatch { border:none; border-radius:6px; }
+  .mini { font-size:11px; color:var(--muted); margin:0 0 8px; }
   .row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
   button {
-    width: 100%; padding: 10px; border: 1px solid var(--line); background: #1d1d26;
+    width: 100%; padding: 11px; border: 1px solid var(--line); background: #1d1d26;
     color: var(--ink); border-radius: 8px; cursor: pointer; font-size: 13px; font-weight: 600;
-    transition: background .12s, border-color .12s;
+    transition: background .12s, border-color .12s; touch-action: manipulation;
   }
   button:hover { background: #24242f; border-color: var(--accent); }
   button.primary { background: var(--accent); border-color: var(--accent); }
   button.primary:hover { filter: brightness(1.1); }
+  button.rec-on { background: var(--rec); border-color: var(--rec); color:#fff; }
   .hint { color: var(--muted); font-size: 11px; margin-top: 14px; line-height: 1.6; }
   .hint kbd { background:#1d1d26; border:1px solid var(--line); border-radius:4px; padding:1px 5px; font-size:10px; }
   main { position: relative; }
-  canvas { display: block; width: 100%; height: 100%; cursor: crosshair; }
+  canvas { display: block; width: 100%; height: 100%; cursor: crosshair; touch-action: none; }
   .toast {
     position: absolute; left: 50%; bottom: 22px; transform: translateX(-50%);
     background: #1d1d26; border: 1px solid var(--line); padding: 8px 14px; border-radius: 8px;
     font-size: 12px; color: var(--muted); opacity: 0; transition: opacity .25s; pointer-events: none;
+    max-width: 80%; text-align:center;
   }
   .toast.show { opacity: 1; }
+  /* floating controls on canvas */
+  .fab {
+    position:absolute; width:42px; height:42px; padding:0; border-radius:50%;
+    display:flex; align-items:center; justify-content:center; font-size:18px;
+    background:#1d1d26cc; backdrop-filter: blur(6px); border:1px solid var(--line);
+  }
+  #fullscreen { top:14px; right:14px; }
+  #panelToggle { top:14px; left:14px; display:none; z-index:30; }
+  .rec-dot { position:absolute; top:16px; left:50%; transform:translateX(-50%);
+    display:none; align-items:center; gap:7px; font-size:12px; color:#fff;
+    background:#000a; border:1px solid var(--rec); padding:5px 11px; border-radius:20px; }
+  .rec-dot.show { display:flex; }
+  .rec-dot i { width:9px; height:9px; border-radius:50%; background:var(--rec); animation:blink 1s infinite; }
+  @keyframes blink { 50% { opacity:.25; } }
+
+  /* ---- Mobile ---- */
+  @media (max-width: 720px) {
+    body { grid-template-columns: 1fr; }
+    aside {
+      position: fixed; inset: 0 auto 0 0; width: min(86vw, 320px); z-index: 20;
+      transform: translateX(-100%); transition: transform .25s ease; box-shadow: 0 0 40px #000a;
+    }
+    body.panel-open aside { transform: translateX(0); }
+    #panelToggle { display:flex; }
+    main { grid-column: 1; }
+  }
 </style>
 </head>
 <body>
-<aside>
+<aside id="panel">
   <h1>Flowfield Studio</h1>
   <p class="sub">Drag on the canvas to seed it. Tune the field, then let it breathe.</p>
 
@@ -93,6 +134,10 @@
   <div class="group">
     <label>Palette</label>
     <div class="palettes" id="palettes"></div>
+    <div class="custom-edit">
+      <p class="mini">Your palette — tap a swatch to change it.</p>
+      <div class="chips" id="chips"></div>
+    </div>
   </div>
 
   <div class="group row">
@@ -103,17 +148,24 @@
     <button id="play" class="primary">Pause</button>
     <button id="save">Save PNG</button>
   </div>
+  <div class="group">
+    <button id="record">● Record video</button>
+  </div>
 
   <p class="hint">
     <b style="color:var(--ink)">Tips</b><br>
     • Drag to inject particles where you click.<br>
-    • <kbd>Space</kbd> play/pause · <kbd>R</kbd> reseed · <kbd>C</kbd> clear · <kbd>S</kbd> save.<br>
+    • <kbd>Space</kbd> play/pause · <kbd>R</kbd> reseed · <kbd>C</kbd> clear · <kbd>S</kbd> save · <kbd>V</kbd> record · <kbd>F</kbd> fullscreen.<br>
+    • Record captures live — tweak sliders while filming. Saves as <b>.webm</b> (convert to GIF with any tool).<br>
     • High curl + low fade = silky ribbons. Low scale = big sweeping motion.
   </p>
 </aside>
 
 <main>
   <canvas id="c"></canvas>
+  <button id="panelToggle" class="fab" title="Controls" aria-label="Toggle controls">☰</button>
+  <button id="fullscreen" class="fab" title="Fullscreen (F)" aria-label="Fullscreen">⛶</button>
+  <div class="rec-dot" id="recDot"><i></i><span id="recTime">REC 0:00</span></div>
   <div class="toast" id="toast"></div>
 </main>
 
@@ -132,15 +184,16 @@
     { name: 'Citrus',  bg: '#0e1206', cols: ['#d6ff3b','#9cff5f','#fff07a','#5fd66b'] },
     { name: 'Mono',    bg: '#0a0a0a', cols: ['#ffffff','#bdbdbd','#7a7a7a','#e8e8e8'] },
   ];
+  const CUSTOM = { name: 'Custom', bg: '#0b0b10', cols: ['#ff7ac6','#7c5cff','#3bd6ff','#ffe6a0'] };
   let palette = PALETTES[1];
 
-  // ---- Simplex-ish value noise (compact, seedable) --------------------------
+  // ---- Value noise (compact, seedable) --------------------------------------
   function makeNoise(seed) {
-    const p = new Uint8Array(512);
     let s = seed >>> 0;
     const rnd = () => (s = (s * 1664525 + 1013904223) >>> 0) / 4294967296;
     const perm = Array.from({length:256}, (_,i)=>i);
     for (let i = 255; i > 0; i--) { const j = (rnd()*(i+1))|0; [perm[i],perm[j]]=[perm[j],perm[i]]; }
+    const p = new Uint8Array(512);
     for (let i = 0; i < 512; i++) p[i] = perm[i & 255];
     const fade = t => t*t*t*(t*(t*6-15)+10);
     const lerp = (a,b,t) => a+(b-a)*t;
@@ -148,12 +201,12 @@
     return (x,y) => {
       const X = Math.floor(x)&255, Y = Math.floor(y)&255;
       x -= Math.floor(x); y -= Math.floor(y);
-      const u = fade(x), v = fade(y);
+      const u = fade(x);
       const a = p[X]+Y, b = p[X+1]+Y;
       return lerp(
-        lerp(grad(p[a], x, y),   grad(p[b], x-1, y),   u),
+        lerp(grad(p[a], x, y),     grad(p[b], x-1, y),     u),
         lerp(grad(p[a+1], x, y-1), grad(p[b+1], x-1, y-1), u),
-        v
+        fade(y)
       );
     };
   }
@@ -167,57 +220,42 @@
     for (let i = 0; i < n; i++) {
       const px = x === undefined ? Math.random()*W : x + (Math.random()-0.5)*r;
       const py = y === undefined ? Math.random()*H : y + (Math.random()-0.5)*r;
-      particles.push({
-        x: px, y: py,
-        c: palette.cols[(Math.random()*palette.cols.length)|0],
-        life: 200 + Math.random()*400,
-      });
+      particles.push({ x: px, y: py, c: pick(), life: 200 + Math.random()*400 });
     }
   }
+  const pick = () => palette.cols[(Math.random()*palette.cols.length)|0];
 
   function reseed() {
     noise = makeNoise((Math.random()*1e9)|0);
     particles = [];
     spawn(params.count|0);
   }
-
-  function clear() {
-    ctx.fillStyle = palette.bg;
-    ctx.fillRect(0, 0, W, H);
-  }
+  function clear() { ctx.fillStyle = palette.bg; ctx.fillRect(0, 0, W, H); }
 
   // ---- Simulation -----------------------------------------------------------
   function step() {
-    // fade overlay for trails
     if (params.fade > 0) {
       ctx.fillStyle = hexAlpha(palette.bg, params.fade);
       ctx.fillRect(0, 0, W, H);
     }
     ctx.lineWidth = params.weight;
     ctx.lineCap = 'round';
-
     const sc = params.scale, sp = params.speed, curl = params.curl;
     for (let i = 0; i < particles.length; i++) {
       const pt = particles[i];
       const a = noise(pt.x*sc, pt.y*sc) * Math.PI * (2 + curl);
-      const vx = Math.cos(a) * sp;
-      const vy = Math.sin(a) * sp;
       ctx.strokeStyle = pt.c;
       ctx.beginPath();
       ctx.moveTo(pt.x, pt.y);
-      pt.x += vx; pt.y += vy;
+      pt.x += Math.cos(a) * sp; pt.y += Math.sin(a) * sp;
       ctx.lineTo(pt.x, pt.y);
       ctx.stroke();
-
-      pt.life--;
-      if (pt.life <= 0 || pt.x < -20 || pt.x > W+20 || pt.y < -20 || pt.y > H+20) {
+      if (--pt.life <= 0 || pt.x < -20 || pt.x > W+20 || pt.y < -20 || pt.y > H+20) {
         pt.x = Math.random()*W; pt.y = Math.random()*H;
-        pt.life = 200 + Math.random()*400;
-        pt.c = palette.cols[(Math.random()*palette.cols.length)|0];
+        pt.life = 200 + Math.random()*400; pt.c = pick();
       }
     }
   }
-
   function hexAlpha(hex, a) {
     const n = parseInt(hex.slice(1), 16);
     return `rgba(${(n>>16)&255},${(n>>8)&255},${n&255},${a})`;
@@ -225,10 +263,7 @@
 
   // ---- Loop -----------------------------------------------------------------
   let playing = true;
-  function frame() {
-    if (playing) step();
-    requestAnimationFrame(frame);
-  }
+  function frame() { if (playing) step(); requestAnimationFrame(frame); }
 
   // ---- Sizing ---------------------------------------------------------------
   function resize() {
@@ -248,67 +283,144 @@
     const update = () => { fn(+el.value); if (out) out.textContent = fmt(+el.value); };
     el.addEventListener('input', update); update();
   };
-  bind('count',  v => { const target=v|0; if (target>particles.length) spawn(target-particles.length); else particles.length=target; params.count=v; }, v=>v|0);
+  bind('count',  v => { const t=v|0; if (t>particles.length) spawn(t-particles.length); else particles.length=t; params.count=v; }, v=>v|0);
   bind('scale',  v => params.scale = v/10000, v => (v/10000).toFixed(4));
   bind('speed',  v => params.speed = v/10,    v => (v/10).toFixed(1));
   bind('curl',   v => params.curl  = v/10,    v => (v/10).toFixed(1));
   bind('fade',   v => params.fade  = v/100,   v => (v/100).toFixed(2));
   bind('weight', v => params.weight= v/10,    v => (v/10).toFixed(1));
 
-  // palettes
+  // palettes (built-in + custom)
   const palWrap = document.getElementById('palettes');
-  PALETTES.forEach((p, i) => {
+  const allPalettes = [...PALETTES, CUSTOM];
+  const swatches = [];
+  function refreshSwatch(el, p) { el.style.background = `linear-gradient(90deg, ${p.cols.join(',')})`; }
+  allPalettes.forEach((p) => {
     const d = document.createElement('div');
-    d.className = 'swatch' + (p === palette ? ' active' : '');
-    d.style.background = `linear-gradient(90deg, ${p.cols.join(',')})`;
+    d.className = 'swatch' + (p === palette ? ' active' : '') + (p === CUSTOM ? ' custom' : '');
+    refreshSwatch(d, p);
     d.title = p.name;
     d.onclick = () => {
       palette = p;
-      [...palWrap.children].forEach(c => c.classList.remove('active'));
+      swatches.forEach(s => s.classList.remove('active'));
       d.classList.add('active');
       clear();
-      particles.forEach(pt => pt.c = p.cols[(Math.random()*p.cols.length)|0]);
+      particles.forEach(pt => pt.c = pick());
     };
-    palWrap.appendChild(d);
+    palWrap.appendChild(d); swatches.push(d);
+  });
+  const customSwatch = swatches[swatches.length - 1];
+
+  // custom palette color pickers
+  const chips = document.getElementById('chips');
+  CUSTOM.cols.forEach((col, i) => {
+    const input = document.createElement('input');
+    input.type = 'color'; input.value = col;
+    input.oninput = () => {
+      CUSTOM.cols[i] = input.value;
+      refreshSwatch(customSwatch, CUSTOM);
+      if (palette === CUSTOM) particles.forEach(pt => { if (Math.random() < .4) pt.c = pick(); });
+    };
+    chips.appendChild(input);
   });
 
-  // buttons
+  // ---- Buttons / toast ------------------------------------------------------
   const toast = (msg) => {
     const t = document.getElementById('toast');
     t.textContent = msg; t.classList.add('show');
-    clearTimeout(t._t); t._t = setTimeout(() => t.classList.remove('show'), 1400);
+    clearTimeout(t._t); t._t = setTimeout(() => t.classList.remove('show'), 1600);
   };
   document.getElementById('reseed').onclick = () => { reseed(); toast('Reseeded the field'); };
   document.getElementById('clear').onclick  = () => { clear(); toast('Canvas cleared'); };
   const playBtn = document.getElementById('play');
   playBtn.onclick = () => { playing = !playing; playBtn.textContent = playing ? 'Pause' : 'Play'; };
-  document.getElementById('save').onclick = save;
 
+  document.getElementById('save').onclick = save;
   function save() {
     const a = document.createElement('a');
     a.download = `flowfield-${Date.now()}.png`;
-    a.href = canvas.toDataURL('image/png');
-    a.click();
+    a.href = canvas.toDataURL('image/png'); a.click();
     toast('Saved PNG');
   }
 
-  // drag to inject
+  // ---- Video recording (MediaRecorder → WebM) -------------------------------
+  let recorder = null, chunks = [], recStart = 0, recTimer = null;
+  const recBtn = document.getElementById('record');
+  const recDot = document.getElementById('recDot');
+  const recTime = document.getElementById('recTime');
+
+  function pickMime() {
+    const opts = ['video/webm;codecs=vp9','video/webm;codecs=vp8','video/webm','video/mp4'];
+    return opts.find(t => window.MediaRecorder && MediaRecorder.isTypeSupported(t)) || '';
+  }
+  function toggleRecord() {
+    if (recorder && recorder.state !== 'inactive') { recorder.stop(); return; }
+    if (!canvas.captureStream || !window.MediaRecorder) { toast('Recording not supported in this browser'); return; }
+    const mime = pickMime();
+    const stream = canvas.captureStream(60);
+    try { recorder = new MediaRecorder(stream, mime ? { mimeType: mime, videoBitsPerSecond: 12e6 } : undefined); }
+    catch (e) { toast('Recording failed to start'); return; }
+    chunks = [];
+    recorder.ondataavailable = e => { if (e.data.size) chunks.push(e.data); };
+    recorder.onstop = () => {
+      const ext = (recorder.mimeType || mime).includes('mp4') ? 'mp4' : 'webm';
+      const blob = new Blob(chunks, { type: chunks[0]?.type || 'video/webm' });
+      const a = document.createElement('a');
+      a.download = `flowfield-${Date.now()}.${ext}`;
+      a.href = URL.createObjectURL(blob); a.click();
+      setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+      recBtn.classList.remove('rec-on'); recBtn.textContent = '● Record video';
+      recDot.classList.remove('show'); clearInterval(recTimer);
+      toast(`Saved ${ext.toUpperCase()} video`);
+    };
+    recorder.start();
+    recStart = Date.now();
+    recBtn.classList.add('rec-on'); recBtn.textContent = '■ Stop recording';
+    recDot.classList.add('show');
+    const tick = () => {
+      const s = Math.floor((Date.now() - recStart) / 1000);
+      recTime.textContent = `REC ${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`;
+    };
+    tick(); recTimer = setInterval(tick, 500);
+  }
+  recBtn.onclick = toggleRecord;
+
+  // ---- Fullscreen -----------------------------------------------------------
+  const fsBtn = document.getElementById('fullscreen');
+  function toggleFullscreen() {
+    if (!document.fullscreenElement) (document.documentElement.requestFullscreen?.() || Promise.reject()).catch(()=>toast('Fullscreen blocked'));
+    else document.exitFullscreen?.();
+  }
+  fsBtn.onclick = toggleFullscreen;
+  document.addEventListener('fullscreenchange', () => { setTimeout(resize, 60); });
+
+  // ---- Mobile panel toggle --------------------------------------------------
+  const panelToggle = document.getElementById('panelToggle');
+  panelToggle.onclick = () => document.body.classList.toggle('panel-open');
+  // tap canvas closes the panel on mobile
+  canvas.addEventListener('pointerdown', () => document.body.classList.remove('panel-open'));
+
+  // ---- Drag / touch to inject ----------------------------------------------
   let dragging = false;
   const inject = (e) => {
     const r = canvas.getBoundingClientRect();
     spawn(40, e.clientX - r.left, e.clientY - r.top, 30);
   };
   canvas.addEventListener('pointerdown', e => { dragging = true; inject(e); });
-  canvas.addEventListener('pointermove', e => { if (dragging) inject(e); });
+  canvas.addEventListener('pointermove', e => { if (dragging) { e.preventDefault(); inject(e); } });
   window.addEventListener('pointerup', () => dragging = false);
+  window.addEventListener('pointercancel', () => dragging = false);
 
-  // keyboard
+  // ---- Keyboard -------------------------------------------------------------
   window.addEventListener('keydown', e => {
     if (e.target.tagName === 'INPUT') return;
+    const k = e.key.toLowerCase();
     if (e.code === 'Space') { e.preventDefault(); playBtn.click(); }
-    else if (e.key === 'r' || e.key === 'R') document.getElementById('reseed').click();
-    else if (e.key === 'c' || e.key === 'C') document.getElementById('clear').click();
-    else if (e.key === 's' || e.key === 'S') save();
+    else if (k === 'r') document.getElementById('reseed').click();
+    else if (k === 'c') document.getElementById('clear').click();
+    else if (k === 's') save();
+    else if (k === 'v') toggleRecord();
+    else if (k === 'f') toggleFullscreen();
   });
 
   // ---- Go -------------------------------------------------------------------
