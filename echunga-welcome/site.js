@@ -5,9 +5,9 @@
   const canvas = document.getElementById('field');
   if (canvas) {
     const ctx = canvas.getContext('2d');
-    const CREAM = '251,248,241';
+    const CREAM = '247,245,242';
     // top of the sky to the paddocks below, echoing the logo
-    const BANDS = ['#e3b25d', '#e3b25d', '#9aa666', '#9aa666', '#5d8c88', '#a8845a'];
+    const BANDS = ['#e3b45d', '#e3b45d', '#97a762', '#97a762', '#5c8d88', '#a8845b'];
 
     let W = 0, H = 0, dpr = 1, parts = [], t = 0, visible = true;
     const mouse = { x: -9999, y: -9999, active: false };
