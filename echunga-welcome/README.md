@@ -28,6 +28,10 @@ Use HTTPS (all of the above provide it free). The contact form and copy buttons 
 
 The Uniting Church SA site can redirect to the new address (a "301 redirect"). If the church has its own domain name, you can point that domain at the new host instead, and a redirect isn't needed. Ask the host for their DNS instructions once you've chosen one.
 
+### Old page addresses
+
+The old site's Resources page (`echunga.ucasa.org.au/resources/`) now lives in the **Resources** section of this page. When setting up redirects, send `/resources/` to `/#resources` on the new address, and everything else to the home page.
+
 ## Things to finish once the address is known
 
 1. In `index.html`, near the top, set the share-preview image to the full address (see the `TODO` comment), and add an `og:url` line.
