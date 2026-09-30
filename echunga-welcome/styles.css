@@ -317,3 +317,9 @@
   .watch-side p { margin: 0 0 1.2rem; }
   .btn-row { display: flex; flex-wrap: wrap; gap: .8rem; }
   .watch-side .fallback { margin: 1.2rem 0 0; font-size: .9rem; color: var(--ink-soft); }
+
+  /* ---------- Footer social links ---------- */
+  .social { display: flex; flex-wrap: wrap; gap: .7rem; justify-content: center; margin-bottom: 1.6rem; }
+  .social-link { display: inline-flex; align-items: center; gap: .55rem; padding: .6rem 1.2rem; border: 1px solid rgba(226,191,128,.5); border-radius: 999px; color: var(--gold-light); text-decoration: none; font-weight: 500; font-size: .95rem; transition: background .2s ease, color .2s ease, border-color .2s ease; }
+  .social-link:hover { background: rgba(226,191,128,.14); color: #fff; border-color: var(--gold-light); }
+  .social-link svg { width: 24px; height: 24px; flex: none; }
