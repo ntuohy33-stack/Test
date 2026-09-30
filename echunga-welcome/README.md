@@ -86,6 +86,7 @@ Open the page you want in any text editor. Each section is marked with a comment
 
 - Service times and the address appear on the home page (hero, Sunday Worship card), the Contact page and every footer. Change them together.
 - The home page's **This week's message** player shows the newest video from the church's YouTube channel and updates itself when a new video is uploaded. It is set by the channel ID in `index.html` (search for `videoseries`; the ID is also in a comment above it). If the player ever says the video is unavailable, check the ID in YouTube Studio under Settings, Channel, Advanced settings. If livestreams are scheduled in advance, the player may show the upcoming stream until it finishes.
+- The **Safe Church page** also names the local contact (Sarah Mosbey) and states that Kids Church, Sunday Youth and crèche leaders hold a current Working With Children Check and that the church council has adopted the Child Safe policy. Keep these true: update the page if the contact or the practice changes.
 - The **Safe Church page** shows safeguarding phone numbers (000, Child Abuse Report Line 13 14 78, Safe Church Committee (08) 8236 4248). They are set by the Uniting Church SA, so check them against https://sa.uca.org.au/safechurch/reporting-abuse every few months.
 - The **menu and footer are repeated in all seven pages**. If you change a menu item, change it in each file.
 - Colours and spacing are all in `styles.css`. The colour names are at the very top.
