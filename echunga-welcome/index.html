@@ -237,6 +237,16 @@
   .minister-grid .name { font-family: var(--serif); font-size: 1.8rem; color: var(--clay-deep); line-height: 1.2; margin: 0; }
   .minister-grid .hi { font-family: var(--serif); font-size: 1.7rem; color: var(--ink); line-height: 1.3; }
 
+  /* ---------- Activities ---------- */
+  .acts { margin-top: 2.5rem; border-bottom: 1px solid var(--line); }
+  .act { display: grid; grid-template-columns: 1fr 2fr; gap: 1rem 3rem; padding: 1.9rem 0; border-top: 1px solid var(--line); }
+  @media (max-width: 800px) { .act { grid-template-columns: 1fr; gap: .8rem; } }
+  .act h3 { font-size: 1.8rem; margin: 0 0 .7rem; color: var(--sage-deep); }
+  .tag { display: inline-block; margin: 0 .4rem .4rem 0; padding: .25rem .85rem; border-radius: 999px; background: #fff; border: 1px solid var(--sage); font-size: .88rem; line-height: 1.5; }
+  .tag.cost { border-color: var(--gold); }
+  .act-body p { margin: 0 0 .8rem; }
+  .act-links { display: flex; flex-wrap: wrap; gap: .4rem 1.6rem; font-weight: 500; }
+
   /* ---------- Resources ---------- */
   .res-group { margin-top: 3.2rem; }
   .res-title { display: flex; align-items: center; gap: 1rem; font-family: var(--serif); font-weight: 600; font-size: 1.8rem; line-height: 1.2; color: var(--sage-deep); margin: 0 0 1.2rem; }
@@ -307,6 +317,7 @@
     <li><a href="#story">Our Story</a></li>
     <li><a href="#vision">Vision</a></li>
     <li><a href="#minister">Our Minister</a></li>
+    <li><a href="#activities">Activities</a></li>
     <li><a href="#resources">Resources</a></li>
     <li><a href="#contact">Contact</a></li>
     <li><a href="#give">Give</a></li>
@@ -459,6 +470,78 @@
         <p>I’ve been married to Amanda for 33 years, and have been serving as a pastor for over 25 years across Australia and the UK — in churches ranging from 50 to 1500 people. Before ordination I spent a decade as a professional chef, which still shapes how I think about hospitality and community.</p>
         <p>My own story isn’t a straight line. I grew up with a single Greek-Cypriot mother in a household that was generous, chaotic, and at times painful. By 19 I was playing in bands, experimenting with New Age spirituality, and working in kitchens. My encounter with Jesus came through the most unlikely of sources — a member of a Christian heavy metal band sharing the gospel at my local pub. It changed everything.</p>
         <p>Since then I’ve pursued a deep commitment to biblically grounded, theologically serious, and pastorally warm ministry. I hold postgraduate qualifications in theology, ministry formation, and counselling.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Activities -->
+  <section id="activities">
+    <div class="wrap">
+      <div class="reveal narrow center">
+        <p class="eyebrow">Connect</p>
+        <h2>Activities</h2>
+        <p class="big">At Echunga Family Church, connection happens in all kinds of ways — over coffee, craft, and conversation, as well as through small groups and community events. There’s something here for everyone.</p>
+      </div>
+
+      <div class="acts">
+        <article class="act reveal">
+          <div>
+            <h3>Craft, Cuppa &amp; Cards</h3>
+            <span class="tag">Weekly · 1pm–4pm</span><span class="tag cost">$2 per week</span>
+          </div>
+          <div class="act-body">
+            <p>A relaxed weekly gathering in Wandeen, Main Street, Echunga. Bring your knitting, sewing, quilting, colouring, or jigsaw — or simply come for the cards and conversation. Everyone is welcome, whether you come occasionally or every week.</p>
+            <p>A small plate of afternoon tea is appreciated but not essential.</p>
+            <div class="act-links">
+              <a href="https://echungauniting.elvanto.com.au/calendar/" rel="noopener">Check the Calendar →</a>
+              <a href="https://www.facebook.com/groups/610782392452892/" rel="noopener">Join our Facebook Group →</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="act reveal">
+          <div>
+            <h3>Men’s Coffee</h3>
+            <span class="tag">Third Thursday of each month · 9:30am</span>
+          </div>
+          <div class="act-body">
+            <p>A relaxed monthly catch-up over coffee at Farm Gate Services, Echunga. All men welcome.</p>
+            <div class="act-links"><a href="https://echungauniting.elvanto.com.au/calendar/" rel="noopener">Check the Calendar →</a></div>
+          </div>
+        </article>
+
+        <article class="act reveal">
+          <div>
+            <h3>Women’s Coffee</h3>
+          </div>
+          <div class="act-body">
+            <p>A monthly morning catch-up for women at Farm Gate Services, Echunga. Dates vary — check the calendar for upcoming mornings.</p>
+            <div class="act-links"><a href="https://echungauniting.elvanto.com.au/calendar/" rel="noopener">Check the Calendar →</a></div>
+          </div>
+        </article>
+
+        <article class="act reveal">
+          <div>
+            <h3>Life Groups</h3>
+          </div>
+          <div class="act-body">
+            <p>Life Groups are small gatherings where people get to know one another at a deeper level while growing in faith together. Groups run regularly and seasonally throughout the year.</p>
+            <p>Interested in joining a group? <a href="#contact">Get in touch →</a></p>
+          </div>
+        </article>
+
+        <article class="act reveal">
+          <div>
+            <h3>Other Events</h3>
+          </div>
+          <div class="act-body">
+            <p>Camps, social activities, community events and outreach happen throughout the year. Keep an eye on the Events Calendar and our Facebook page for what’s coming up.</p>
+            <div class="act-links">
+              <a href="https://echungauniting.elvanto.com.au/calendar/" rel="noopener">Events Calendar →</a>
+              <a href="https://www.facebook.com/echungauniting" rel="noopener">Facebook →</a>
+            </div>
+          </div>
+        </article>
       </div>
     </div>
   </section>

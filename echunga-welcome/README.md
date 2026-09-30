@@ -30,7 +30,14 @@ The Uniting Church SA site can redirect to the new address (a "301 redirect"). I
 
 ### Old page addresses
 
-The old site's Resources page (`echunga.ucasa.org.au/resources/`) now lives in the **Resources** section of this page. When setting up redirects, send `/resources/` to `/#resources` on the new address, and everything else to the home page.
+Two pages from the old site now live as sections of this page:
+
+| Old address | New address |
+| --- | --- |
+| `/resources/` | `/#resources` |
+| `/activities/` | `/#activities` |
+
+When setting up redirects, send those two as above and everything else to the home page. The events calendar is on Elvanto (`echungauniting.elvanto.com.au/calendar/`), and the Activities section links to it directly.
 
 ## Things to finish once the address is known
 
