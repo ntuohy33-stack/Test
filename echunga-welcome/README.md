@@ -73,7 +73,7 @@ Not yet mapped: the old Events Calendar (`/events-calendar/`), Pastoral Support 
 
 ## Things to finish once the address is known
 
-1. In the `<head>` of each page, set the share-preview image to the full address (see the `TODO` comment in `index.html`) and add an `og:url` line.
+1. The share-preview tags (`og:url` and `og:image` in the `<head>` of each of the five pages) currently use the temporary address `echunga-family-churchpagesdev.ntuohy33.workers.dev`. When the final address is set, replace it on all five pages (search for `workers.dev`), then re-upload. After the final address is live, switch off or redirect the temporary `workers.dev` address in Cloudflare so search engines don't list two copies of the site.
 2. Test the "Send message" form on the live site. It opens the visitor's email app, addressed to `info@echunga.ucasa.org.au`, because a static site cannot receive form posts on its own. For in-page submission you'd add a form service.
 3. Check "Watch the livestream", the Members link and the book links open correctly.
 4. The public name is **Echunga Family Church**. The only remaining "Echunga Uniting Church" is the bank *Account Name* on the Contact page, which must match how the account is registered, so check it with the treasurer before ever changing it.
