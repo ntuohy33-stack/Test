@@ -114,6 +114,17 @@
   .card p:last-child { margin-bottom: 0; }
   .time { font-family: var(--serif); font-size: 2rem; color: var(--clay-deep); line-height: 1.1; margin-bottom: .3rem !important; }
 
+  /* photo gallery: masonry columns keep each photo's own proportions */
+  .gallery-head { text-align: center; margin-bottom: 2.2rem; }
+  .photos { columns: 2; column-gap: 1rem; }
+  .photos figure { margin: 0 0 1rem; break-inside: avoid; overflow: hidden; border-radius: 18px; background: #fff;
+    box-shadow: 0 14px 30px -20px rgba(47,58,44,.5); transition: transform .35s ease, box-shadow .35s ease; }
+  .photos img { display: block; width: 100%; height: auto; transition: transform .8s ease; }
+  .photos figure:hover { transform: translateY(-4px) rotate(-.4deg); box-shadow: 0 22px 36px -22px rgba(47,58,44,.55); }
+  .photos figure:hover img { transform: scale(1.04); }
+  @media (min-width: 720px) { .photos { columns: 4; column-gap: 1.1rem; } .photos figure { margin-bottom: 1.1rem; } }
+  @media (prefers-reduced-motion: reduce) { .photos figure, .photos img { transition: none; } .photos figure:hover, .photos figure:hover img { transform: none; } }
+
   .next { background: linear-gradient(180deg, transparent, rgba(154,166,102,.14)); text-align: center; }
   .next .actions { margin-top: 1.5rem; }
 
@@ -161,6 +172,25 @@
         <li>Music</li>
         <li>Morning tea</li>
       </ul>
+    </div>
+  </section>
+
+  <section class="gallery">
+    <div class="wrap">
+      <div class="gallery-head reveal">
+        <p class="eyebrow">Life together</p>
+        <h2>Come and meet the family</h2>
+      </div>
+      <div class="photos">
+        <figure class="reveal"><img loading="lazy" src="photo-1.jpg" width="438" height="361" alt="A group of people laughing around a café table with cups of tea and coffee"></figure>
+        <figure class="reveal"><img loading="lazy" src="photo-2.jpg" width="437" height="379" alt="A smiling couple standing in front of the stone church"></figure>
+        <figure class="reveal"><img loading="lazy" src="photo-3.jpg" width="437" height="529" alt="Two men cheerfully greeting the camera in front of a glowing Welcome sign"></figure>
+        <figure class="reveal"><img loading="lazy" src="photo-4.jpg" width="436" height="529" alt="Children helping themselves to morning tea at the serving bench"></figure>
+        <figure class="reveal"><img loading="lazy" src="photo-5.jpg" width="438" height="537" alt="Two women smiling over a hot drink by the coffee machine"></figure>
+        <figure class="reveal"><img loading="lazy" src="photo-6.jpg" width="437" height="537" alt="Young people and adults gathered at the front of the sanctuary beside a wooden cross"></figure>
+        <figure class="reveal"><img loading="lazy" src="photo-7.jpg" width="437" height="537" alt="Three women holding gingerbread houses in front of a Christmas tree"></figure>
+        <figure class="reveal"><img loading="lazy" src="photo-8.jpg" width="436" height="537" alt="A woman laughing warmly while holding up a decorated gingerbread piece"></figure>
+      </div>
     </div>
   </section>
 
