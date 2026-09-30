@@ -173,17 +173,15 @@
   .service-card address { font-style: normal; color: var(--ink-soft); margin-bottom: 1rem; }
   .service-card .links { display: flex; flex-wrap: wrap; gap: .5rem 1.4rem; }
 
-  .journey { list-style: none; margin: 0 0 3rem; padding: 0; display: grid; gap: 1rem; grid-template-columns: repeat(4, 1fr); counter-reset: step; position: relative; }
-  .journey li { position: relative; background: #fff; border: 1px solid var(--line); border-radius: 18px; padding: 3.2rem 1.3rem 1.4rem; counter-increment: step; }
-  .journey li::before {
-    content: counter(step); position: absolute; top: 1rem; left: 1.3rem; width: 2rem; height: 2rem; border-radius: 50%;
-    display: grid; place-items: center; font-weight: 500; font-size: .95rem; color: #fff; background: var(--sage-deep);
-  }
-  .journey li:nth-child(2)::before { background: var(--clay-deep); }
-  .journey li:nth-child(3)::before { background: var(--teal); }
-  .journey li:nth-child(4)::before { background: #a5761f; }
+  .journey { list-style: none; margin: 0 0 3rem; padding: 0; display: grid; gap: 1rem; grid-template-columns: repeat(4, 1fr); }
+  .journey li { background: #fff; border: 1px solid var(--line); border-radius: 18px; padding: 1.4rem 1.3rem 1.5rem; }
+  .ico { display: grid; place-items: center; width: 48px; height: 48px; border-radius: 50%; margin-bottom: .9rem; color: #fff; background: var(--sage-deep); }
+  .ico svg { width: 26px; height: 26px; }
+  .journey li:nth-child(2) .ico { background: var(--clay-deep); }
+  .journey li:nth-child(3) .ico { background: var(--teal); }
+  .journey li:nth-child(4) .ico { background: #a5761f; }
   .journey strong { display: block; font-family: var(--serif); font-size: 1.35rem; line-height: 1.2; margin-bottom: .3rem; color: var(--ink); }
-  .journey span { color: var(--ink-soft); font-size: .98rem; line-height: 1.55; display: block; }
+  .journey li > span:not(.ico) { color: var(--ink-soft); font-size: .98rem; line-height: 1.55; display: block; }
   @media (max-width: 900px) { .journey { grid-template-columns: repeat(2, 1fr); } }
   @media (max-width: 520px) { .journey { grid-template-columns: 1fr; } }
 
@@ -307,3 +305,9 @@
 
   /* IvyMode is tightly spaced by design; open it up a little at text and card-title sizes */
   h1, h2, h3, h4, .big, .brand, .time, .journey strong, .hi, .name, .verb, .vm p, .heritage .date, .allwelcome { letter-spacing: .02em; }
+
+  /* soft tinted icon badges on the information cards */
+  .extras .ico { background: rgba(151,167,98,.22); color: var(--sage-deep); }
+  .card.gold .ico { background: rgba(227,180,93,.3); color: #7a5712; }
+  .card.teal .ico { background: rgba(92,141,136,.2); color: #3f6b67; }
+  .card.clay .ico { background: rgba(168,132,91,.24); color: var(--clay-deep); }

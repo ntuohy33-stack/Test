@@ -76,6 +76,19 @@
     els.forEach(el => io.observe(el));
   } else els.forEach(el => el.classList.add('in'));
 
+  /* ---------- links to other websites open in a new tab (covers links added later too) ---------- */
+  document.querySelectorAll('a[href^="http"]').forEach(a => {
+    if (a.hostname === location.hostname) return;
+    a.target = '_blank';
+    a.rel = 'noopener noreferrer';
+    if (!a.querySelector('.sr-only')) {
+      const hint = document.createElement('span');
+      hint.className = 'sr-only';
+      hint.textContent = ' (opens in a new tab)';
+      a.append(hint);
+    }
+  });
+
   /* ---------- menu: phone toggle ---------- */
   const nav = document.getElementById('nav');
   const toggle = document.getElementById('nav-toggle');
