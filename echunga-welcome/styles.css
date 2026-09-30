@@ -189,11 +189,6 @@
   .extras .card { padding: 1.4rem 1.5rem; }
   .extras h3 { font-size: 1.35rem; }
 
-  .stream {
-    display: flex; flex-wrap: wrap; gap: 1rem 2rem; align-items: center; justify-content: space-between;
-    background: linear-gradient(135deg, rgba(227,178,93,.22), rgba(154,166,102,.2)); border-radius: 22px; padding: 1.6rem 2rem;
-  }
-  .stream p { margin: 0; max-width: 34rem; }
   .allwelcome { font-family: var(--serif); font-size: 2rem; color: var(--olive); text-align: center; margin: 2.5rem 0 0; }
 
   /* ---------- Our story ---------- */
@@ -311,3 +306,14 @@
   .card.gold .ico { background: rgba(227,180,93,.3); color: #7a5712; }
   .card.teal .ico { background: rgba(92,141,136,.2); color: #3f6b67; }
   .card.clay .ico { background: rgba(168,132,91,.24); color: var(--clay-deep); }
+
+  /* ---------- Watch: latest message ---------- */
+  .watch { background: linear-gradient(180deg, transparent, rgba(227,180,93,.14)); }
+  .watch-grid { display: grid; gap: 2.2rem; grid-template-columns: 1.7fr 1fr; align-items: center; margin-top: 2.2rem; }
+  @media (max-width: 860px) { .watch-grid { grid-template-columns: 1fr; gap: 1.6rem; } }
+  .video { position: relative; aspect-ratio: 16 / 9; border-radius: 20px; overflow: hidden; background: var(--dark); box-shadow: 0 20px 42px -26px rgba(44,40,32,.65); }
+  .video::before { content: "Latest message · Echunga Family Church"; position: absolute; inset: 0; display: grid; place-items: center; padding: 1rem; text-align: center; color: rgba(255,255,255,.72); font-size: .95rem; letter-spacing: .06em; }
+  .video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+  .watch-side p { margin: 0 0 1.2rem; }
+  .btn-row { display: flex; flex-wrap: wrap; gap: .8rem; }
+  .watch-side .fallback { margin: 1.2rem 0 0; font-size: .9rem; color: var(--ink-soft); }

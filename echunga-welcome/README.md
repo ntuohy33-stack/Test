@@ -83,6 +83,7 @@ Not yet mapped: the old Events Calendar (`/events-calendar/`), Pastoral Support 
 Open the page you want in any text editor. Each section is marked with a comment (`<!-- Plan your visit -->`, `<!-- Give -->` and so on), and the text sits in plain paragraphs.
 
 - Service times and the address appear on the home page (hero, Sunday Worship card), the Contact page and every footer. Change them together.
+- The home page's **This week's message** player shows the newest video from the church's YouTube channel and updates itself when a new video is uploaded. It is set by the channel ID in `index.html` (search for `videoseries`; the ID is also in a comment above it). If the player ever says the video is unavailable, check the ID in YouTube Studio under Settings, Channel, Advanced settings. If livestreams are scheduled in advance, the player may show the upcoming stream until it finishes.
 - The **menu and footer are repeated in all five pages**. If you change a menu item, change it in each file.
 - Colours and spacing are all in `styles.css`. The colour names are at the very top.
 
