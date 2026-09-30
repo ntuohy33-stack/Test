@@ -1,0 +1,13 @@
+# Old Uniting Church SA site addresses -> new pages.
+# This file takes effect on Cloudflare Pages and Netlify when the site is served on the old address
+# (echunga.ucasa.org.au). If the old site simply redirects visitors to a new address instead, that
+# redirect is set up on the old site's side, and this file is not used.
+# Not yet mapped: /events-calendar/, /community/ (Pastoral Support).
+/welcome        /about/       301
+/welcome/       /about/       301
+/contact-us     /contact/     301
+/contact-us/    /contact/     301
+/newsletter     /resources/   301
+/newsletter/    /resources/   301
+/gallery        /             301
+/gallery/       /             301

@@ -1,54 +1,81 @@
-# Echunga Family Church: welcome site
+# Echunga Family Church website
 
-A single-page site (plain HTML, CSS and a little JavaScript). There is nothing to build or install, and it needs no database or server software.
+A small static site: plain HTML, one stylesheet and one script. There is nothing to build or install, and it needs no database or server software.
+
+## Pages
+
+| Address | Page | Contents |
+| --- | --- | --- |
+| `/` | Home | Welcome, about, photo gallery, Plan Your Visit |
+| `/about/` | About | Our Story, Vision & Mission, Meet our Minister |
+| `/activities/` | Activities | Craft, Cuppa & Cards, coffee groups, Life Groups, other events |
+| `/resources/` | Resources | Sermons, newsletter, books, a place to begin, get involved |
+| `/contact/` | Contact | Contact form and details, and Give Online |
+
+The menu on every page is: **About** (Our Story, Vision, Our Minister), **Activities**, **Resources**, **Contact**, **Members** (opens the Elvanto portal). Plan Your Visit is on the home page.
 
 ## What's in this folder
 
 | File | Purpose |
 | --- | --- |
-| `index.html` | The whole site: all wording, styles and behaviour |
-| `logo.jpg` | Church logo |
-| `photo-1.jpg` to `photo-8.jpg` | Gallery photos |
+| `index.html`, `about/`, `activities/`, `resources/`, `contact/` | The five pages (each folder holds an `index.html`) |
+| `styles.css` | All the design, shared by every page |
+| `site.js` | Shared behaviour: the animated hills, phone menu, contact form, copy buttons |
+| `_redirects` | Old-address redirects (see below) |
+| `logo.jpg`, `photo-1.jpg` to `photo-8.jpg` | Logo and gallery photos |
 | `favicon.ico`, `favicon-32.png`, `apple-touch-icon.png`, `icon-512.png` | Browser tab and phone home-screen icons |
-| `share-card.jpg` | Preview image when the link is shared (Facebook, messages) |
+| `share-card.jpg` | Preview image when a link is shared (Facebook, messages) |
 
-**To publish:** upload the *contents* of this folder to any web host, keeping the files together in one folder.
+**To publish:** upload the *contents* of this folder to any web host, keeping the folder structure exactly as it is.
+
+**To view it on your own computer:** the menu links point at folders, so double-clicking `index.html` won't follow them. Run `python3 -m http.server` inside this folder and open `http://localhost:8000`, or just publish it to a host.
 
 ## Hosting options
 
 Any of these works. Each serves a static site well, and the free tiers are ample for a church site.
 
-- **GitHub Pages**: free, deploys straight from this repository.
-- **Cloudflare Pages** or **Netlify**: free, drag-and-drop upload or connect the repository.
+- **Cloudflare Pages** (recommended if you already have an account): free, drag-and-drop upload or connect a repository. Supports the `_redirects` file.
+- **Netlify**: the same, and also supports `_redirects`.
+- **GitHub Pages**: free, deploys from a repository. It ignores `_redirects` and needs the repository to be public on a free plan.
 - **Ordinary web hosting** (cPanel or similar): upload the files by FTP or the file manager.
 
-Use HTTPS (all of the above provide it free). The contact form and copy buttons work best on a secure address.
+Use HTTPS (all of the above provide it free).
 
 ## Pointing the current site at the new one
 
-The Uniting Church SA site can redirect to the new address (a "301 redirect"). If the church has its own domain name, you can point that domain at the new host instead, and a redirect isn't needed. Ask the host for their DNS instructions once you've chosen one.
+Two situations:
 
-### Old page addresses
-
-Two pages from the old site now live as sections of this page:
+1. **The old address is pointed at the new host** (the Uniting Church SA changes DNS, or forwards the whole address). Then `_redirects` handles the old page addresses automatically.
+2. **The old site just redirects visitors to the new address.** The redirect is set on the old site's side. Ask them to send each old page to the matching new one:
 
 | Old address | New address |
 | --- | --- |
-| `/resources/` | `/#resources` |
-| `/activities/` | `/#activities` |
+| `/welcome/` | `/about/` |
+| `/activities/` | `/activities/` |
+| `/resources/` | `/resources/` |
+| `/contact-us/` | `/contact/` |
+| `/newsletter/` | `/resources/` |
+| `/gallery/` | `/` |
+| anything else | `/` |
 
-When setting up redirects, send those two as above and everything else to the home page. The events calendar is on Elvanto (`echungauniting.elvanto.com.au/calendar/`), and the Activities section links to it directly.
+Old section links still land in the right place on the new pages: `/about/#weareUc` (Our Story), `/about/#meettheMinister`, `/about/#vision`, `/activities/#connectionPoints` and `/activities/#otherActivities`.
+
+Not yet mapped: the old Events Calendar (`/events-calendar/`), Pastoral Support (`/community/#support`). The events calendar itself is on Elvanto, and the Activities page links to it.
 
 ## Things to finish once the address is known
 
-1. In `index.html`, near the top, set the share-preview image to the full address (see the `TODO` comment), and add an `og:url` line.
+1. In the `<head>` of each page, set the share-preview image to the full address (see the `TODO` comment in `index.html`) and add an `og:url` line.
 2. Test the "Send message" form on the live site. It opens the visitor's email app, addressed to `info@echunga.ucasa.org.au`, because a static site cannot receive form posts on its own. For in-page submission you'd add a form service.
-3. Check "Watch the livestream" opens the YouTube channel.
-4. The public name is **Echunga Family Church**. The only remaining "Echunga Uniting Church" is the bank *Account Name* in the Give section, which must match how the account is registered, so check it with the treasurer before ever changing it.
+3. Check "Watch the livestream", the Members link and the book links open correctly.
+4. The public name is **Echunga Family Church**. The only remaining "Echunga Uniting Church" is the bank *Account Name* on the Contact page, which must match how the account is registered, so check it with the treasurer before ever changing it.
 
 ## Editing the wording
 
-Open `index.html` in any text editor. Each section is marked with a comment (`<!-- Plan your visit -->`, `<!-- Contact -->` and so on), and the text sits in plain paragraphs. Service times and the address appear in the page header, the "Sunday Worship" card, the contact section and the footer, so change all four together.
+Open the page you want in any text editor. Each section is marked with a comment (`<!-- Plan your visit -->`, `<!-- Give -->` and so on), and the text sits in plain paragraphs.
+
+- Service times and the address appear on the home page (hero, Sunday Worship card), the Contact page and every footer. Change them together.
+- The **menu and footer are repeated in all five pages**. If you change a menu item, change it in each file.
+- Colours and spacing are all in `styles.css`. The colour names are at the very top.
 
 Fonts (Cormorant Garamond and Jost) load from Google Fonts. If that's ever blocked, the page falls back to standard fonts and stays readable.
 
@@ -56,4 +83,4 @@ Fonts (Cormorant Garamond and Jost) load from Google Fonts. If that's ever block
 
 - People who have "reduce motion" switched on see a still image in place of the animated hills.
 - The animation pauses when off-screen or in a background tab.
-- Photos have descriptive alt text, and all interactive elements are keyboard-reachable.
+- Photos have descriptive alt text, the menu works with a keyboard, and all interactive elements are reachable without a mouse.

@@ -9,7 +9,6 @@
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
-
 <!-- Share previews (Facebook, messages, etc.).
      TODO once the final address is known: add <meta property="og:url"> and change og:image below
      to the full address, e.g. https://YOUR-DOMAIN/share-card.jpg (most platforms ignore relative image paths). -->
@@ -17,11 +16,9 @@
 <meta property="og:locale" content="en_AU">
 <meta property="og:site_name" content="Echunga Family Church">
 <meta property="og:title" content="You're Welcome Here · Echunga Family Church">
-<meta property="og:description" content="Sunday worship at 10am, 32 Adelaide Road, Echunga. Come as you are. Families very welcome.">
+<meta property="og:description" content="Sunday worship at 10am, 32 Adelaide Road, Echunga SA 5153. Come as you are. A warm, Christ-centred community in the heart of the Adelaide Hills.">
 <meta property="og:image" content="share-card.jpg">
 <meta name="twitter:card" content="summary_large_image">
-
-<!-- Helps Google show the church's address, phone and service details. -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -45,284 +42,28 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Jost:wght@400;500&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --cream: #fbf8f1;
-    --ink: #2f3a2c;
-    --ink-soft: #55604f;
-    --sage: #9aa666;
-    --sage-deep: #5c6a30;   /* text-safe green */
-    --forest: #3f4b26;      /* dark band background */
-    --gold: #e3b25d;
-    --teal: #5d8c88;
-    --clay: #a8845a;
-    --clay-deep: #7a5a35;   /* text-safe clay */
-    --card: #ffffff;
-    --line: rgba(92,106,48,.18);
-    --serif: "Cormorant Garamond", Georgia, "Times New Roman", serif;
-    --sans: "Jost", system-ui, -apple-system, "Segoe UI", sans-serif;
-  }
-  * { box-sizing: border-box; }
-  html { scroll-behavior: smooth; }
-  body {
-    margin: 0; background: var(--cream); color: var(--ink);
-    font-family: var(--sans); font-size: 1.0625rem; line-height: 1.7;
-    -webkit-font-smoothing: antialiased;
-  }
-  a { color: var(--sage-deep); }
-  :focus-visible { outline: 3px solid var(--teal); outline-offset: 3px; border-radius: 6px; }
-  [id] { scroll-margin-top: 4.5rem; }
-  p { margin: 0 0 1.1rem; }
-
-  /* ---------- Top navigation (appears once the hero is scrolled past) ---------- */
-  .nav {
-    position: fixed; inset: 0 0 auto 0; z-index: 20; display: flex; align-items: center; gap: 1.5rem;
-    padding: .55rem 1.25rem; background: rgba(251,248,241,.92); backdrop-filter: blur(10px);
-    border-bottom: 1px solid var(--line); transform: translateY(-105%); transition: transform .4s ease;
-  }
-  .nav.show { transform: none; }
-  .nav .brand { font-family: var(--serif); font-weight: 600; font-size: 1.25rem; color: var(--sage-deep); text-decoration: none; white-space: nowrap; }
-  .nav ul { display: flex; gap: 1.1rem; list-style: none; margin: 0 0 0 auto; padding: 0; overflow-x: auto; scrollbar-width: none; }
-  .nav ul::-webkit-scrollbar { display: none; }
-  .nav li a { text-decoration: none; font-size: .92rem; letter-spacing: .05em; color: var(--ink); white-space: nowrap; padding: .3rem .1rem; border-bottom: 2px solid transparent; }
-  .nav li a:hover { border-bottom-color: var(--gold); }
-  @media (max-width: 1100px) { .nav .brand { display: none; } .nav ul { margin-left: 0; gap: .9rem; } }
-
-  /* ---------- Hero ---------- */
-  .hero {
-    position: relative; min-height: 100svh; overflow: hidden;
-    display: grid; place-items: center; padding: 3rem 1.25rem 5rem;
-    isolation: isolate;
-  }
-  #field { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -2; display: block; }
-  /* soft veil so text always reads over the moving field */
-  .hero::before {
-    content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
-    background: radial-gradient(ellipse 52% 60% at 50% 46%, rgba(251,248,241,.92) 0%, rgba(251,248,241,.78) 55%, rgba(251,248,241,0) 100%);
-  }
-  .hero-inner { text-align: center; max-width: 40rem; }
-  .logo {
-    width: clamp(150px, 26vw, 230px); height: auto; display: block; margin: 0 auto 1.25rem;
-    mix-blend-mode: multiply; /* lets the JPG's white sit invisibly on the cream */
-    animation: rise 1.4s ease both;
-  }
-  h1 {
-    font-family: var(--serif); font-weight: 600; letter-spacing: .01em;
-    font-size: clamp(2.6rem, 8vw, 4.6rem); line-height: 1.05; margin: 0 0 1rem;
-    color: var(--sage-deep); animation: rise 1.4s .15s ease both;
-  }
-  .lead { font-size: clamp(1.1rem, 2.6vw, 1.3rem); color: var(--ink); margin: 0 auto 1.5rem; max-width: 34rem; animation: rise 1.4s .3s ease both; }
-  .when {
-    display: inline-block; font-size: .95rem; letter-spacing: .16em; text-transform: uppercase;
-    color: var(--clay-deep); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
-    padding: .7rem 0; margin: 0 0 2rem; animation: rise 1.4s .45s ease both;
-  }
-  .actions { display: flex; flex-wrap: wrap; gap: .8rem; justify-content: center; animation: rise 1.4s .6s ease both; }
-  .btn {
-    display: inline-block; text-decoration: none; font-weight: 500; letter-spacing: .04em; font-family: inherit; font-size: 1rem; cursor: pointer;
-    padding: .85rem 1.7rem; border-radius: 999px; border: 2px solid var(--sage-deep); line-height: 1.4;
-    transition: transform .2s ease, background .2s ease, color .2s ease, box-shadow .2s ease;
-  }
-  .btn.primary { background: var(--sage-deep); color: #fff; }
-  .btn.ghost { background: rgba(255,255,255,.6); color: var(--sage-deep); }
-  .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(92,106,48,.22); }
-  .btn.ghost:hover { background: var(--sage-deep); color: #fff; }
-
-  .scroll-cue {
-    position: absolute; bottom: 1.4rem; left: 50%; transform: translateX(-50%);
-    width: 1px; height: 44px; background: linear-gradient(var(--sage-deep), transparent);
-    opacity: .5; animation: cue 2.4s ease-in-out infinite;
-  }
-  @keyframes cue { 0%,100% { transform: translate(-50%,0); opacity:.2 } 50% { transform: translate(-50%,10px); opacity:.6 } }
-  @keyframes rise { from { opacity: 0; transform: translateY(14px) } to { opacity: 1; transform: none } }
-
-  /* ---------- Shared content styles ---------- */
-  main section { padding: 4.75rem 1.25rem; }
-  .wrap { max-width: 62rem; margin: 0 auto; }
-  .narrow { max-width: 42rem; margin-left: auto; margin-right: auto; }
-  h2 {
-    font-family: var(--serif); font-weight: 600; font-size: clamp(2rem, 5vw, 2.8rem);
-    line-height: 1.1; color: var(--sage-deep); margin: 0 0 1.2rem;
-  }
-  h3 { font-family: var(--serif); font-weight: 600; font-size: 1.6rem; line-height: 1.2; margin: 0 0 .5rem; color: var(--ink); }
-  .eyebrow { font-size: .8rem; letter-spacing: .22em; text-transform: uppercase; color: var(--clay-deep); margin: 0 0 .6rem; }
-  .center { text-align: center; }
-  .big { font-family: var(--serif); font-size: clamp(1.4rem, 3.4vw, 2rem); line-height: 1.4; }
-
-  .card {
-    background: var(--card); border: 1px solid var(--line); border-radius: 20px; padding: 1.8rem;
-    box-shadow: 0 1px 0 rgba(0,0,0,.02), 0 14px 34px -22px rgba(47,58,44,.35);
-    border-top: 6px solid var(--sage);
-  }
-  .card p { color: var(--ink-soft); }
-  .card p:last-child { margin-bottom: 0; }
-  .card.gold { border-top-color: var(--gold); }
-  .card.teal { border-top-color: var(--teal); }
-  .card.clay { border-top-color: var(--clay); }
-  .time { font-family: var(--serif); font-size: 2.4rem; color: var(--clay-deep); line-height: 1.1; margin-bottom: .2rem !important; }
-
-  .pillars { display: flex; flex-wrap: wrap; gap: .6rem; justify-content: center; margin: 2rem 0 0; padding: 0; list-style: none; }
-  .pillars li { padding: .45rem 1.1rem; border-radius: 999px; font-size: .95rem; background: #fff; border: 1px solid var(--line); }
-  .pillars li:nth-child(1) { border-color: var(--sage); }
-  .pillars li:nth-child(2) { border-color: var(--gold); }
-  .pillars li:nth-child(3) { border-color: var(--teal); }
-  .pillars li:nth-child(4) { border-color: var(--clay); }
-
-  /* ---------- Gallery ---------- */
-  .gallery-head { text-align: center; margin-bottom: 2.2rem; }
-  .photos { columns: 2; column-gap: 1rem; }
-  .photos figure { margin: 0 0 1rem; break-inside: avoid; overflow: hidden; border-radius: 18px; background: #fff;
-    box-shadow: 0 14px 30px -20px rgba(47,58,44,.5); transition: transform .35s ease, box-shadow .35s ease; }
-  .photos img { display: block; width: 100%; height: auto; transition: transform .8s ease; }
-  .photos figure:hover { transform: translateY(-4px) rotate(-.4deg); box-shadow: 0 22px 36px -22px rgba(47,58,44,.55); }
-  .photos figure:hover img { transform: scale(1.04); }
-  @media (min-width: 720px) { .photos { columns: 4; column-gap: 1.1rem; } .photos figure { margin-bottom: 1.1rem; } }
-
-  /* ---------- Plan your visit ---------- */
-  .visit-top { display: grid; gap: 1.5rem; grid-template-columns: 1.2fr 1fr; align-items: center; margin-bottom: 3rem; }
-  @media (max-width: 800px) { .visit-top { grid-template-columns: 1fr; } }
-  .visit-top .big { margin: 0; }
-  .service-card address { font-style: normal; color: var(--ink-soft); margin-bottom: 1rem; }
-  .service-card .links { display: flex; flex-wrap: wrap; gap: .5rem 1.4rem; }
-
-  .journey { list-style: none; margin: 0 0 3rem; padding: 0; display: grid; gap: 1rem; grid-template-columns: repeat(4, 1fr); counter-reset: step; position: relative; }
-  .journey li { position: relative; background: #fff; border: 1px solid var(--line); border-radius: 18px; padding: 3.2rem 1.3rem 1.4rem; counter-increment: step; }
-  .journey li::before {
-    content: counter(step); position: absolute; top: 1rem; left: 1.3rem; width: 2rem; height: 2rem; border-radius: 50%;
-    display: grid; place-items: center; font-weight: 500; font-size: .95rem; color: #fff; background: var(--sage-deep);
-  }
-  .journey li:nth-child(2)::before { background: var(--clay-deep); }
-  .journey li:nth-child(3)::before { background: var(--teal); }
-  .journey li:nth-child(4)::before { background: #a5761f; }
-  .journey strong { display: block; font-family: var(--serif); font-size: 1.35rem; line-height: 1.2; margin-bottom: .3rem; color: var(--ink); }
-  .journey span { color: var(--ink-soft); font-size: .98rem; line-height: 1.55; display: block; }
-  @media (max-width: 900px) { .journey { grid-template-columns: repeat(2, 1fr); } }
-  @media (max-width: 520px) { .journey { grid-template-columns: 1fr; } }
-
-  .extras { display: grid; gap: 1.1rem; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); margin-bottom: 2.5rem; }
-  .extras .card { padding: 1.4rem 1.5rem; }
-  .extras h3 { font-size: 1.35rem; }
-
-  .stream {
-    display: flex; flex-wrap: wrap; gap: 1rem 2rem; align-items: center; justify-content: space-between;
-    background: linear-gradient(135deg, rgba(227,178,93,.22), rgba(154,166,102,.2)); border-radius: 22px; padding: 1.6rem 2rem;
-  }
-  .stream p { margin: 0; max-width: 34rem; }
-  .allwelcome { font-family: var(--serif); font-size: 2rem; color: var(--sage-deep); text-align: center; margin: 2.5rem 0 0; }
-
-  /* ---------- Our story ---------- */
-  .story { background: linear-gradient(180deg, transparent, rgba(154,166,102,.14)); }
-  .story-grid { display: grid; gap: 3rem; grid-template-columns: 1.5fr 1fr; align-items: start; }
-  @media (max-width: 860px) { .story-grid { grid-template-columns: 1fr; gap: 2rem; } }
-  .heritage { background: #fff; border: 1px solid var(--line); border-radius: 20px; padding: 1.8rem; text-align: center; box-shadow: 0 14px 34px -22px rgba(47,58,44,.35); }
-  .heritage .date { font-family: var(--serif); font-size: 2.6rem; line-height: 1.05; color: var(--clay-deep); margin: 0 0 .4rem; }
-  .heritage p { color: var(--ink-soft); font-size: .98rem; }
-  .heritage ul { list-style: none; margin: 1rem 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: .5rem; justify-content: center; }
-  .heritage li { padding: .3rem .85rem; border-radius: 999px; font-size: .88rem; border: 1px solid var(--line); }
-  .heritage li:nth-child(1) { border-color: var(--sage); } .heritage li:nth-child(2) { border-color: var(--gold); } .heritage li:nth-child(3) { border-color: var(--teal); }
-
-  /* ---------- Vision & mission ---------- */
-  .vision { background: var(--forest); color: #f4efe2; }
-  .vision h2 { color: #f4efe2; }
-  .vision .eyebrow { color: var(--gold); }
-  .vm { display: grid; gap: 1.25rem; grid-template-columns: 1fr 1fr; margin: 2.2rem 0; }
-  @media (max-width: 720px) { .vm { grid-template-columns: 1fr; } }
-  .vm div { border: 1px solid rgba(244,239,226,.28); border-radius: 20px; padding: 1.8rem; background: rgba(255,255,255,.05); }
-  .vm h3 { color: var(--gold); font-size: 1rem; font-family: var(--sans); font-weight: 500; letter-spacing: .2em; text-transform: uppercase; margin-bottom: .7rem; }
-  .vm p { font-family: var(--serif); font-size: clamp(1.5rem, 3.4vw, 2rem); line-height: 1.25; margin: 0; }
-
-  /* ---------- Minister ---------- */
-  .minister-grid { display: grid; gap: 3rem; grid-template-columns: 1fr 2fr; align-items: start; }
-  @media (max-width: 800px) { .minister-grid { grid-template-columns: 1fr; gap: 1.2rem; } }
-  .minister-grid .name { font-family: var(--serif); font-size: 1.8rem; color: var(--clay-deep); line-height: 1.2; margin: 0; }
-  .minister-grid .hi { font-family: var(--serif); font-size: 1.7rem; color: var(--ink); line-height: 1.3; }
-
-  /* ---------- Activities ---------- */
-  .acts { margin-top: 2.5rem; border-bottom: 1px solid var(--line); }
-  .act { display: grid; grid-template-columns: 1fr 2fr; gap: 1rem 3rem; padding: 1.9rem 0; border-top: 1px solid var(--line); }
-  @media (max-width: 800px) { .act { grid-template-columns: 1fr; gap: .8rem; } }
-  .act h3 { font-size: 1.8rem; margin: 0 0 .7rem; color: var(--sage-deep); }
-  .tag { display: inline-block; margin: 0 .4rem .4rem 0; padding: .25rem .85rem; border-radius: 999px; background: #fff; border: 1px solid var(--sage); font-size: .88rem; line-height: 1.5; }
-  .tag.cost { border-color: var(--gold); }
-  .act-body p { margin: 0 0 .8rem; }
-  .act-links { display: flex; flex-wrap: wrap; gap: .4rem 1.6rem; font-weight: 500; }
-
-  /* ---------- Resources ---------- */
-  .res-group { margin-top: 3.2rem; }
-  .res-title { display: flex; align-items: center; gap: 1rem; font-family: var(--serif); font-weight: 600; font-size: 1.8rem; line-height: 1.2; color: var(--sage-deep); margin: 0 0 1.2rem; }
-  .res-title::after { content: ""; flex: 1; height: 1px; background: var(--line); }
-  .res-grid { display: grid; gap: 1.1rem; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); }
-  .res-grid.wide { grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr)); }
-  .res-card { display: flex; flex-direction: column; gap: .45rem; background: #fff; border: 1px solid var(--line); border-radius: 18px; padding: 1.4rem 1.5rem; }
-  .res-card h4 { font-family: var(--serif); font-weight: 600; font-size: 1.4rem; line-height: 1.2; margin: 0; color: var(--ink); }
-  .res-card h4 a { color: inherit; text-decoration-color: var(--gold); text-underline-offset: 3px; }
-  .res-card .by { font-size: .82rem; letter-spacing: .08em; text-transform: uppercase; color: var(--clay-deep); margin: 0; }
-  .res-card p { margin: 0; color: var(--ink-soft); font-size: .98rem; line-height: 1.6; }
-  .res-card .go { margin-top: auto; padding-top: .6rem; font-weight: 500; }
-  .verb { font-family: var(--serif); font-weight: 600; font-size: 2rem; line-height: 1; color: var(--clay-deep); }
-  .res-card:nth-child(2) .verb { color: var(--teal); }
-  .res-card:nth-child(3) .verb { color: var(--sage-deep); }
-  .chips { display: flex; flex-wrap: wrap; gap: .5rem; list-style: none; margin: 1rem 0 1.4rem; padding: 0; }
-  .chips li { padding: .4rem 1rem; border-radius: 999px; background: #fff; border: 1px solid var(--line); font-size: .95rem; }
-
-  /* ---------- Contact ---------- */
-  .contact { background: linear-gradient(180deg, transparent, rgba(154,166,102,.14)); }
-  .contact-grid { display: grid; gap: 2.5rem; grid-template-columns: 1.3fr 1fr; align-items: start; }
-  @media (max-width: 860px) { .contact-grid { grid-template-columns: 1fr; } }
-  form { background: #fff; border: 1px solid var(--line); border-radius: 20px; padding: 1.8rem; box-shadow: 0 14px 34px -22px rgba(47,58,44,.35); }
-  label { display: block; font-weight: 500; font-size: .95rem; margin-bottom: .3rem; }
-  input, textarea {
-    width: 100%; font: inherit; color: var(--ink); background: var(--cream); border: 1.5px solid rgba(92,106,48,.35);
-    border-radius: 12px; padding: .7rem .9rem; margin-bottom: 1.1rem;
-  }
-  input:focus, textarea:focus { outline: 3px solid rgba(93,140,136,.4); border-color: var(--teal); }
-  textarea { min-height: 8rem; resize: vertical; }
-  .form-note { font-size: .9rem; color: var(--ink-soft); margin: .9rem 0 0; }
-  .details dl { margin: 0; }
-  .details dt { font-size: .78rem; letter-spacing: .2em; text-transform: uppercase; color: var(--clay-deep); margin-top: 1rem; }
-  .details dd { margin: .1rem 0 0; }
-  .details dt:first-child { margin-top: 0; }
-
-  /* ---------- Give ---------- */
-  .give-card { display: grid; gap: 1rem 1.2rem; grid-template-columns: 1fr 1.1fr 1.6fr; margin: 1.6rem 0; }
-  @media (max-width: 720px) { .give-card { grid-template-columns: 1fr; } }
-  .give-card div { background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 1rem 1.2rem; }
-  .give-card small { display: block; font-size: .75rem; letter-spacing: .2em; text-transform: uppercase; color: var(--clay-deep); }
-  .give-card strong { display: block; font-family: var(--serif); font-size: 1.5rem; font-weight: 600; letter-spacing: .04em; word-break: break-word; }
-  .copy { margin-top: .4rem; font: inherit; font-size: .85rem; color: var(--sage-deep); background: none; border: 1px solid var(--line); border-radius: 999px; padding: .2rem .8rem; cursor: pointer; }
-  .copy:hover { background: rgba(154,166,102,.18); }
-
-  footer { padding: 2.5rem 1.25rem 3rem; text-align: center; color: var(--ink-soft); font-size: .95rem; border-top: 1px solid var(--line); }
-  footer p { margin: 0 auto .4rem; max-width: 36rem; }
-
-  /* gentle reveal on scroll */
-  .reveal { opacity: 0; transform: translateY(18px); transition: opacity .9s ease, transform .9s ease; }
-  .reveal.in { opacity: 1; transform: none; }
-
-  @media (prefers-reduced-motion: reduce) {
-    html { scroll-behavior: auto; }
-    .logo, h1, .lead, .when, .actions, .scroll-cue { animation: none; }
-    .reveal { opacity: 1; transform: none; transition: none; }
-    .btn, .nav, .photos figure, .photos img { transition: none; }
-    .photos figure:hover, .photos figure:hover img { transform: none; }
-  }
-</style>
+<link rel="stylesheet" href="styles.css">
 </head>
-<body>
+<body class="home">
 
 <nav class="nav" id="nav" aria-label="Main">
-  <a class="brand" href="#top">Echunga Family Church</a>
-  <ul>
-    <li><a href="#visit">Plan Your Visit</a></li>
-    <li><a href="#story">Our Story</a></li>
-    <li><a href="#vision">Vision</a></li>
-    <li><a href="#minister">Our Minister</a></li>
-    <li><a href="#activities">Activities</a></li>
-    <li><a href="#resources">Resources</a></li>
-    <li><a href="#contact">Contact</a></li>
-    <li><a href="#give">Give</a></li>
-    <li><a href="https://echungauniting.elvanto.com.au/" target="_blank" rel="noopener">Members</a></li>
-  </ul>
+  <div class="nav-in">
+    <a class="brand" href="./"><img src="apple-touch-icon.png" alt="" width="34" height="34"><span>Echunga Family Church</span></a>
+    <button class="nav-toggle" id="nav-toggle" type="button" aria-expanded="false" aria-controls="menu"><span class="sr-only">Menu</span><span class="bars" aria-hidden="true"></span></button>
+    <ul class="menu" id="menu">
+      <li class="has-sub"><a href="about/">About</a>
+        <ul class="sub">
+          <li><a href="about/#story">Our Story</a></li>
+          <li><a href="about/#vision">Vision</a></li>
+          <li><a href="about/#minister">Our Minister</a></li>
+        </ul>
+      </li>
+      <li><a href="activities/">Activities</a></li>
+      <li><a href="resources/">Resources</a></li>
+      <li><a href="contact/">Contact</a></li>
+      <li><a class="ext" href="https://echungauniting.elvanto.com.au/" target="_blank" rel="noopener">Members</a></li>
+    </ul>
+  </div>
 </nav>
 
 <header class="hero" id="top">
@@ -334,11 +75,12 @@
     <p class="when">Sunday mornings · 10am · 32 Adelaide Road, Echunga</p>
     <div class="actions">
       <a class="btn primary" href="#visit">Plan Your Visit</a>
-      <a class="btn ghost" href="#contact">Contact Us</a>
+      <a class="btn ghost" href="contact/">Contact Us</a>
     </div>
   </div>
   <div class="scroll-cue" aria-hidden="true"></div>
 </header>
+
 
 <main>
   <!-- About -->
@@ -426,286 +168,16 @@
     </div>
   </section>
 
-  <!-- Our story -->
-  <section id="story" class="story">
-    <div class="wrap story-grid">
-      <div class="reveal">
-        <p class="eyebrow">Our Story</p>
-        <h2>Part of the Hills for generations</h2>
-        <p>Echunga Family Church has been part of the Adelaide Hills community for generations. We are an evangelical congregation within the Uniting Church in Australia — holding to orthodox Christian faith, committed to the authority of Scripture, and passionate about seeing people come to know Jesus.</p>
-        <p>The Uniting Church was formed on 22 June 1977, bringing together Congregational, Methodist, and Presbyterian traditions. We are proud to be part of that heritage while remaining focused on our core calling: making and growing disciples in this community.</p>
-        <p>We are a member congregation of Generate Presbytery — a network of evangelical churches across South Australia committed to gospel renewal, mission, and discipleship.</p>
-      </div>
-      <aside class="heritage reveal" aria-label="Uniting Church heritage">
-        <p class="date">22 June 1977</p>
-        <p>The Uniting Church was formed</p>
-        <ul><li>Congregational</li><li>Methodist</li><li>Presbyterian</li></ul>
-      </aside>
-    </div>
-  </section>
-
-  <!-- Vision & mission -->
-  <section id="vision" class="vision">
-    <div class="wrap">
-      <div class="reveal">
-        <p class="eyebrow">Vision &amp; Mission</p>
-        <p class="big" style="max-width:46rem">We believe Jesus came to bring fullness of life to all people. The local church is where that life is modelled, shared, and grown.</p>
-      </div>
-      <div class="vm">
-        <div class="reveal"><h3>Our Vision</h3><p>To see a new generation in the Hills find Jesus and His people.</p></div>
-        <div class="reveal"><h3>Our Mission</h3><p>Knowing Jesus, Go — Caring &amp; Sharing.</p></div>
-      </div>
-      <p class="reveal" style="max-width:42rem">Growing as followers of Jesus, we care for those around us and help others come to faith. Our hope is to see people encounter God’s love, grace, and the hope that only He brings.</p>
-    </div>
-  </section>
-
-  <!-- Minister -->
-  <section id="minister">
-    <div class="wrap minister-grid">
-      <div class="reveal">
-        <p class="eyebrow">Meet our Minister</p>
-        <h2>Rev Nicholas Tuohy</h2>
-      </div>
-      <div class="reveal">
-        <p class="hi">Hi, I’m Nicholas — and I’m glad you’re here.</p>
-        <p>I’ve been married to Amanda for 33 years, and have been serving as a pastor for over 25 years across Australia and the UK — in churches ranging from 50 to 1500 people. Before ordination I spent a decade as a professional chef, which still shapes how I think about hospitality and community.</p>
-        <p>My own story isn’t a straight line. I grew up with a single Greek-Cypriot mother in a household that was generous, chaotic, and at times painful. By 19 I was playing in bands, experimenting with New Age spirituality, and working in kitchens. My encounter with Jesus came through the most unlikely of sources — a member of a Christian heavy metal band sharing the gospel at my local pub. It changed everything.</p>
-        <p>Since then I’ve pursued a deep commitment to biblically grounded, theologically serious, and pastorally warm ministry. I hold postgraduate qualifications in theology, ministry formation, and counselling.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- Activities -->
-  <section id="activities">
-    <div class="wrap">
-      <div class="reveal narrow center">
-        <p class="eyebrow">Connect</p>
-        <h2>Activities</h2>
-        <p class="big">At Echunga Family Church, connection happens in all kinds of ways — over coffee, craft, and conversation, as well as through small groups and community events. There’s something here for everyone.</p>
-      </div>
-
-      <div class="acts">
-        <article class="act reveal">
-          <div>
-            <h3>Craft, Cuppa &amp; Cards</h3>
-            <span class="tag">Weekly · 1pm–4pm</span><span class="tag cost">$2 per week</span>
-          </div>
-          <div class="act-body">
-            <p>A relaxed weekly gathering in Wandeen, Main Street, Echunga. Bring your knitting, sewing, quilting, colouring, or jigsaw — or simply come for the cards and conversation. Everyone is welcome, whether you come occasionally or every week.</p>
-            <p>A small plate of afternoon tea is appreciated but not essential.</p>
-            <div class="act-links">
-              <a href="https://echungauniting.elvanto.com.au/calendar/" rel="noopener">Check the Calendar →</a>
-              <a href="https://www.facebook.com/groups/610782392452892/" rel="noopener">Join our Facebook Group →</a>
-            </div>
-          </div>
-        </article>
-
-        <article class="act reveal">
-          <div>
-            <h3>Men’s Coffee</h3>
-            <span class="tag">Third Thursday of each month · 9:30am</span>
-          </div>
-          <div class="act-body">
-            <p>A relaxed monthly catch-up over coffee at Farm Gate Services, Echunga. All men welcome.</p>
-            <div class="act-links"><a href="https://echungauniting.elvanto.com.au/calendar/" rel="noopener">Check the Calendar →</a></div>
-          </div>
-        </article>
-
-        <article class="act reveal">
-          <div>
-            <h3>Women’s Coffee</h3>
-          </div>
-          <div class="act-body">
-            <p>A monthly morning catch-up for women at Farm Gate Services, Echunga. Dates vary — check the calendar for upcoming mornings.</p>
-            <div class="act-links"><a href="https://echungauniting.elvanto.com.au/calendar/" rel="noopener">Check the Calendar →</a></div>
-          </div>
-        </article>
-
-        <article class="act reveal">
-          <div>
-            <h3>Life Groups</h3>
-          </div>
-          <div class="act-body">
-            <p>Life Groups are small gatherings where people get to know one another at a deeper level while growing in faith together. Groups run regularly and seasonally throughout the year.</p>
-            <p>Interested in joining a group? <a href="#contact">Get in touch →</a></p>
-          </div>
-        </article>
-
-        <article class="act reveal">
-          <div>
-            <h3>Other Events</h3>
-          </div>
-          <div class="act-body">
-            <p>Camps, social activities, community events and outreach happen throughout the year. Keep an eye on the Events Calendar and our Facebook page for what’s coming up.</p>
-            <div class="act-links">
-              <a href="https://echungauniting.elvanto.com.au/calendar/" rel="noopener">Events Calendar →</a>
-              <a href="https://www.facebook.com/echungauniting" rel="noopener">Facebook →</a>
-            </div>
-          </div>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <!-- Resources -->
-  <section id="resources">
-    <div class="wrap">
-      <div class="reveal narrow center">
-        <h2>Resources</h2>
-        <p class="big">Whether you’re new to faith or have been walking with Jesus for decades, these resources are here to help you grow, stay connected, and go deeper.</p>
-      </div>
-
-      <div class="res-group">
-        <h3 class="res-title reveal">Watch &amp; Listen</h3>
-        <div class="res-grid wide">
-          <article class="res-card reveal">
-            <h4>Sunday Sermons</h4>
-            <p>Miss a Sunday, or want to revisit a message? Our sermons are available on YouTube.</p>
-            <a class="go" href="https://www.youtube.com/@echungauniting" rel="noopener">Watch on YouTube →</a>
-          </article>
-          <article class="res-card reveal">
-            <h4>Thinking Faith — Nicholas’s Substack</h4>
-            <p>Reflections on faith, life, and what it means to follow Jesus in the everyday. Written by our minister, Nicholas Tuohy.</p>
-            <a class="go" href="https://nicholastuohy.substack.com/" rel="noopener">Read on Substack →</a>
-          </article>
-        </div>
-      </div>
-
-      <div class="res-group">
-        <h3 class="res-title reveal">Stay Connected</h3>
-        <div class="res-grid wide">
-          <article class="res-card reveal">
-            <h4>Newsletter</h4>
-            <p>Stay up to date with what’s happening at Echunga Family Church — news, events, and community updates delivered to your inbox.</p>
-            <a class="go" href="https://us19.list-manage.com/contact-form?u=ada97561f19afc180c13ae76b&amp;form_id=09e570420907d161e83462ec55e2227c" rel="noopener">Sign up for the Newsletter →</a>
-          </article>
-          <article class="res-card reveal">
-            <h4>Facebook</h4>
-            <p>Follow us on Facebook for updates, encouragement, and community news.</p>
-            <a class="go" href="https://www.facebook.com/echungauniting" rel="noopener">Follow us on Facebook →</a>
-          </article>
-        </div>
-      </div>
-
-      <div class="res-group">
-        <h3 class="res-title reveal">Read &amp; Reflect</h3>
-        <div class="res-grid">
-          <article class="res-card reveal">
-            <h4><a href="https://reformers.com.au/products/9781433566134-gentle-and-lowly-the-heart-of-christ-for-sinners-and-sufferers-ortlund-dane" rel="noopener">Gentle &amp; Lowly</a></h4>
-            <p class="by">Dane Ortlund</p>
-            <p>A searching and tender exploration of the heart of Jesus. One of the most pastoral books written in recent years.</p>
-          </article>
-          <article class="res-card reveal">
-            <h4><a href="https://reformers.com.au/products/9781444750218-making-sense-of-god-keller-timothy-j" rel="noopener">Making Sense of God</a></h4>
-            <p class="by">Timothy Keller</p>
-            <p>For anyone asking hard questions about faith in a secular age. Intelligent, accessible, and fair.</p>
-          </article>
-          <article class="res-card reveal">
-            <h4><a href="https://koorong.com/product/the-emotionally-healthy-leader-peter-scazzero_9780310525363" rel="noopener">The Emotionally Healthy Leader</a></h4>
-            <p class="by">Peter Scazzero</p>
-            <p>For those in leadership — church, workplace, or family. Challenges the way we lead from the inside out.</p>
-          </article>
-          <article class="res-card reveal">
-            <h4><a href="https://koorong.com/product/one-thousand-gifts-a-dare-to-live-fully_9780785253655" rel="noopener">One Thousand Gifts</a></h4>
-            <p class="by">Ann Voskamp</p>
-            <p>A lyrical, honest meditation on gratitude and the practice of noticing grace in ordinary life.</p>
-          </article>
-          <article class="res-card reveal">
-            <h4><a href="https://reformers.com.au/products/9781444702163-meaning-of-marriage-the-facing-the-complexities-of-commitment-with-the-wisdom-of-god-keller-timothy-j-keller-kathy" rel="noopener">The Meaning of Marriage</a></h4>
-            <p class="by">Timothy &amp; Kathy Keller</p>
-            <p>Theologically rich and practically wise. Recommended for couples at any stage.</p>
-          </article>
-          <article class="res-card reveal">
-            <h4><a href="https://reformers.com.au/products/9781784985981-being-the-bad-guys-how-to-live-for-jesus-in-a-world-that-says-you-shouldnt-mcalpine-stephen" rel="noopener">Being the Bad Guys</a></h4>
-            <p class="by">Stephen McAlpine</p>
-            <p>A clear-eyed and encouraging guide to living as a Christian in a culture that has moved on from faith. Honest and hopeful.</p>
-          </article>
-        </div>
-      </div>
-
-      <div class="res-group">
-        <h3 class="res-title reveal">A Place to Begin</h3>
-        <p class="reveal">New to faith, or returning after a long time away? Here are three simple starting points.</p>
-        <div class="res-grid">
-          <article class="res-card reveal">
-            <span class="verb">Read</span>
-            <p>The Gospel of Mark is the shortest and most direct account of Jesus’s life. A good place to start.</p>
-            <a class="go" href="https://www.biblegateway.com/passage/?search=Mark+1&amp;version=NIV" rel="noopener">Read Mark’s Gospel →</a>
-          </article>
-          <article class="res-card reveal">
-            <span class="verb">Listen</span>
-            <p>Browse our sermon archive for messages that connect faith to everyday life.</p>
-            <a class="go" href="https://www.youtube.com/@echungauniting" rel="noopener">Browse the sermon archive →</a>
-          </article>
-          <article class="res-card reveal">
-            <span class="verb">Talk</span>
-            <p>You’re welcome to get in touch with us with any questions. No agenda, no pressure.</p>
-            <a class="go" href="#contact">Get in touch with us →</a>
-          </article>
-        </div>
-      </div>
-
-      <div class="res-group reveal">
-        <h3 class="res-title">Get Involved</h3>
-        <div class="narrow" style="margin-left:0">
-          <p>Echunga Family Church is an active community where people’s gifts, passions and abilities find a home. There are many ways to serve — whether your strength is with people, creativity, prayer, or practical tasks.</p>
-          <p>Our ministry teams include:</p>
-          <ul class="chips" aria-label="Ministry teams">
-            <li>Children’s Ministry</li><li>Youth</li><li>Small Groups</li><li>Worship</li><li>Prayer</li>
-            <li>Pastoral Care</li><li>Mission</li><li>Property</li><li>Fundraising</li><li>IT</li>
-          </ul>
-          <p><strong>Interested in joining a team?</strong> <a href="#contact">Get in touch →</a></p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Contact -->
-  <section id="contact" class="contact">
-    <div class="wrap">
-      <div class="reveal narrow center" style="margin-bottom:2.2rem">
-        <p class="eyebrow">Contact Us</p>
-        <h2>We’d love to hear from you</h2>
-        <p>Whether you have a question, want to know more about our community, or are going through something and need someone to talk to — please reach out. We aim to respond within two business days.</p>
-      </div>
-      <div class="contact-grid">
-        <form id="contact-form" class="reveal" novalidate>
-          <label for="f-name">Name *</label>
-          <input id="f-name" name="name" type="text" autocomplete="name" required>
-          <label for="f-email">E-mail *</label>
-          <input id="f-email" name="email" type="email" autocomplete="email" required>
-          <label for="f-phone">Telephone</label>
-          <input id="f-phone" name="phone" type="tel" autocomplete="tel">
-          <label for="f-msg">Message *</label>
-          <textarea id="f-msg" name="message" required></textarea>
-          <button class="btn primary" type="submit">Send message</button>
-          <p class="form-note" id="form-status" role="status">This opens your email app with your message ready to send to info@echunga.ucasa.org.au.</p>
-        </form>
-        <div class="details reveal">
-          <h3>Contact Details</h3>
-          <dl>
-            <dt>Phone</dt><dd><a href="tel:+61870940878">08 7094 0878</a></dd>
-            <dt>Email</dt><dd><a href="mailto:info@echunga.ucasa.org.au">info@echunga.ucasa.org.au</a></dd>
-            <dt>Address</dt><dd>32 Adelaide Road, Echunga SA 5153</dd>
-            <dt>Post</dt><dd>PO Box 233, Echunga SA 5153</dd>
-          </dl>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Give -->
-  <section id="give">
+  <!-- Next steps -->
+  <section class="next">
     <div class="wrap narrow center reveal">
-      <p class="eyebrow">Give Online</p>
-      <h2>Your giving makes a real difference</h2>
-      <p>Your giving sustains the ministry of Echunga Family Church and makes a real difference.</p>
-      <div class="give-card" style="text-align:left">
-        <div><small>BSB</small><strong>633 000</strong><button class="copy" type="button" data-copy="633000">Copy</button></div>
-        <div><small>Account</small><strong>214 652 893</strong><button class="copy" type="button" data-copy="214652893">Copy</button></div>
-        <div><small>Account Name</small><strong>Echunga Uniting Church</strong></div>
+      <p class="eyebrow">Next steps</p>
+      <h2>We’d love to meet you</h2>
+      <div class="actions">
+        <a class="btn primary" href="contact/">Contact Us</a>
+        <a class="btn ghost" href="about/">About Us</a>
+        <a class="btn ghost" href="activities/">Activities</a>
       </div>
-      <p>We also receive offerings during Sunday Worship at 10am.</p>
     </div>
   </section>
 </main>
@@ -713,111 +185,9 @@
 <footer>
   <p>We are a Member of Generate Presbytery and part of the Uniting Church SA.</p>
   <p>32 Adelaide Road, Echunga SA 5153 · PO Box 233, Echunga SA 5153</p>
-  <p><a href="https://echungauniting.elvanto.com.au/" target="_blank" rel="noopener">Members Portal</a></p>
+  <p class="foot-links"><a href="contact/">Contact</a> · <a href="contact/#give">Give</a> · <a href="https://echungauniting.elvanto.com.au/" target="_blank" rel="noopener">Members Portal</a></p>
 </footer>
 
-<script>
-(() => {
-  /* ---------- Living hills: a calm flow field in the logo's palette ---------- */
-  const canvas = document.getElementById('field');
-  const ctx = canvas.getContext('2d');
-  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const CREAM = '251,248,241';
-  // top of the sky to the paddocks below, echoing the logo
-  const BANDS = ['#e3b25d', '#e3b25d', '#9aa666', '#9aa666', '#5d8c88', '#a8845a'];
-
-  let W = 0, H = 0, dpr = 1, parts = [], t = 0, raf = 0, visible = true;
-  const mouse = { x: -9999, y: -9999, active: false };
-
-  function size() {
-    dpr = Math.min(devicePixelRatio || 1, 2);
-    W = canvas.clientWidth; H = canvas.clientHeight;
-    canvas.width = W * dpr; canvas.height = H * dpr;
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    ctx.fillStyle = `rgb(${CREAM})`; ctx.fillRect(0, 0, W, H);
-    const n = Math.round(Math.min(1100, Math.max(350, W * H / 1800)));
-    parts = Array.from({ length: n }, spawn);
-  }
-  function spawn() {
-    const y = Math.random() * H;
-    const band = Math.min(BANDS.length - 1, Math.floor((y / H) * BANDS.length));
-    return { x: Math.random() * W, y, c: BANDS[band], life: 200 + Math.random() * 400, w: .6 + Math.random() * 1.1 };
-  }
-  // rolling-hills angle: mostly horizontal, undulating
-  function angle(x, y) {
-    const a = Math.sin(x * .0042 + t * .18) * .75 + Math.cos(y * .006 - t * .14) * .55 + Math.sin((x + y) * .0021 + t * .09) * .45;
-    return a * .55;
-  }
-  function step() {
-    ctx.fillStyle = `rgba(${CREAM},.045)`;
-    ctx.fillRect(0, 0, W, H);
-    ctx.lineCap = 'round';
-    for (const p of parts) {
-      let a = angle(p.x, p.y);
-      let vx = Math.cos(a) * 1.15, vy = Math.sin(a) * 1.15;
-      if (mouse.active) {           // a gentle swirl around the visitor's cursor
-        const dx = p.x - mouse.x, dy = p.y - mouse.y, d2 = dx * dx + dy * dy;
-        if (d2 < 22000) { const f = (1 - d2 / 22000) * 1.6, d = Math.sqrt(d2) + 1; vx += (-dy / d) * f; vy += (dx / d) * f; }
-      }
-      const nx = p.x + vx, ny = p.y + vy;
-      ctx.strokeStyle = p.c; ctx.globalAlpha = .8; ctx.lineWidth = p.w;
-      ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(nx, ny); ctx.stroke();
-      p.x = nx; p.y = ny;
-      if (--p.life <= 0 || p.x < -10 || p.x > W + 10 || p.y < -10 || p.y > H + 10) Object.assign(p, spawn());
-    }
-    ctx.globalAlpha = 1;
-    t += .004;
-  }
-  function loop() { if (visible && !document.hidden) step(); raf = requestAnimationFrame(loop); }
-
-  size();
-  if (reduce) {                      // still image only for people who prefer no motion
-    ctx.fillStyle = `rgb(${CREAM})`; ctx.fillRect(0, 0, W, H);
-    for (let i = 0; i < 260; i++) step();
-  } else {
-    loop();
-    new IntersectionObserver(([e]) => { visible = e.isIntersecting; }).observe(canvas);
-    addEventListener('pointermove', e => {
-      const r = canvas.getBoundingClientRect();
-      mouse.x = e.clientX - r.left; mouse.y = e.clientY - r.top; mouse.active = true;
-    }, { passive: true });
-    addEventListener('pointerleave', () => { mouse.active = false; });
-  }
-  let rt; addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(size, 200); });
-
-  /* ---------- gentle reveal on scroll ---------- */
-  const els = document.querySelectorAll('.reveal');
-  if ('IntersectionObserver' in window && !reduce) {
-    const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: .12 });
-    els.forEach(el => io.observe(el));
-  } else els.forEach(el => el.classList.add('in'));
-
-  /* ---------- nav appears once the hero is scrolled past ---------- */
-  const nav = document.getElementById('nav');
-  const hero = document.getElementById('top');
-  if ('IntersectionObserver' in window) {
-    new IntersectionObserver(([e]) => nav.classList.toggle('show', !e.isIntersecting), { threshold: 0, rootMargin: '-80px 0px 0px 0px' }).observe(hero);
-  } else nav.classList.add('show');
-
-  /* ---------- copy giving details ---------- */
-  document.querySelectorAll('.copy').forEach(btn => btn.addEventListener('click', async () => {
-    try { await navigator.clipboard.writeText(btn.dataset.copy); btn.textContent = 'Copied'; }
-    catch { btn.textContent = 'Select and copy'; }
-    setTimeout(() => { btn.textContent = 'Copy'; }, 1800);
-  }));
-
-  /* ---------- contact form: composes an email (no server needed) ---------- */
-  const form = document.getElementById('contact-form');
-  const status = document.getElementById('form-status');
-  form.addEventListener('submit', e => {
-    e.preventDefault();
-    if (!form.reportValidity()) return;
-    const d = Object.fromEntries(new FormData(form));
-    const body = `Name: ${d.name}\nE-mail: ${d.email}\nTelephone: ${d.phone || '—'}\n\n${d.message}`;
-    location.href = 'mailto:info@echunga.ucasa.org.au?subject=' + encodeURIComponent('Website enquiry from ' + d.name) + '&body=' + encodeURIComponent(body);
-    status.textContent = 'Opening your email app… If nothing opens, please email info@echunga.ucasa.org.au directly.';
-  });
-})();
-</script>
+<script src="site.js" defer></script>
 </body>
 </html>
