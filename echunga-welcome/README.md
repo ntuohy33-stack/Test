@@ -11,14 +11,15 @@ A small static site: plain HTML, one stylesheet and one script. There is nothing
 | `/activities/` | Activities | Craft, Cuppa & Cards, coffee groups, Life Groups, other events |
 | `/resources/` | Resources | Sermons, newsletter, books, a place to begin, get involved |
 | `/contact/` | Contact | Contact form and details, and Give Online |
+| `/beliefs/` | Statement of Beliefs | The 20 statements of belief, grouped by theme (in the About menu) |
 
-The menu on every page is: **About** (Our Story, Vision, Our Minister), **Activities**, **Resources**, **Contact**, **Members** (opens the Elvanto portal). Plan Your Visit is on the home page.
+The menu on every page is: **About** (Our Story, Vision, Our Minister, Statement of Beliefs), **Activities**, **Resources**, **Contact**, **Members** (opens the Elvanto portal). Plan Your Visit is on the home page.
 
 ## What's in this folder
 
 | File | Purpose |
 | --- | --- |
-| `index.html`, `about/`, `activities/`, `resources/`, `contact/` | The five pages (each folder holds an `index.html`) |
+| `index.html`, `about/`, `activities/`, `resources/`, `contact/`, `beliefs/` | The six pages (each folder holds an `index.html`) |
 | `styles.css` | All the design, shared by every page |
 | `site.js` | Shared behaviour: the animated hills, phone menu, contact form, copy buttons |
 | `_redirects` | Old-address redirects (see below) |
@@ -73,7 +74,7 @@ Not yet mapped: the old Events Calendar (`/events-calendar/`), Pastoral Support 
 
 ## Things to finish once the address is known
 
-1. The share-preview tags (`og:url` and `og:image` in the `<head>` of each of the five pages) currently use the temporary address `echunga-family-churchpagesdev.ntuohy33.workers.dev`. When the final address is set, replace it on all five pages (search for `workers.dev`), then re-upload. After the final address is live, switch off or redirect the temporary `workers.dev` address in Cloudflare so search engines don't list two copies of the site.
+1. The share-preview tags (`og:url` and `og:image` in the `<head>` of each of the six pages) currently use the temporary address `echunga-family-churchpagesdev.ntuohy33.workers.dev`. When the final address is set, replace it on all six pages (search for `workers.dev`), then re-upload. After the final address is live, switch off or redirect the temporary `workers.dev` address in Cloudflare so search engines don't list two copies of the site.
 2. Test the "Send message" form on the live site. It opens the visitor's email app, addressed to `info@echunga.ucasa.org.au`, because a static site cannot receive form posts on its own. For in-page submission you'd add a form service.
 3. Check "Watch the livestream", the Members link and the book links open correctly.
 4. The public name is **Echunga Family Church**. The only remaining "Echunga Uniting Church" is the bank *Account Name* on the Contact page, which must match how the account is registered, so check it with the treasurer before ever changing it.
@@ -84,7 +85,7 @@ Open the page you want in any text editor. Each section is marked with a comment
 
 - Service times and the address appear on the home page (hero, Sunday Worship card), the Contact page and every footer. Change them together.
 - The home page's **This week's message** player shows the newest video from the church's YouTube channel and updates itself when a new video is uploaded. It is set by the channel ID in `index.html` (search for `videoseries`; the ID is also in a comment above it). If the player ever says the video is unavailable, check the ID in YouTube Studio under Settings, Channel, Advanced settings. If livestreams are scheduled in advance, the player may show the upcoming stream until it finishes.
-- The **menu and footer are repeated in all five pages**. If you change a menu item, change it in each file.
+- The **menu and footer are repeated in all six pages**. If you change a menu item, change it in each file.
 - Colours and spacing are all in `styles.css`. The colour names are at the very top.
 
 Fonts (Cormorant Garamond and Jost) load from Google Fonts. If that's ever blocked, the page falls back to standard fonts and stays readable.

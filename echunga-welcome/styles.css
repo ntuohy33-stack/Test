@@ -51,7 +51,8 @@
   .menu > li { position: relative; }
   .menu a { display: block; text-decoration: none; color: var(--ink); font-size: .95rem; letter-spacing: .04em; padding: .5rem .85rem; border-radius: 999px; }
   .menu a:hover { background: rgba(154,166,102,.18); }
-  .menu a[aria-current="page"] { color: var(--sage-deep); font-weight: 500; box-shadow: inset 0 -2px 0 var(--gold); border-radius: 0; }
+  .menu > li > a[aria-current] { color: var(--sage-deep); font-weight: 500; box-shadow: inset 0 -2px 0 var(--gold); border-radius: 0; }
+  .sub a[aria-current="page"] { color: var(--sage-deep); font-weight: 500; background: rgba(154,166,102,.2); }
   .menu a.ext::after { content: " \2197"; font-size: .8em; }
   .has-sub > a::after { content: "\25BE"; font-size: .7em; margin-left: .4rem; opacity: .7; }
   .sub { display: none; position: absolute; top: 100%; left: 0; min-width: 12.5rem; list-style: none; margin: 0; padding: .4rem; background: #fff; border: 1px solid var(--line); border-radius: 14px; box-shadow: 0 16px 34px -18px rgba(47,58,44,.45); }
@@ -70,7 +71,7 @@
     .menu { display: none; position: absolute; top: 100%; left: 0; right: 0; flex-direction: column; align-items: stretch; gap: 0; margin: 0; padding: .5rem 1.25rem 1rem; background: rgba(247,245,242,.98); border-bottom: 1px solid var(--line); max-height: calc(100svh - 4rem); overflow-y: auto; }
     .nav.open .menu { display: flex; }
     .menu a { padding: .8rem .4rem; border-radius: 8px; font-size: 1.05rem; }
-    .menu a[aria-current="page"] { box-shadow: none; background: rgba(154,166,102,.18); }
+    .menu > li > a[aria-current] { box-shadow: none; background: rgba(154,166,102,.18); }
     .has-sub > a::after { display: none; }
     .sub { display: block; position: static; min-width: 0; padding: 0 0 0 1rem; border: 0; background: transparent; box-shadow: none; }
     .sub a { font-size: .98rem; color: var(--ink-soft); }
@@ -323,3 +324,36 @@
   .social-link { display: inline-flex; align-items: center; gap: .55rem; padding: .6rem 1.2rem; border: 1px solid rgba(226,191,128,.5); border-radius: 999px; color: var(--gold-light); text-decoration: none; font-weight: 500; font-size: .95rem; transition: background .2s ease, color .2s ease, border-color .2s ease; }
   .social-link:hover { background: rgba(226,191,128,.14); color: #fff; border-color: var(--gold-light); }
   .social-link svg { width: 24px; height: 24px; flex: none; }
+
+  /* ---------- Statement of Beliefs ---------- */
+  .about-link { margin: 1.6rem 0 0; }
+  .preface { max-width: 40rem; margin-left: auto; margin-right: auto; }
+  .beliefs-section { padding-top: 1rem !important; }
+  .we-believe { font-family: var(--serif); font-size: clamp(2.6rem, 8vw, 4.6rem); line-height: 1.05; color: var(--olive); text-align: center; margin: 0 0 1.6rem; letter-spacing: .02em; }
+  .jump { display: flex; flex-wrap: wrap; gap: .5rem; justify-content: center; max-width: 52rem; margin: 0 auto 3rem; }
+  .jump a { text-decoration: none; padding: .4rem 1rem; border-radius: 999px; background: #fff; border: 1px solid var(--line); font-size: .92rem; color: var(--ink); transition: background .2s ease, border-color .2s ease; }
+  .jump a:hover { background: rgba(151,167,98,.16); border-color: var(--sage); }
+
+  .c-sage { --c: var(--sage); --cd: var(--sage-deep); }
+  .c-teal { --c: var(--teal); --cd: #3f6b67; }
+  .c-gold { --c: var(--gold); --cd: #7a5712; }
+  .c-clay { --c: var(--clay); --cd: var(--clay-deep); }
+
+  .bgroup { display: grid; grid-template-columns: 1fr 2.3fr; gap: 1.4rem 3rem; padding: 2.8rem 0; border-top: 1px solid var(--line); }
+  @media (max-width: 860px) { .bgroup { grid-template-columns: 1fr; } }
+  .bgroup-head { align-self: start; position: sticky; top: 5.5rem; }
+  @media (max-width: 860px) { .bgroup-head { position: static; } }
+  .bgroup-head::before { content: ""; display: block; width: 2.8rem; height: 4px; border-radius: 4px; background: var(--c); margin-bottom: 1.1rem; }
+  .range { font-size: .8rem; letter-spacing: .2em; text-transform: uppercase; color: var(--cd); margin: 0 0 .5rem; }
+  .bgroup-head h2 { margin: 0; font-size: clamp(1.8rem, 3.6vw, 2.4rem); }
+
+  .beliefs { list-style: none; margin: 0; padding: 0; display: grid; gap: 1.7rem; }
+  .beliefs > li { position: relative; padding-left: 4.4rem; font-size: 1.12rem; line-height: 1.65; }
+  .beliefs > li::before { content: counter(list-item); position: absolute; left: 0; top: -.2rem; width: 3.4rem; font-family: var(--serif); font-size: 2.9rem; line-height: 1; color: var(--cd); letter-spacing: 0; }
+  .wb { display: block; font-size: .78rem; letter-spacing: .18em; text-transform: uppercase; color: var(--ink-soft); margin-bottom: .25rem; }
+  .beliefs a { color: var(--cd); font-weight: 500; }
+  @media (max-width: 520px) { .beliefs > li { padding-left: 3.4rem; font-size: 1.06rem; } .beliefs > li::before { font-size: 2.3rem; width: 2.8rem; } }
+
+  .christ { list-style: none; margin: 1.1rem 0 0; padding: 0; display: grid; gap: .6rem; grid-template-columns: repeat(auto-fit, minmax(13.5rem, 1fr)); }
+  .christ li { position: relative; background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: .85rem 1rem .85rem 3.1rem; font-size: 1rem; line-height: 1.45; }
+  .christ li::before { content: counter(list-item, lower-alpha); position: absolute; left: .85rem; top: .8rem; width: 1.7rem; height: 1.7rem; border-radius: 50%; display: grid; place-items: center; font-family: var(--sans); font-size: .85rem; font-weight: 500; color: #fff; background: var(--cd); }
