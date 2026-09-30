@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>You're Welcome Here · Echunga Family Church</title>
+<meta name="description" content="Sunday worship at 10am, 32 Adelaide Road, Echunga. Come as you are. Families very welcome.">
+<meta name="theme-color" content="#fbf8f1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Jost:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #fbf8f1;
+    --ink: #2f3a2c;
+    --ink-soft: #55604f;
+    --sage: #9aa666;
+    --sage-deep: #5c6a30;   /* text-safe green */
+    --gold: #e3b25d;
+    --teal: #5d8c88;
+    --clay: #a8845a;
+    --clay-deep: #7a5a35;   /* text-safe clay */
+    --card: #ffffff;
+    --line: rgba(92,106,48,.18);
+    --serif: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+    --sans: "Jost", system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0; background: var(--cream); color: var(--ink);
+    font-family: var(--sans); font-size: 1.0625rem; line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--sage-deep); }
+  :focus-visible { outline: 3px solid var(--teal); outline-offset: 3px; border-radius: 6px; }
+
+  /* ---------- Hero ---------- */
+  .hero {
+    position: relative; min-height: 100svh; overflow: hidden;
+    display: grid; place-items: center; padding: 3rem 1.25rem 5rem;
+    isolation: isolate;
+  }
+  #field { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -2; display: block; }
+  /* soft veil so text always reads over the moving field */
+  .hero::before {
+    content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+    background: radial-gradient(ellipse 52% 60% at 50% 46%, rgba(251,248,241,.92) 0%, rgba(251,248,241,.78) 55%, rgba(251,248,241,0) 100%);
+  }
+  .hero-inner { text-align: center; max-width: 40rem; }
+  .logo {
+    width: clamp(150px, 26vw, 230px); height: auto; display: block; margin: 0 auto 1.25rem;
+    mix-blend-mode: multiply; /* lets the JPG's white sit invisibly on the cream */
+    animation: rise 1.4s ease both;
+  }
+  h1 {
+    font-family: var(--serif); font-weight: 600; letter-spacing: .01em;
+    font-size: clamp(2.6rem, 8vw, 4.6rem); line-height: 1.05; margin: 0 0 1rem;
+    color: var(--sage-deep); animation: rise 1.4s .15s ease both;
+  }
+  .lead { font-size: clamp(1.1rem, 2.6vw, 1.3rem); color: var(--ink); margin: 0 auto 1.5rem; max-width: 34rem; animation: rise 1.4s .3s ease both; }
+  .when {
+    display: inline-block; font-size: .95rem; letter-spacing: .16em; text-transform: uppercase;
+    color: var(--clay-deep); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
+    padding: .7rem 0; margin: 0 0 2rem; animation: rise 1.4s .45s ease both;
+  }
+  .actions { display: flex; flex-wrap: wrap; gap: .8rem; justify-content: center; animation: rise 1.4s .6s ease both; }
+  .btn {
+    display: inline-block; text-decoration: none; font-weight: 500; letter-spacing: .04em;
+    padding: .85rem 1.7rem; border-radius: 999px; border: 2px solid var(--sage-deep);
+    transition: transform .2s ease, background .2s ease, color .2s ease, box-shadow .2s ease;
+  }
+  .btn.primary { background: var(--sage-deep); color: #fff; }
+  .btn.ghost { background: rgba(255,255,255,.6); color: var(--sage-deep); }
+  .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(92,106,48,.22); }
+  .btn.ghost:hover { background: var(--sage-deep); color: #fff; }
+
+  .scroll-cue {
+    position: absolute; bottom: 1.4rem; left: 50%; transform: translateX(-50%);
+    width: 1px; height: 44px; background: linear-gradient(var(--sage-deep), transparent);
+    opacity: .5; animation: cue 2.4s ease-in-out infinite;
+  }
+  @keyframes cue { 0%,100% { transform: translate(-50%,0); opacity:.2 } 50% { transform: translate(-50%,10px); opacity:.6 } }
+  @keyframes rise { from { opacity: 0; transform: translateY(14px) } to { opacity: 1; transform: none } }
+
+  /* ---------- Content ---------- */
+  main section { padding: 4.5rem 1.25rem; }
+  .wrap { max-width: 62rem; margin: 0 auto; }
+  h2 {
+    font-family: var(--serif); font-weight: 600; font-size: clamp(2rem, 5vw, 2.8rem);
+    line-height: 1.1; color: var(--sage-deep); margin: 0 0 1rem;
+  }
+  .eyebrow { font-size: .8rem; letter-spacing: .22em; text-transform: uppercase; color: var(--clay-deep); margin: 0 0 .6rem; }
+
+  .expect { text-align: center; }
+  .expect p.big { font-family: var(--serif); font-size: clamp(1.4rem, 3.4vw, 2rem); line-height: 1.4; max-width: 44rem; margin: 0 auto; }
+  .expect .pillars { display: flex; flex-wrap: wrap; gap: .6rem; justify-content: center; margin: 2rem 0 0; padding: 0; list-style: none; }
+  .expect .pillars li { padding: .45rem 1.1rem; border-radius: 999px; font-size: .95rem; background: #fff; border: 1px solid var(--line); }
+  .expect .pillars li:nth-child(1) { border-color: var(--sage); }
+  .expect .pillars li:nth-child(2) { border-color: var(--gold); }
+  .expect .pillars li:nth-child(3) { border-color: var(--teal); }
+  .expect .pillars li:nth-child(4) { border-color: var(--clay); }
+
+  .cards { display: grid; gap: 1.25rem; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); }
+  .card {
+    background: var(--card); border: 1px solid var(--line); border-radius: 20px; padding: 1.8rem;
+    box-shadow: 0 1px 0 rgba(0,0,0,.02), 0 14px 34px -22px rgba(47,58,44,.35);
+    border-top: 6px solid var(--sage);
+  }
+  .card:nth-child(2) { border-top-color: var(--gold); }
+  .card:nth-child(3) { border-top-color: var(--teal); }
+  .card h3 { font-family: var(--serif); font-size: 1.6rem; margin: 0 0 .5rem; color: var(--ink); }
+  .card p { margin: 0 0 1rem; color: var(--ink-soft); }
+  .card p:last-child { margin-bottom: 0; }
+  .time { font-family: var(--serif); font-size: 2rem; color: var(--clay-deep); line-height: 1.1; margin-bottom: .3rem !important; }
+
+  .next { background: linear-gradient(180deg, transparent, rgba(154,166,102,.14)); text-align: center; }
+  .next .actions { margin-top: 1.5rem; }
+
+  footer { padding: 2.5rem 1.25rem 3rem; text-align: center; color: var(--ink-soft); font-size: .95rem; border-top: 1px solid var(--line); }
+  footer p { margin: 0 auto; max-width: 36rem; }
+
+  /* gentle reveal on scroll */
+  .reveal { opacity: 0; transform: translateY(18px); transition: opacity .9s ease, transform .9s ease; }
+  .reveal.in { opacity: 1; transform: none; }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .logo, h1, .lead, .when, .actions, .scroll-cue { animation: none; }
+    .reveal { opacity: 1; transform: none; transition: none; }
+    .btn { transition: none; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero" id="top">
+  <canvas id="field" aria-hidden="true"></canvas>
+  <div class="hero-inner">
+    <img class="logo" src="logo.jpg" alt="Echunga Family Church: a pointed church window showing a cross over a rising sun and rolling hills">
+    <h1>You're Welcome Here</h1>
+    <p class="lead">If you’re new — or finding your way back — come as you are. You don’t need to know what to do.</p>
+    <p class="when">Sunday mornings · 10am · 32 Adelaide Road, Echunga</p>
+    <div class="actions">
+      <a class="btn primary" href="#visit">Plan Your Visit</a>
+      <!-- TODO: set to the real contact page or mailto: address -->
+      <a class="btn ghost" href="#" data-todo="contact">Contact Us</a>
+    </div>
+  </div>
+  <div class="scroll-cue" aria-hidden="true"></div>
+</header>
+
+<main>
+  <section class="expect">
+    <div class="wrap reveal">
+      <p class="eyebrow">What to expect</p>
+      <p class="big">A relaxed, Christ-centred service with Bible teaching, prayer, and music, followed by morning tea and a chance to connect.</p>
+      <ul class="pillars" aria-label="Elements of a Sunday service">
+        <li>Bible teaching</li>
+        <li>Prayer</li>
+        <li>Music</li>
+        <li>Morning tea</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="visit">
+    <div class="wrap">
+      <div class="reveal">
+        <p class="eyebrow">Plan your visit</p>
+        <h2>Sunday Worship</h2>
+      </div>
+      <div class="cards">
+        <article class="card reveal">
+          <h3>Sunday Worship</h3>
+          <p class="time">10am</p>
+          <p>32 Adelaide Road, Echunga</p>
+          <p><a href="https://www.google.com/maps/search/?api=1&query=32+Adelaide+Road+Echunga+SA" rel="noopener">Get directions</a></p>
+        </article>
+        <article class="card reveal">
+          <h3>Visiting with children?</h3>
+          <p>Families are very welcome, and we’ll help you find what’s best for your kids on the day.</p>
+        </article>
+        <article class="card reveal">
+          <h3>Prefer to watch online first?</h3>
+          <p>Join our livestream.</p>
+          <!-- TODO: set to the real livestream URL -->
+          <p><a href="#" data-todo="livestream">Watch the livestream</a></p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="next">
+    <div class="wrap reveal">
+      <p class="eyebrow">Next steps</p>
+      <h2>We’d love to meet you</h2>
+      <div class="actions">
+        <a class="btn primary" href="#visit">Plan Your Visit</a>
+        <a class="btn ghost" href="#" data-todo="contact">Contact Us</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <p>We are a Member of Generate Presbytery and part of the Uniting Church SA.</p>
+</footer>
+
+<script>
+(() => {
+  /* ---------- Living hills: a calm flow field in the logo's palette ---------- */
+  const canvas = document.getElementById('field');
+  const ctx = canvas.getContext('2d');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const CREAM = '251,248,241';
+  // top of the sky to the paddocks below, echoing the logo
+  const BANDS = ['#e3b25d', '#e3b25d', '#9aa666', '#9aa666', '#5d8c88', '#a8845a'];
+
+  let W = 0, H = 0, dpr = 1, parts = [], t = 0, raf = 0, visible = true;
+  const mouse = { x: -9999, y: -9999, active: false };
+
+  function size() {
+    dpr = Math.min(devicePixelRatio || 1, 2);
+    W = canvas.clientWidth; H = canvas.clientHeight;
+    canvas.width = W * dpr; canvas.height = H * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.fillStyle = `rgb(${CREAM})`; ctx.fillRect(0, 0, W, H);
+    const n = Math.round(Math.min(1100, Math.max(350, W * H / 1800)));
+    parts = Array.from({ length: n }, spawn);
+  }
+  function spawn() {
+    const y = Math.random() * H;
+    const band = Math.min(BANDS.length - 1, Math.floor((y / H) * BANDS.length));
+    return { x: Math.random() * W, y, c: BANDS[band], life: 200 + Math.random() * 400, w: .6 + Math.random() * 1.1 };
+  }
+  // rolling-hills angle: mostly horizontal, undulating
+  function angle(x, y) {
+    const a = Math.sin(x * .0042 + t * .18) * .75 + Math.cos(y * .006 - t * .14) * .55 + Math.sin((x + y) * .0021 + t * .09) * .45;
+    return a * .55;
+  }
+  function step() {
+    ctx.fillStyle = `rgba(${CREAM},.045)`;
+    ctx.fillRect(0, 0, W, H);
+    ctx.lineCap = 'round';
+    for (const p of parts) {
+      let a = angle(p.x, p.y);
+      let vx = Math.cos(a) * 1.15, vy = Math.sin(a) * 1.15;
+      if (mouse.active) {           // a gentle swirl around the visitor's cursor
+        const dx = p.x - mouse.x, dy = p.y - mouse.y, d2 = dx * dx + dy * dy;
+        if (d2 < 22000) { const f = (1 - d2 / 22000) * 1.6, d = Math.sqrt(d2) + 1; vx += (-dy / d) * f; vy += (dx / d) * f; }
+      }
+      const nx = p.x + vx, ny = p.y + vy;
+      ctx.strokeStyle = p.c; ctx.globalAlpha = .8; ctx.lineWidth = p.w;
+      ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(nx, ny); ctx.stroke();
+      p.x = nx; p.y = ny;
+      if (--p.life <= 0 || p.x < -10 || p.x > W + 10 || p.y < -10 || p.y > H + 10) Object.assign(p, spawn());
+    }
+    ctx.globalAlpha = 1;
+    t += .004;
+  }
+  function loop() { if (visible && !document.hidden) step(); raf = requestAnimationFrame(loop); }
+
+  size();
+  if (reduce) {                      // still image only for people who prefer no motion
+    ctx.fillStyle = `rgb(${CREAM})`; ctx.fillRect(0, 0, W, H);
+    for (let i = 0; i < 260; i++) step();
+  } else {
+    loop();
+    new IntersectionObserver(([e]) => { visible = e.isIntersecting; }).observe(canvas);
+    addEventListener('pointermove', e => {
+      const r = canvas.getBoundingClientRect();
+      mouse.x = e.clientX - r.left; mouse.y = e.clientY - r.top; mouse.active = true;
+    }, { passive: true });
+    addEventListener('pointerleave', () => { mouse.active = false; });
+  }
+  let rt; addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(size, 200); });
+
+  /* ---------- gentle reveal on scroll ---------- */
+  const els = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window && !reduce) {
+    const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: .15 });
+    els.forEach(el => io.observe(el));
+  } else els.forEach(el => el.classList.add('in'));
+
+  /* placeholder links do nothing until real URLs are set */
+  document.querySelectorAll('a[data-todo]').forEach(a => a.addEventListener('click', e => e.preventDefault()));
+})();
+</script>
+</body>
+</html>
