@@ -33,7 +33,7 @@ The Uniting Church SA site can redirect to the new address (a "301 redirect"). I
 1. In `index.html`, near the top, set the share-preview image to the full address (see the `TODO` comment), and add an `og:url` line.
 2. Test the "Send message" form on the live site. It opens the visitor's email app, addressed to `info@echunga.ucasa.org.au`, because a static site cannot receive form posts on its own. For in-page submission you'd add a form service.
 3. Check "Watch the livestream" opens the YouTube channel.
-4. Confirm which name to show publicly (Echunga *Family* Church or *Uniting* Church). The logo and the browser tab currently say Family Church, and the body copy says Uniting Church.
+4. The public name is **Echunga Family Church**. The only remaining "Echunga Uniting Church" is the bank *Account Name* in the Give section, which must match how the account is registered, so check it with the treasurer before ever changing it.
 
 ## Editing the wording
 
