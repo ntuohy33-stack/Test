@@ -1,25 +1,28 @@
 # Brand fonts
 
-The site is set up to use the brand guide fonts. Drop the web-font files (`.woff2`) into this folder with **exactly** these names and the site uses them automatically. Nothing else needs changing.
+The site is set up to use the brand guide fonts. Web-font files (`.woff2`) placed in this folder with **exactly** these names are picked up automatically. Nothing else needs changing.
 
-| Brand font | Used for | Files to add |
-| --- | --- | --- |
-| **IvyMode** (Regular) | Headings, the church name in the menu, large quotations | `IvyMode-Regular.woff2` |
-| **Metropolis** | Body text, menu, buttons | `Metropolis-Regular.woff2`, `Metropolis-Medium.woff2`, `Metropolis-SemiBold.woff2` |
+| Brand font | Used for | Files | Status |
+| --- | --- | --- | --- |
+| **IvyMode** (Regular) | Headings, the church name in the menu, large text | `IvyMode-Regular.woff2` | Converted and tested. Kept out of version control (see below) |
+| **Metropolis** | Body text, menu, buttons | `Metropolis-Regular.woff2` (400), `Metropolis-Medium.woff2` (500), `Metropolis-SemiBold.woff2` (600) | **Still needed.** The files supplied so far were Thin (100), which is too fine for body text |
 
-Until those files are here, the site shows free look-alikes (Cormorant Garamond in place of IvyMode, Montserrat in place of Metropolis), so nothing looks broken.
+Until a font's file is here, the site shows a free look-alike (Cormorant Garamond for IvyMode, Montserrat for Metropolis), so nothing looks broken.
 
-**Not used yet:** the secondary fonts, Carentro and Garet Book. Decide where they should appear (for example small uppercase labels), and they can be added the same way.
+**Not used yet:** the secondary fonts, Carentro and Garet Book.
 
-## Licences: please check before uploading
+## Licences
 
-Fonts are licensed separately for the web, and a licence for print or a logo does not always cover a website.
+- **IvyMode** is © Ivy Foundry and sold through Type Network (store.typenetwork.com). Its file allows embedding technically, but that is not the same as permission. Putting it on a website needs a **web-font licence**. Please confirm one is in place. `.gitignore` keeps IvyMode, Carentro and Garet files out of this repository, because the repository is public and anyone could download them from it. Add these files to the folder you publish from (or to a private repository), not here.
+- **Metropolis** is open-source (SIL Open Font License) and can be used and shared freely, including in this repository.
+- **Carentro and Garet** appear to be commercial. Check for web licences before using them.
 
-- **Metropolis** is an open-source font (SIL Open Font License), so it can be used on a website freely. Download it from its official project page.
-- **IvyMode, Carentro and Garet** appear to be commercial fonts. Ask whoever produced the brand guide whether a **web licence** was included, and ask them for the `.woff2` files, or buy a web licence from the foundry.
+I can't confirm licence terms from here, so please treat this as a prompt to check.
 
-I can't confirm these licence details from here, so please treat the above as a prompt to check, not a ruling.
+## Getting the right Metropolis files
+
+The files supplied were named like `metropolis-latin-100-normal.ttf`, which suggests they came from Fontsource. From the same place, download the **latin** subset in weights **400, 500 and 600, normal** (not italic). Send them over, or convert them to `.woff2` yourself, and add them to this folder.
 
 ## Converting files
 
-If you only have `.otf` or `.ttf` files, they can be converted to `.woff2` with any free online converter, or I can convert them for you if you send them.
+If you only have `.ttf` or `.otf` files, they can be converted to `.woff2` with any free converter, or send them to me and I'll convert them.

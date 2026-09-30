@@ -37,7 +37,7 @@ The colours and fonts follow the church brand guide. The palette is at the top o
 - **Primary colours:** sage `#97A762`, teal `#5C8D88`, gold `#E3B45D`, clay `#A8845B`.
 - **Secondary colours used:** olive `#808A4E` (large headings), light gold `#E2BF80`, slate `#9BA4A8`. The dark `#2C2820` (footer and vision band) and warm off-white `#F7F5F2` (page background) match the old site's brand refresh.
 - **Accessibility:** the brand olive and sage are too pale for small text, so small text, links and buttons use darker shades of the same colours (`--sage-deep`, `--clay-deep`). All text pairings pass WCAG AA contrast.
-- **Fonts:** IvyMode (headings) and Metropolis (body) are wired in, and load from the `fonts/` folder once the files are added. See `fonts/README.md` for the exact file names and a licensing note. Until then, free look-alikes are used.
+- **Fonts:** IvyMode (headings) and Metropolis (body) are wired in, and load from the `fonts/` folder once the files are added. Licensed font files are deliberately kept out of this public repository (see `.gitignore`), so they must be added to the folder you publish from. See `fonts/README.md` for the exact file names and licensing notes. Until then, free look-alikes are used.
 
 ## Hosting options
 

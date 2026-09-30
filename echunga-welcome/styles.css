@@ -297,10 +297,13 @@
 
   /* ---------- Multi-page additions ---------- */
   .sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
-  h1.page-title { font-size: clamp(2rem, 5vw, 2.8rem); line-height: 1.1; margin: 0 0 1.2rem; animation: none; letter-spacing: 0; }
+  h1.page-title { font-size: clamp(2rem, 5vw, 2.8rem); line-height: 1.1; margin: 0 0 1.2rem; animation: none; letter-spacing: .02em; }
   body.subpage main > section:first-child { padding-top: 8rem; }
   .next { background: linear-gradient(180deg, transparent, rgba(154,166,102,.14)); text-align: center; }
   .next .actions { margin-top: 1.5rem; }
   .foot-links { margin-top: .8rem !important; }
   footer a { color: var(--gold-light); text-underline-offset: 3px; }
   footer a:hover { color: var(--gold); }
+
+  /* IvyMode is tightly spaced by design; open it up a little at text and card-title sizes */
+  h1, h2, h3, h4, .big, .brand, .time, .journey strong, .hi, .name, .verb, .vm p, .heritage .date, .allwelcome { letter-spacing: .02em; }

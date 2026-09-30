@@ -1,0 +1,5 @@
+# Commercially licensed brand fonts are kept out of this public repository.
+# Add them to the folder on the host you publish from, not to version control.
+fonts/IvyMode*
+fonts/Carentro*
+fonts/Garet*
