@@ -480,3 +480,16 @@
   .wf-title { font-size: clamp(2.6rem, 6vw, 4rem); margin: 0 0 .4rem; }
   .wf-lead { font-family: var(--serif); font-size: clamp(1.3rem, 2.6vw, 1.7rem); line-height: 1.35; letter-spacing: .02em; color: var(--clay-deep); margin: 0 0 1.2rem; }
   .fees thead th:first-child { width: auto; }
+
+  /* ---------- Book covers on Resources ---------- */
+  .res-grid.books { grid-template-columns: repeat(auto-fit, minmax(min(25rem, 100%), 1fr)); gap: 1.2rem; }
+  .res-card.book { flex-direction: row; align-items: flex-start; gap: 1.3rem; padding: 1.2rem; }
+  .res-card.book .book-text { display: flex; flex-direction: column; gap: .45rem; min-width: 0; }
+  .book .cover { flex: 0 0 112px; width: 112px; display: block; border-radius: 4px 8px 8px 4px; overflow: hidden; box-shadow: 0 14px 26px -12px rgba(44,40,32,.55), 0 2px 5px rgba(44,40,32,.18); transition: transform .25s ease; background: var(--line); }
+  .book .cover:hover { transform: translateY(-3px) rotate(-1deg); }
+  .book .cover img { display: block; width: 100%; height: auto; }
+  .book .cover-text { aspect-ratio: 360 / 552; background: linear-gradient(160deg, var(--teal), #3f6b67); color: #fff; padding: .9rem .75rem; display: flex; flex-direction: column; justify-content: space-between; text-align: left; }
+  .book .cover-text span { font-family: var(--serif); font-size: 1.15rem; line-height: 1.15; letter-spacing: .02em; }
+  .book .cover-text small { font-size: .62rem; letter-spacing: .14em; text-transform: uppercase; opacity: .9; }
+  @media (max-width: 400px) { .book .cover { flex-basis: 88px; width: 88px; } .res-card.book { gap: 1rem; } }
+  @media (prefers-reduced-motion: reduce) { .book .cover { transition: none; } .book .cover:hover { transform: none; } }

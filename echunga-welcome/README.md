@@ -23,6 +23,7 @@ The menu on every page is: **About** (Our Story, Vision, Our Minister, Statement
 | File | Purpose |
 | --- | --- |
 | `index.html`, `about/`, `activities/`, `resources/`, `contact/`, `beliefs/`, `safe-church/`, `on-the-way/`, `weddings-and-funerals/` | The nine pages (each folder holds an `index.html`) |
+| `books/` | Book covers shown on the Resources page (360px wide .webp). *Making Sense of God* has no cover image yet and shows a styled text cover; to add one, save it here and swap it into the card in `resources/index.html` |
 | `forms/` | The four PDFs linked from On the Way: the On the Way document and the Taking the Step, Baptism of a Child and Joining Us forms. To update one, replace the file keeping the same name |
 | `styles.css` | All the design, shared by every page |
 | `site.js` | Shared behaviour: the animated hills, phone menu, contact form, copy buttons |
