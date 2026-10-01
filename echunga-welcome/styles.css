@@ -234,7 +234,7 @@
   .res-title { display: flex; align-items: center; gap: 1rem; font-family: var(--serif); font-weight: 500; font-size: 1.8rem; line-height: 1.2; color: var(--olive); margin: 0 0 1.2rem; }
   .res-title::after { content: ""; flex: 1; height: 1px; background: var(--line); }
   .res-grid { display: grid; gap: 1.1rem; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); }
-  .res-grid.wide { grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr)); }
+  .res-grid.wide { grid-template-columns: repeat(auto-fit, minmax(min(20rem, 100%), 1fr)); }
   .res-card { display: flex; flex-direction: column; gap: .45rem; background: #fff; border: 1px solid var(--line); border-radius: 18px; padding: 1.4rem 1.5rem; }
   .res-card h4 { font-family: var(--serif); font-weight: 500; font-size: 1.4rem; line-height: 1.2; margin: 0; color: var(--ink); }
   .res-card h4 a { color: inherit; text-decoration-color: var(--gold); text-underline-offset: 3px; }
@@ -359,27 +359,30 @@
   .christ li::before { content: counter(list-item, lower-alpha); position: absolute; left: .85rem; top: .8rem; width: 1.7rem; height: 1.7rem; border-radius: 50%; display: grid; place-items: center; font-family: var(--sans); font-size: .85rem; font-weight: 500; color: #fff; background: var(--cd); }
 
   /* ---------- Safe Church ---------- */
-  .concern { background: linear-gradient(180deg, transparent, rgba(92,141,136,.12)); }
-  .help-grid { display: grid; gap: 1.1rem; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); margin-top: 2.2rem; }
-  .help-card { background: #fff; border: 1px solid var(--line); border-radius: 20px; padding: 1.6rem; display: flex; flex-direction: column; gap: .35rem; box-shadow: 0 14px 34px -24px rgba(47,58,44,.4); }
-  .help-card h3 { font-size: 1.3rem; margin: 0; }
-  .help-card p { margin: 0; color: var(--ink-soft); }
-  .help-card .num { white-space: nowrap; font-family: var(--serif); font-size: 2.3rem; line-height: 1.1; color: var(--ink); margin: .5rem 0 .2rem; letter-spacing: .02em; }
-  .help-card .num a { color: inherit; text-decoration: none; }
-  .help-card .num a:hover { text-decoration: underline; text-underline-offset: 5px; }
-  .help-card.urgent { background: var(--dark); border-color: var(--dark); }
-  .help-card.urgent h3, .help-card.urgent .num { color: #f4efe2; }
-  .help-card.urgent p { color: rgba(244,239,226,.78); }
-  .help-card.urgent .ico { background: rgba(227,180,93,.22); color: var(--gold); }
-  .help-card:not(.urgent) .ico { background: rgba(92,141,136,.2); color: #3f6b67; }
-  .concern .more { text-align: center; margin: 1.8rem 0 0; font-weight: 500; }
   .framework .res-grid { margin-top: 2.2rem; }
   .framework .res-card .ico { background: rgba(151,167,98,.22); color: var(--sage-deep); }
   .here .res-card .ico { background: rgba(151,167,98,.22); color: var(--sage-deep); }
   .here .res-grid { margin-top: 2.2rem; }
-  .local-card { display: flex; gap: 1.2rem; align-items: flex-start; max-width: 42rem; margin: 1.3rem auto 0; padding: 1.6rem; background: #fff; border: 1px solid var(--line); border-radius: 20px; box-shadow: 0 14px 34px -24px rgba(47,58,44,.4); }
-  .local-card .ico { flex: none; margin: 0; background: rgba(151,167,98,.22); color: var(--sage-deep); }
-  .local-card h3 { font-size: 1.3rem; margin: 0 0 .5rem; }
-  .local-card p { margin: 0 0 .5rem; }
-  .local-card .note { font-size: .95rem; color: var(--ink-soft); margin: .6rem 0 0; }
   .policy-link { text-align: center; margin: 2rem 0 0; }
+
+  /* ---------- Safe Church: quiet concern section ---------- */
+  .jump-concern { margin: 1rem 0 0; font-size: .92rem; }
+  .jump-concern a { color: var(--ink-soft); }
+  .concern-quiet { padding: 3.2rem 1.25rem 3.6rem; border-top: 1px solid var(--line); }
+  .concern-quiet .wrap { max-width: 44rem; }
+  .concern-quiet h2 { font-size: 1.7rem; color: var(--ink); margin: 0 0 .6rem; }
+  .concern-quiet > .wrap > p { color: var(--ink-soft); margin: 0 0 1.2rem; font-size: 1rem; }
+  .contacts { margin: 0; }
+  .contacts > div { padding: .9rem 0; border-top: 1px solid var(--line); }
+  .contacts dt { font-weight: 500; font-size: .98rem; }
+  .contacts dd { margin: .15rem 0 0; color: var(--ink-soft); font-size: .98rem; overflow-wrap: anywhere; }
+  .contacts .note { display: inline-block; margin-top: .35rem; font-size: .92rem; }
+  .concern-quiet .more { margin: 1.1rem 0 0; font-size: .95rem; }
+
+  /* very narrow phones (320px): keep the menu bar and brand inside the screen */
+  @media (max-width: 360px) {
+    .nav { padding-left: 1rem; padding-right: 1rem; }
+    .brand { font-size: 1.1rem; gap: .45rem; }
+    .brand img { width: 28px; height: 28px; }
+    .nav-in { gap: .75rem; }
+  }
