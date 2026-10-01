@@ -493,3 +493,13 @@
   .book .cover-text small { font-size: .62rem; letter-spacing: .14em; text-transform: uppercase; opacity: .9; }
   @media (max-width: 400px) { .book .cover { flex-basis: 88px; width: 88px; } .res-card.book { gap: 1rem; } }
   @media (prefers-reduced-motion: reduce) { .book .cover { transition: none; } .book .cover:hover { transform: none; } }
+
+  /* ---------- Photos ---------- */
+  .photo { margin: 2.2rem auto; max-width: 62rem; }
+  .photo img { display: block; width: 100%; height: auto; border-radius: 22px; box-shadow: 0 22px 44px -28px rgba(44,40,32,.55); background: var(--line); }
+  .photo.band img { aspect-ratio: 21 / 9; object-fit: cover; }
+  .photo.tall { max-width: 34rem; }
+  .photo.start { margin-left: 0; margin-right: 0; }
+  @media (max-width: 560px) { .photo.band img { aspect-ratio: 4 / 3; } .photo img { border-radius: 16px; } }
+  .photo-wrap { margin-top: -3rem; }
+  .photo.band.native img { aspect-ratio: auto; }
