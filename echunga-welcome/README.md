@@ -13,15 +13,16 @@ A small static site: plain HTML, one stylesheet and one script. There is nothing
 | `/contact/` | Contact | Contact form and details, and Give Online |
 | `/beliefs/` | Statement of Beliefs | The 20 statements of belief, grouped by theme (in the About menu) |
 | `/on-the-way/` | On the Way | Baptism, confirmation and membership: five "where are you now?" pathways, what happens next, the four rolls, and the downloadable forms (top-level menu item; invitation band on the home page) |
+| `/weddings-and-funerals/` | Weddings & Funerals | Fee tables (community vs regular or past attenders), how to book a wedding, where to start for a funeral, payment (in the About menu and footer) |
 | `/safe-church/` | Safe Church | Our commitment, how to raise a concern (with phone numbers), and the Uniting Church SA framework (in the About menu) |
 
-The menu on every page is: **About** (Our Story, Vision, Our Minister, Statement of Beliefs, Safe Church), **On the Way**, **Activities**, **Resources**, **Contact**, **Members** (opens the Elvanto portal). Plan Your Visit is on the home page.
+The menu on every page is: **About** (Our Story, Vision, Our Minister, Statement of Beliefs, Safe Church, Weddings & Funerals), **On the Way**, **Activities**, **Resources**, **Contact**, **Members** (opens the Elvanto portal). Plan Your Visit is on the home page.
 
 ## What's in this folder
 
 | File | Purpose |
 | --- | --- |
-| `index.html`, `about/`, `activities/`, `resources/`, `contact/`, `beliefs/`, `safe-church/`, `on-the-way/` | The eight pages (each folder holds an `index.html`) |
+| `index.html`, `about/`, `activities/`, `resources/`, `contact/`, `beliefs/`, `safe-church/`, `on-the-way/`, `weddings-and-funerals/` | The nine pages (each folder holds an `index.html`) |
 | `forms/` | The four PDFs linked from On the Way: the On the Way document and the Taking the Step, Baptism of a Child and Joining Us forms. To update one, replace the file keeping the same name |
 | `styles.css` | All the design, shared by every page |
 | `site.js` | Shared behaviour: the animated hills, phone menu, contact form, copy buttons |
@@ -77,7 +78,7 @@ Not yet mapped: the old Events Calendar (`/events-calendar/`), Pastoral Support 
 
 ## Things to finish once the address is known
 
-1. The share-preview tags (`og:url` and `og:image` in the `<head>` of each of the eight pages) currently use the temporary address `echunga-family-churchpagesdev.ntuohy33.workers.dev`. When the final address is set, replace it on all eight pages (search for `workers.dev`), then re-upload. After the final address is live, switch off or redirect the temporary `workers.dev` address in Cloudflare so search engines don't list two copies of the site.
+1. The share-preview tags (`og:url` and `og:image` in the `<head>` of each of the nine pages) currently use the temporary address `echunga-family-churchpagesdev.ntuohy33.workers.dev`. When the final address is set, replace it on all nine pages (search for `workers.dev`), then re-upload. After the final address is live, switch off or redirect the temporary `workers.dev` address in Cloudflare so search engines don't list two copies of the site.
 2. Test the "Send message" form on the live site. It opens the visitor's email app, addressed to `info@echunga.ucasa.org.au`, because a static site cannot receive form posts on its own. For in-page submission you'd add a form service.
 3. Check "Watch the livestream", the Members link and the book links open correctly.
 4. The public name is **Echunga Family Church**. The only remaining "Echunga Uniting Church" is the bank *Account Name* on the Contact page, which must match how the account is registered, so check it with the treasurer before ever changing it.
@@ -91,7 +92,8 @@ Open the page you want in any text editor. Each section is marked with a comment
 - The **Safe Church page** also names the local contact (Sarah Mosbey) and states that Kids Church, Sunday Youth and crèche leaders hold a current Working With Children Check and that the church council has adopted the Child Safe policy. Keep these true: update the page if the contact or the practice changes.
 - The **Safe Church page** shows safeguarding phone numbers (000, Child Abuse Report Line 13 14 78, Safe Church Committee (08) 8236 4248). They are set by the Uniting Church SA, so check them against https://sa.uca.org.au/safechurch/reporting-abuse every few months.
 - The **On the Way page** carries Nick's email but deliberately not his mobile number (the PDFs still include it) and the wording of the four rolls and four questions. The PDFs are scanned images, so screen readers cannot read them; the page itself carries the same content in text. Keep the page and the PDFs in step if either changes.
-- The **menu and footer are repeated in all eight pages**. If you change a menu item, change it in each file.
+- The **Weddings & Funerals page** replaces the four fee sheets (funeral and wedding, public and church-member versions), which are deliberately not hosted as PDFs because they carried private mobile numbers. Fees are in the two tables on the page and are dated "Fees updated February 2026" at the bottom: change both the figures and that line together each year. Enquiries go to the church office (weddings) and to Nick's email (funerals); no individual volunteers are named. Who counts as a regular or past attender is left to "please talk with Nick".
+- The **menu and footer are repeated in all nine pages**. If you change a menu item, change it in each file.
 - Colours and spacing are all in `styles.css`. The colour names are at the very top.
 
 Fonts (Cormorant Garamond and Jost) load from Google Fonts. If that's ever blocked, the page falls back to standard fonts and stays readable.

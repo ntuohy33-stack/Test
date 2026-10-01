@@ -451,3 +451,29 @@
   .otw-links ul { list-style: none; margin: 0; padding: 0; border-top: 1px solid rgba(255,255,255,.3); }
   .otw-links a { display: flex; justify-content: space-between; gap: 1rem; padding: .9rem .3rem; border-bottom: 1px solid rgba(255,255,255,.3); color: #fff; text-decoration: none; font-size: 1.05rem; transition: background .2s ease, padding .2s ease; }
   .otw-links a:hover { background: rgba(255,255,255,.1); padding-left: .7rem; }
+
+  /* ---------- Weddings & Funerals ---------- */
+  .wf { padding-top: 2.5rem; }
+  .wf + .wf { border-top: 1px solid var(--line); margin-top: 1rem; padding-top: 3.5rem; }
+  .wf-h { font-size: 1.5rem; margin: 2.4rem 0 .8rem; }
+  .fees-wrap { background: #fff; border: 1px solid var(--line); border-radius: 18px; padding: .4rem 1.2rem; overflow-x: auto; }
+  .fees { width: 100%; border-collapse: collapse; font-size: .98rem; }
+  .fees th, .fees td { padding: .75rem .6rem; text-align: right; border-bottom: 1px solid var(--line); vertical-align: top; }
+  .fees thead th { font-size: .74rem; letter-spacing: .14em; text-transform: uppercase; color: var(--clay-deep); font-weight: 600; border-bottom: 2px solid var(--line); }
+  .fees tbody th, .fees tfoot th { text-align: left; font-weight: 500; }
+  .fees thead th:first-child { width: 36%; }
+  .fees tfoot th, .fees tfoot td { font-weight: 600; border-bottom: 0; border-top: 2px solid var(--line); }
+  .fees tfoot td { color: var(--sage-deep); }
+  .fee-note { color: var(--ink-soft); font-size: .97rem; margin: .9rem 0 0; }
+  .wf-steps { margin: 0; padding: 0; list-style: none; counter-reset: wf; }
+  .wf-steps li { counter-increment: wf; position: relative; padding: .6rem 0 .6rem 3rem; }
+  .wf-steps li::before { content: counter(wf); position: absolute; left: 0; top: .55rem; width: 2rem; height: 2rem; border-radius: 50%; background: rgba(151,167,98,.25); color: var(--sage-deep); font-weight: 600; display: grid; place-items: center; font-size: .9rem; }
+  .wf-cta { display: flex; flex-wrap: wrap; gap: .7rem; margin-top: 1.6rem; }
+  .wf-start { background: rgba(92,141,136,.12); border-radius: 22px; padding: 1.6rem 1.8rem; margin-top: 1.6rem; }
+  .wf-start .lbl { font-size: .8rem; letter-spacing: .2em; text-transform: uppercase; color: var(--clay-deep); margin: 0 0 .5rem; }
+  .wf-start p { overflow-wrap: anywhere; }
+  .wf-list { list-style: none; margin: 1.2rem 0 0; padding: 0; border-top: 1px solid var(--line); }
+  .wf-list li { display: grid; grid-template-columns: 8rem 1fr; gap: .3rem 1rem; padding: .8rem 0; border-bottom: 1px solid var(--line); }
+  @media (max-width: 560px) { .wf-list li { grid-template-columns: 1fr; } }
+  .updated { color: var(--ink-soft); font-size: .88rem; margin: 2.5rem 0 3rem; }
+  .wf-pointer { margin: 1.4rem 0 0; font-size: .95rem; color: var(--ink-soft); }
