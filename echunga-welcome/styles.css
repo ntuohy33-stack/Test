@@ -477,3 +477,6 @@
   @media (max-width: 560px) { .wf-list li { grid-template-columns: 1fr; } }
   .updated { color: var(--ink-soft); font-size: .88rem; margin: 2.5rem 0 3rem; }
   .wf-pointer { margin: 1.4rem 0 0; font-size: .95rem; color: var(--ink-soft); }
+  .wf-title { font-size: clamp(2.6rem, 6vw, 4rem); margin: 0 0 .4rem; }
+  .wf-lead { font-family: var(--serif); font-size: clamp(1.3rem, 2.6vw, 1.7rem); line-height: 1.35; letter-spacing: .02em; color: var(--clay-deep); margin: 0 0 1.2rem; }
+  .fees thead th:first-child { width: auto; }
