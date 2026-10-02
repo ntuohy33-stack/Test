@@ -508,3 +508,37 @@
   .photo-grid figure { margin: 0; }
   .photo-grid img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 18px; box-shadow: 0 18px 36px -26px rgba(44,40,32,.55); background: var(--line); }
   @media (max-width: 560px) { .photo-grid { grid-template-columns: 1fr; } }
+
+  /* ---------- Our History ---------- */
+  .photo.mid { max-width: 46rem; }
+  .about-link { display: flex; flex-wrap: wrap; gap: .7rem; justify-content: center; }
+  .history { padding-top: 2.5rem; }
+  .history-photos { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(min(11rem, 100%), 1fr)); margin: 1.8rem 0 2rem; }
+  .history-photos.two { grid-template-columns: repeat(auto-fit, minmax(min(16rem, 100%), 1fr)); }
+  .history-photos figure { margin: 0; }
+  .history-photos img { display: block; width: 100%; height: auto; border-radius: 14px; box-shadow: 0 16px 32px -24px rgba(44,40,32,.6); background: var(--line); }
+  .history-photos.two img { aspect-ratio: 4 / 3; object-fit: cover; }
+  .history-photos figcaption { margin-top: .5rem; font-family: var(--serif); font-size: 1rem; color: var(--clay-deep); text-align: center; letter-spacing: .02em; }
+  .prose p { margin: 0 0 1.1rem; }
+  .prose .pull { font-family: var(--serif); font-size: clamp(1.25rem, 2.6vw, 1.6rem); line-height: 1.4; letter-spacing: .02em; color: var(--sage-deep); margin: 1.6rem 0 .6rem; }
+  .timeline { list-style: none; margin: 2.4rem 0 2rem; padding: 0; display: flex; position: relative; }
+  .timeline::before { content: ""; position: absolute; left: 2%; right: 2%; top: 1.95rem; height: 2px; background: var(--teal); opacity: .55; }
+  .timeline li { flex: 1; text-align: center; position: relative; padding: 0 .3rem; }
+  .timeline .yr { display: block; font-family: var(--serif); font-size: 1.2rem; color: var(--sage-deep); height: 1.6rem; }
+  .timeline li::before { content: ""; display: block; width: 14px; height: 14px; border-radius: 50%; background: var(--gold); margin: .55rem auto .7rem; position: relative; }
+  .timeline .ev { display: block; font-size: .9rem; line-height: 1.35; color: var(--ink-soft); }
+  @media (max-width: 640px) {
+    .timeline { flex-direction: column; gap: 1.1rem; padding-left: 1.6rem; }
+    .timeline::before { left: 6px; right: auto; top: .4rem; bottom: .4rem; width: 2px; height: auto; }
+    .timeline li { text-align: left; padding: 0; }
+    .timeline li::before { position: absolute; left: -1.6rem; top: .25rem; margin: 0; }
+    .timeline .yr { height: auto; display: inline; margin-right: .5rem; }
+    .timeline .ev { display: inline; }
+  }
+  .story-continues { margin-top: 3rem; }
+  @media (max-width: 640px) {
+    .history-photos { grid-template-columns: repeat(3, 1fr); gap: .5rem; }
+    .history-photos.two { grid-template-columns: repeat(2, 1fr); }
+    .history-photos figcaption { font-size: .78rem; line-height: 1.25; }
+    .history-photos img { border-radius: 10px; }
+  }
