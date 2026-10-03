@@ -543,7 +543,18 @@
   @media (max-width: 520px) { .journey.compact { grid-template-columns: 1fr; } .journey.compact li, .journey.compact li + li { border-left: 0; padding: .85rem 1.1rem; } .journey.compact li:nth-child(n+2) { border-top: 1px solid var(--line); } }
 
   /* slim invitation to On the Way on the home page */
-  .otw-slim { padding-top: 1rem !important; padding-bottom: 1rem !important; }
+  .otw-slim { padding-top: 1rem !important; padding-bottom: 3.5rem !important; }
   .otw-bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem 2rem; background: #3f6b67; color: #fff; border-radius: 22px; padding: 1.3rem 1.8rem; }
   .otw-bar p { margin: 0; font-family: var(--serif); font-size: clamp(1.15rem, 2.4vw, 1.45rem); line-height: 1.3; letter-spacing: .02em; color: #fff; }
   @media (max-width: 560px) { .otw-bar { padding: 1.2rem; } .otw-bar .btn { width: 100%; text-align: center; } }
+
+  /* compact Kids / Crèche / Communion strip on the home page */
+  .extras.compact { gap: 0; grid-template-columns: repeat(3, 1fr); background: #fff; border: 1px solid var(--line); border-radius: 22px; padding: .5rem 0; box-shadow: 0 14px 34px -26px rgba(47,58,44,.4); }
+  .extras.compact .card { background: transparent; border: 0; border-radius: 0; box-shadow: none; padding: 1.1rem 1.4rem; display: grid; grid-template-columns: 44px 1fr; column-gap: .9rem; align-content: start; align-items: start; }
+  .extras.compact .card + .card { border-left: 1px solid var(--line); }
+  .extras.compact .ico { width: 44px; height: 44px; margin: 0; grid-row: 1 / span 3; }
+  .extras.compact .ico svg { width: 23px; height: 23px; }
+  .extras.compact h3 { font-size: 1.15rem; margin: 0 0 .15rem; }
+  .extras.compact p { font-size: .92rem; line-height: 1.45; margin: 0 0 .3rem; }
+  .extras.compact p a { font-size: .9rem; }
+  @media (max-width: 900px) { .extras.compact { grid-template-columns: 1fr; } .extras.compact .card + .card { border-left: 0; border-top: 1px solid var(--line); } .extras.compact .card { padding: .9rem 1.1rem; } }
