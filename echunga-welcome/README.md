@@ -30,7 +30,7 @@ The menu on every page is: **About** (Our Story, Vision, Our Minister, Our Histo
 | `styles.css` | All the design, shared by every page |
 | `site.js` | Shared behaviour: the animated hills, phone menu, contact form, copy buttons |
 | `_redirects` | Old-address redirects (see below) |
-| `logo.jpg`, `photo-1.jpg` to `photo-8.jpg` | Logo and gallery photos |
+| `logo.webp` (and the original `logo.jpg`), `photo-1.jpg` to `photo-8.jpg` | Logo (the Home hero uses the small .webp) and gallery photos |
 | `favicon.ico`, `favicon-32.png`, `apple-touch-icon.png`, `icon-512.png` | Browser tab and phone home-screen icons |
 | `share-card.jpg` | Preview image when a link is shared (Facebook, messages) |
 
