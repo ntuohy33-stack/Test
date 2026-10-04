@@ -5,23 +5,19 @@ The site is set up to use the brand guide fonts. Web-font files (`.woff2`) place
 | Brand font | Used for | Files | Status |
 | --- | --- | --- | --- |
 | **IvyMode** (Regular) | Headings, the church name in the menu, large text | `IvyMode-Regular.woff2` | Converted and tested. Kept out of version control (see below) |
-| **Metropolis** | Body text, menu, buttons | `Metropolis-Regular.woff2` (400), `Metropolis-Medium.woff2` (500), `Metropolis-SemiBold.woff2` (600) | **Still needed.** The files supplied so far were Thin (100), which is too fine for body text |
+| **Metropolis** | Body text, menu, buttons | `Metropolis-Regular.woff2` (400), `Metropolis-Medium.woff2` (500), `Metropolis-SemiBold.woff2` (600), `Metropolis-Bold.woff2` (700) | **Done.** Included in this folder (latin subset, from the Fontsource package). It is free to use; the licence copy is `Metropolis-LICENSE.txt` |
 
-Until a font's file is here, the site shows a free look-alike (Cormorant Garamond for IvyMode, Montserrat for Metropolis), so nothing looks broken.
+Until the IvyMode file is added to the folder you publish from, the site shows a free look-alike (Cormorant Garamond), so nothing looks broken. Metropolis needs nothing more.
 
 **Not used yet:** the secondary fonts, Carentro and Garet Book.
 
 ## Licences
 
 - **IvyMode** is © Ivy Foundry and sold through Type Network (store.typenetwork.com). Its file allows embedding technically, but that is not the same as permission. Putting it on a website needs a **web-font licence**. Please confirm one is in place. `.gitignore` keeps IvyMode, Carentro and Garet files out of this repository, because the repository is public and anyone could download them from it. Add these files to the folder you publish from (or to a private repository), not here.
-- **Metropolis** is open-source (SIL Open Font License) and can be used and shared freely, including in this repository.
+- **Metropolis** is free to use and share, including in this repository. The Fontsource package it came from is marked as public domain (the Unlicense), and a copy of that licence is in this folder.
 - **Carentro and Garet** appear to be commercial. Check for web licences before using them.
 
 I can't confirm licence terms from here, so please treat this as a prompt to check.
-
-## Getting the right Metropolis files
-
-The files supplied were named like `metropolis-latin-100-normal.ttf`, which suggests they came from Fontsource. From the same place, download the **latin** subset in weights **400, 500 and 600, normal** (not italic). Send them over, or convert them to `.woff2` yourself, and add them to this folder.
 
 ## Converting files
 

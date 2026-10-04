@@ -1,7 +1,8 @@
   @font-face { font-family: "IvyMode"; src: url("fonts/IvyMode-Regular.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: swap; }
   @font-face { font-family: "Metropolis"; src: url("fonts/Metropolis-Regular.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: swap; }
   @font-face { font-family: "Metropolis"; src: url("fonts/Metropolis-Medium.woff2") format("woff2"); font-weight: 500; font-style: normal; font-display: swap; }
-  @font-face { font-family: "Metropolis"; src: url("fonts/Metropolis-SemiBold.woff2") format("woff2"); font-weight: 500; font-style: normal; font-display: swap; }
+  @font-face { font-family: "Metropolis"; src: url("fonts/Metropolis-SemiBold.woff2") format("woff2"); font-weight: 600; font-style: normal; font-display: swap; }
+  @font-face { font-family: "Metropolis"; src: url("fonts/Metropolis-Bold.woff2") format("woff2"); font-weight: 700; font-style: normal; font-display: swap; }
 
   :root {
     /* Brand palette, from the brand guide */
@@ -21,10 +22,10 @@
     --ink-soft: #5b5548;
     --card: #ffffff;
     --line: rgba(92,106,48,.18);
-    /* Brand fonts (IvyMode, Metropolis) load from /fonts when the files are present.
+    /* Brand fonts: Metropolis is included in /fonts; IvyMode loads when its file is present (see fonts/README.md).
        Free look-alikes fill in until then. */
     --serif: "IvyMode", "Cormorant Garamond", Georgia, "Times New Roman", serif;
-    --sans: "Metropolis", "Montserrat", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --sans: "Metropolis", system-ui, -apple-system, "Segoe UI", sans-serif;
   }
   * { box-sizing: border-box; }
   html { scroll-behavior: smooth; }
