@@ -26,7 +26,8 @@ The menu on every page is: **About** (Our Story, Vision, Our Minister, Our Histo
 | `index.html`, `about/`, `activities/`, `resources/`, `contact/`, `beliefs/`, `safe-church/`, `on-the-way/`, `weddings-and-funerals/`, `our-history/` | The ten pages (each folder holds an `index.html`) |
 | `books/` | Book covers shown on the Resources page (360px wide .webp). *Making Sense of God* has no cover image yet and shows a styled text cover; to add one, save it here and swap it into the card in `resources/index.html` |
 | `photos/` | Congregation and building photos used on Home, Activities, On the Way, Weddings & Funerals and Resources (.webp, cropped; name badges blurred or cropped out). Add `alt` text to any new photo |
-| `forms/` | The four PDFs linked from On the Way: the On the Way document and the Taking the Step, Baptism of a Child and Joining Us forms. To update one, replace the file keeping the same name |
+| `forms/` | The four PDFs linked from On the Way: the On the Way document and the Taking the Step, Baptism of a Child and Joining Us forms. They have real, selectable text and are built from the sources in `forms-src/`; to change one, edit its source and rebuild (see `forms-src/README.md`), or replace the file keeping the same name |
+| `forms-src/` | HTML sources for the four PDFs, the build script, and the Metropolis font. Not part of the website upload |
 | `styles.css` | All the design, shared by every page |
 | `site.js` | Shared behaviour: the animated hills, phone menu, contact form, copy buttons |
 | `_redirects` | Old-address redirects (see below) |
