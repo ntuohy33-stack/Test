@@ -13,7 +13,7 @@ Until the IvyMode file is added to the folder you publish from, the site shows a
 
 ## Licences
 
-- **IvyMode** is © Ivy Foundry and sold through Type Network (store.typenetwork.com). Its file allows embedding technically, but that is not the same as permission. Putting it on a website needs a **web-font licence**. Please confirm one is in place. `.gitignore` keeps IvyMode, Carentro and Garet files out of this repository, because the repository is public and anyone could download them from it. Add these files to the folder you publish from (or to a private repository), not here.
+- **IvyMode** is © Ivy Foundry and sold through Type Network (store.typenetwork.com). Its file allows embedding technically, but that is not the same as permission. Putting it on a website needs a **web-font licence**. The church has confirmed it holds a licence for IvyMode. `.gitignore` keeps IvyMode, Carentro and Garet files out of this repository, because the repository is public and anyone could download them from it. Add these files to the folder you publish from (or to a private repository), not here.
 - **Metropolis** is free to use and share, including in this repository. The Fontsource package it came from is marked as public domain (the Unlicense), and a copy of that licence is in this folder.
 - **Carentro and Garet** appear to be commercial. Check for web licences before using them.
 
